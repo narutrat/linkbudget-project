@@ -237,7 +237,7 @@
     </div>
 
     <div class="col-sm-2">
-      <Modem @modemSelected="modemDropdown"></Modem>
+      <Modem @modemSelected="selectedModem = $event"></Modem>
     </div>
   </div>
 
@@ -247,7 +247,7 @@
     </div>
 
     <div class="col-sm-2">
-      <BestModCode @bestModCodeSelected="bestModCodeDropdown"></BestModCode>
+      <BestModCode @bestModCodeSelected="selectedBestModCode = $event"></BestModCode>
     </div>
   </div>
 
@@ -265,7 +265,7 @@
         </div>
 
         <div class="col-sm-2">
-          <ModulationA :modem="selectedModem" @modCodeASelected="modCodeADropdown"></ModulationA>
+          <ModulationA :modem="selectedModem" @modCodeASelected="selectedModCodeA = $event"></ModulationA>
         </div>
       </div>
 
@@ -275,7 +275,7 @@
         </div>
 
         <div class="col-sm-2">
-          <FecA :modem="selectedModem" @fecASelected="fecADropdown"></FecA>
+          <fecA :modem="selectedModem" @fecASelected="selectedFecA = $event"></fecA>
         </div>
       </div>
     </div>
@@ -285,94 +285,218 @@
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
 
   <div class="row">
-    <h3 style="margin-left:30px; margin-top:5px; font-weight:bold; text-align:left">System Loss</h3>
+    <h3 class="col-sm-5" style="margin-left:15px; margin-top:5px; font-weight:bold; text-align:left">System Loss</h3>
+    <div class="col-sm-1"></div>
+    <h3 class="col-sm-5" style="margin-left:-15px; margin-top:5px; font-weight:bold; text-align:left">Antenna Gain & Temperature</h3>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+
+
+      <div class="col-sm-6" style="margin-left:-15px">
+        <div class="row">
+          <div class="col-sm-4 blue-box1">
+            IFL Loss: {{ iflLoss }}
+          </div>
+
+          <div class="col-sm-1"></div>
+
+          <div class="input-group col-sm-4">
+            <span class="input-group-addon">Uplink</span>
+            <input v-model="iflLoss" class="form-control" style="text-align:center">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 blue-box1">
+            <span>Loss from Antenna Feed to LNA: {{ lossFeedA }}</span>
+          </div>
+
+          <div class="col-sm-1"></div>
+
+          <div class="col-sm-4">
+            <input v-model="lossFeedA" class="form-control" style="text-align:center" />
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-sm-4 blue-box1">
+            <span>Mispointing Antenna Loss: {{ misAntUpA }} / {{ misAntDnB }}</span>
+          </div>
+
+          <div class="col-sm-1"></div>
+
+          <div class="input-group col-sm-4">
+            <span class="input-group-addon">Uplink</span>
+            <input v-model="misAntUpA" class="form-control" style="text-align:center" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-5" style="margin-left:25px"></div>
+
+          <div class="input-group col-sm-4">
+            <span class="input-group-addon">Downlink</span>
+            <input v-model="misAntDnB" class="form-control" style="text-align:center" />
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-sm-4 blue-box1">
+            <span>Atmospheric Absorption: {{ atmos }}</span>
+          </div>
+
+          <div class="col-sm-1"></div>
+
+          <div class="col-sm-4">
+            <input v-model="atmos" class="form-control" style="text-align:center" />
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-sm-4 blue-box1">
+            <span>Other Loss (XPD & Axial Ratio Loss): {{ otherLossUpA }}</span>
+          </div>
+
+          <div class="col-sm-1"></div>
+
+          <div class="col-sm-4">
+            <input v-model="otherLossUpA" class="form-control" style="text-align:center" />
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-4 blue-box1">
+            <span>Antenna Gain: {{ selectedAntGain }} </span>
+          </div>
+
+          <div class="col-sm-3">
+            <AntGain @antGainSelected="selectedAntGain = $event"></AntGain>
+          </div>
+
+          <!-- <div class="col-sm-1"></div> -->
+
+          <div class="input-group col-sm-4">
+            <span class="input-group-addon">{{ selectedAntGain }}</span>
+            <input v-model="selectedAntGain" class="form-control" style="text-align:center" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 blue-box1">
+            <span>Antenna Efficiency: {{ selectedAntEff }}</span>
+          </div>
+
+          <div class="col-sm-3">
+            <AntEff @antEffSelected="selectedAntEff = $event"></AntEff>
+          </div>
+
+          <!-- <div class="col-sm-1"></div> -->
+
+          <div class="input-group col-sm-4">
+            <span class="input-group-addon">{{ selectedAntEff }}</span>
+            <input v-model="selectedAntEff" class="form-control" style="text-align:center">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 blue-box1">
+            <span>Rx Antenna Temperature: {{ selectedRxAntTemp }}</span>
+          </div>
+
+          <div class="col-sm-3">
+            <RxAntTemp @rxAntTempSelected="selectedRxAntTemp = $event"></RxAntTemp>
+          </div>
+
+          <!-- <div class="col-sm-1"></div> -->
+
+          <div class="input-group col-sm-4">
+            <span class="input-group-addon">{{ selectedRxAntTemp }}</span>
+            <input v-model="selectedRxAntTemp" class="form-control" style="text-align:center">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 blue-box1">
+            <span>LNA Noise Temperature: {{ selectedLnaTemp }}</span>
+          </div>
+
+          <div class="col-sm-3">
+            <LnaNoiseTemp @lnaTempSelected="selectedLnaTemp = $event"></LnaNoiseTemp>
+          </div>
+
+          <!-- <div class="col-sm-1"></div> -->
+
+          <div class="input-group col-sm-4">
+            <span class="input-group-addon">{{ selectedLnaTemp }}</span>
+            <input v-model="selectedLnaTemp" class="form-control" style="text-align:center">
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
   </div>
 
-  <div class="col-sm-6" style="margin-left:-15px">
-    <div class="row">
-      <div class="col-sm-4 blue-box1">
-        IFL Loss: {{ iflLoss }}
-      </div>
+  <h3 style="margin-left:15px; margin-top:5px; font-weight:bold; text-align:left">Miscellaneous Configuration</h3>
 
-      <div class="col-sm-1"></div>
-
-      <div class="input-group col-sm-4">
-        <span class="input-group-addon">Uplink</span>
-        <input v-model="iflLoss" class="form-control" style="text-align:center">
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-4 blue-box1">
-        <span>Loss from Antenna Feed to LNA: {{ lossFeedA }}</span>
-      </div>
-
-      <div class="col-sm-1"></div>
-
-      <div class="col-sm-4">
-        <input v-model="lossFeedA" class="form-control" style="text-align:center" />
-      </div>
-    </div>
-
-    <div class="row">
-
-      <div class="col-sm-4 blue-box1">
-        <span>Mispointing Antenna Loss: {{ misAntUpA }} / {{ misAntDnB }}</span>
-      </div>
-
-      <div class="col-sm-1"></div>
-
-      <div class="input-group col-sm-4">
-        <span class="input-group-addon">Uplink</span>
-        <input v-model="misAntUpA" class="form-control" style="text-align:center" />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-5" style="margin-left:25px"></div>
-
-      <div class="input-group col-sm-4">
-        <span class="input-group-addon">Downlink</span>
-        <input v-model="misAntDnB" class="form-control" style="text-align:center" />
-      </div>
-    </div>
-
-    <div class="row">
-
-      <div class="col-sm-4 blue-box1">
-        <span>Atmospheric Absorption: {{ atmos }}</span>
-      </div>
-
-      <div class="col-sm-1"></div>
-
-      <div class="col-sm-4">
-        <input v-model="atmos" class="form-control" style="text-align:center" />
-      </div>
-    </div>
-
-    <div class="row">
-
-      <div class="col-sm-4 blue-box1">
-        <span>Other Loss (XPD & Axial Ratio Loss): {{ otherLossUpA }}</span>
-      </div>
-
-      <div class="col-sm-1"></div>
-
-      <div class="col-sm-4">
-        <input v-model="otherLossUpA" class="form-control" style="text-align:center" />
-      </div>
-    </div>
-  </div>
-
-  <div class="col-sm-6">
-    <div class="col-sm-4 blue-box1">
-      <span>Antenna Gain: {{ selectedAntGain }} </span>
+<!--  -->
+  <div class="row">
+    <div class="col-sm-2 blue-box1">
+      <span>Link Availability: {{ selectedLinkAva }}</span>
     </div>
 
     <div class="col-sm-2">
-      <AntGain @antGainSelected="selectedAntGain = $event"></AntGain>
+      <LinkAva @linkAvaSelected="selectedLinkAva = $event"></LinkAva>
+    </div>
+
+    <div class="input-group col-sm-2">
+      <span class="input-group-addon">{{ selectedLinkAva }}</span>
+      <input v-model="selectedLinkAva" class="form-control" style="text-align:center">
     </div>
   </div>
+
+<!--  -->
+  <div class="row">
+    <div class="col-sm-2 blue-box1">
+      <span>Equivalent BW: {{ selectedEquivalentBW }}</span>
+    </div>
+
+    <div class="col-sm-2">
+      <EquiBW @equivalentBWSelected="selectedEquivalentBW = $event"></EquiBW>
+    </div>
+
+    <div class="input-group col-sm-2">
+      <span class="input-group-addon">{{ selectedEquivalentBW }}</span>
+      <input v-model="selectedEquivalentBW" class="form-control" style="text-align:center">
+    </div>
+  </div>
+
+<!--  -->
+  <div class="row">
+    <div class="col-sm-2 blue-box1">
+      <span>EBE: {{ selectedEbe }}</span>
+    </div>
+
+    <div class="col-sm-2">
+      <EbeCheck @ebeSelected="selectedEbe = $event"></EbeCheck>
+    </div>
+
+    <div class="input-group col-sm-2">
+      <span class="input-group-addon">{{ selectedEbe }}</span>
+      <input v-model="selectedEbe" class="form-control" style="text-align:center">
+    </div>
+  </div>
+
+  <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
+
+
 </div>
 </template>
 
@@ -408,6 +532,12 @@ import MisAntDnB from './inputs/MisAntDnB'
 import Atmos from './inputs/Atmos'
 import OtherLoss from './inputs/OtherLoss'
 import AntGain from './inputs/AntGain'
+import AntEff from './inputs/AntEff'
+import RxAntTemp from './inputs/RxAntTemp'
+import LnaNoiseTemp from './inputs/LnaNoiseTemp'
+import LinkAva from './inputs/LinkAva'
+import EquiBW from './inputs/EquiBW'
+import EbeCheck from './inputs/EbeCheck'
 
 
 export default {
@@ -444,7 +574,13 @@ export default {
       misAntDnB: "",
       atmos: "",
       otherLossUpA: "",
-      selectedAntGain: ""
+      selectedAntGain: "",
+      selectedAntEff: "",
+      selectedRxAntTemp: "",
+      selectedLnaTemp: "",
+      selectedLinkAva: "",
+      selectedEquivalentBW: "",
+      selectedEbe: ""
     };
   },
   components: { // Allow components to be used as HTML element
@@ -466,12 +602,24 @@ export default {
     BestModCode,
     ModulationA,
     FecA,
-    AntGain
+    AntGain,
+    AntEff,
+    RxAntTemp,
+    LnaNoiseTemp,
+    LinkAva,
+    EquiBW,
+    EbeCheck
   },
   computed: {
     LocationLabel() {
       return this.selectedLocationsA.map(function(obj) {
         return obj.label;
+      }).join(',');
+
+    },
+    ModLabel() {
+      return this.selectedModCodeA.map(function(obj) {
+        return obj.modCode;
       }).join(',');
 
     }
@@ -501,21 +649,6 @@ export default {
       this.selectedLocationsB = locations;
     },
 
-    modemDropdown(modem) {
-      this.selectedModem = modem;
-    },
-
-    bestModCodeDropdown(bestModCode) {
-      this.selectedBestModCode = bestModCode;
-    },
-
-    modCodeADropdown(modCodeA) {
-      this.selectedModCodeA = modCodeA;
-    },
-
-    fecADropdown(fecA) {
-      this.selectedFecA = fecA;
-    },
 
   }
 }

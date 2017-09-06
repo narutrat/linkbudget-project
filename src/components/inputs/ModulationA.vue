@@ -12,7 +12,7 @@ export default {
   props: ['modem'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      modCodeA: "",
+      modCodeA: [],
       modemDatabase: [{
           label: 'Modem A',
           modCode: ['BPSK', 'QPSK', '8PSK', '16APSK'],
@@ -42,6 +42,7 @@ export default {
   },
   methods: {
     modCodeAChanged(value) {
+        console.log(JSON.stringify(value, undefined, 2));
       this.$emit('modCodeASelected', value);
     }
   }

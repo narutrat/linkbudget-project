@@ -2975,7 +2975,15 @@
 </template>
 
 <script>
-import {getRainData, atmosphericLoss, cloudAtten, gasAtten, scinAtten, rainAtten001, rainAtten} from '../utils/atmospheric.js'
+import {
+  getRainData,
+  atmosphericLoss,
+  cloudAtten,
+  gasAtten,
+  scinAtten,
+  rainAtten001,
+  rainAtten
+} from '../utils/atmospheric.js'
 
 export default {
   name: 'input',

@@ -1,5 +1,6 @@
 <template>
   <select v-model="antGain" class="btn btn-default" @change="antGainChanged($event.target.value)">
+    <option value="">Please Select</option>
     <option v-for="antGain in CalOptions" :value="antGain.label">
       {{ antGain.label }}
     </option>
