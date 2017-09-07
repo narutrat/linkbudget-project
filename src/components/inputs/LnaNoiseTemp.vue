@@ -1,6 +1,6 @@
 <template>
   <select v-model="lnaTemp" class="btn btn-default" @change="lnaTempChanged($event.target.value)">
-    <option value="">Please Select</option>
+    <!-- <option value="">Please Select</option> -->
     <option v-for="lnaTemp in defaultOptions" :value="lnaTemp.label">
       {{ lnaTemp.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      lnaTemp: '',
+      lnaTemp: 'Default',
       defaultOptions: [{
           label: 'Default',
           value: 1

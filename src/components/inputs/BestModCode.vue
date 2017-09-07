@@ -1,6 +1,6 @@
 <template>
   <select v-model="bestModCode" class="btn btn-default" @change="bestModCodeChanged($event.target.value)">
-    <option value="">Select Yes / No</option>
+    <!-- <option value="">Select Yes / No</option> -->
     <option v-for="bestModCode in yesNoOptions" :value="bestModCode.label">
       {{ bestModCode.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      bestModCode: '',
+      bestModCode: 'No',
       yesNoOptions: [{
           label: 'Yes',
           value: 1

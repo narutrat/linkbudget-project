@@ -1,6 +1,6 @@
 <template>
   <span :value="freqdownlink">
-    Frequency: {{ freqdownlink }}
+    Center Frequency: {{ freqdownlink }} GHz
   </span>
 </template>
 
@@ -117,7 +117,7 @@
     computed: {
       freqdownlink() {
         let result = this.tpConfigDatabase.find(x => x.transponders === this.transponders);
-        return result ? result.downFrq : [];
+        return result ? result.downFrq : '';
       }
     },
     // methods: {

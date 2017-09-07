@@ -1,6 +1,6 @@
 <template>
   <select v-model="equivalentBW" class="btn btn-default" @change="equivalentBWChanged($event.target.value)">
-    <option value="">Please Select</option>
+    <!-- <option value="">Please Select</option> -->
     <option v-for="equivalentBW in yesNoOptions" :value="equivalentBW.label">
       {{ equivalentBW.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      equivalentBW: '',
+      equivalentBW: 'No',
       yesNoOptions: [{
           label: 'Yes',
           value: 1

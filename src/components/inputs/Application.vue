@@ -1,6 +1,6 @@
 <template>
   <select v-model="appDVB" class="btn btn-default" @change="appDVBChanged($event.target.value)">
-    <option value="">Select Application</option>
+    <!-- <option value="">Select Application</option> -->
     <option v-for="appDVB in appDVBOptions" :value="appDVB.label">
       {{ appDVB.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      appDVB: '',
+      appDVB: 'DVB-S1',
       appDVBOptions: [{
           label: 'DVB-S1',
           value: 1

@@ -15,11 +15,19 @@ export default {
       modem: '',
       modemOptions: [{
           label: 'Modem A',
-          value: 1
+          value: 1,
+          modCode: ['BPSK 1/2', 'QPSK 1/2', '8PSK 1/2', '16APSK 1/2', 'BPSK 3/4', 'QPSK 3/4', '8PSK 3/4', '16APSK 3/4'],
+          modCodeValue: [1, 2, 3, 4],
+          ebNo: [1, 2, 3, 4, 8, 9],
+          bt: [1.05, 1.2, 1.35]
         },
         {
           label: 'Modem B',
-          value: 2
+          value: 2,
+          modCode: ['BPSK 1/2', 'QPSK 1/2', '8PSK 1/2', '16APSK 1/2', 'BPSK 3/4', 'QPSK 3/4', '8PSK 3/4'],
+          modCodeValue: [1, 2, 3],
+          ebNo: [1, 2, 3, 8],
+          bt: [1.05, 1.2]
         }
       ]
     }
@@ -27,7 +35,7 @@ export default {
   methods: {
     modemChanged(value) {
       let selectedModem = this.modemOptions.find(s => s.label === value);
-      this.$emit('modemSelected', selectedModem.label);
+      this.$emit('modemSelected', selectedModem);
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <select v-model="bwSel" class="btn btn-default" @change="bwSelChanged($event.target.value)">
-    <option value="">Select Bandwidth</option>
+    <!-- <option value="">Select Bandwidth</option> -->
     <option v-for="bwSel in bwSelOptions" :value="bwSel.label">
       {{ bwSel.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      bwSel: '',
+      bwSel: 'Bandwidth',
       bwSelOptions: [{
           label: 'Bandwidth',
           value: 1

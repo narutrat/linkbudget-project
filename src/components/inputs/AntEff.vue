@@ -1,6 +1,6 @@
 <template>
   <select v-model="antEff" class="btn btn-default" @change="antEffChanged($event.target.value)">
-    <option value="">Select Mode</option>
+    <!-- <option value="">Select Mode</option> -->
     <option v-for="antEff in defaultOptions" :value="antEff.label">
       {{ antEff.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      antEff: '',
+      antEff: 'Default',
       defaultOptions: [{
           label: 'Default',
           value: 1

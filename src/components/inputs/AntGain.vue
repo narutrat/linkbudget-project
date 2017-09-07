@@ -1,6 +1,6 @@
 <template>
   <select v-model="antGain" class="btn btn-default" @change="antGainChanged($event.target.value)">
-    <option value="">Please Select</option>
+    <!-- <option value="">Please Select</option> -->
     <option v-for="antGain in CalOptions" :value="antGain.label">
       {{ antGain.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      antGain: '',
+      antGain: 'Calculation',
       CalOptions: [{
           label: 'Calculation',
           value: 1

@@ -1,6 +1,6 @@
 <template>
   <select v-model="ebe" class="btn btn-default" @change="ebeChanged($event.target.value)">
-    <option value="">Please Select</option>
+    <!-- <option value="">Please Select</option> -->
     <option v-for="ebe in ShowOptions" :value="ebe.label">
       {{ ebe.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      ebe: '',
+      ebe: 'Hide',
       ShowOptions: [{
           label: 'Show',
           value: 1

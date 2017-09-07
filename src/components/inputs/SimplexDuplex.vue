@@ -1,6 +1,6 @@
 <template>
   <select v-model="simDuplex" class="btn btn-default" @change="simDuplexChanged($event.target.value)">
-    <option value="">Select Simplex/Duplex</option>
+    <!-- <option value="">Select Simplex/Duplex</option> -->
     <option v-for="simDuplex in simDuplexOptions" :value="simDuplex.label">
       {{ simDuplex.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      simDuplex: '',
+      simDuplex: 'Duplex',
       simDuplexOptions: [{
           label: 'Simplex',
           value: 1

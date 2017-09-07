@@ -1,6 +1,6 @@
 <template>
   <select v-model="linkAva" class="btn btn-default" @change="linkAvaChanged($event.target.value)">
-    <option value="">Please Select</option>
+    <!-- <option value="">Please Select</option> -->
     <option v-for="linkAva in defaultOptions" :value="linkAva.label">
       {{ linkAva.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      linkAva: '',
+      linkAva: 'Default',
       defaultOptions: [{
           label: 'Default',
           value: 1

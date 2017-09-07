@@ -1,6 +1,6 @@
 <template>
   <select v-model="carrier" class="btn btn-default" @change="carrierChanged($event.target.value)">
-    <option value="">Select Carrier</option>
+    <!-- <option value="">Select Carrier</option> -->
     <option v-for="carrier in carrierOptions" :value="carrier.label">
       {{ carrier.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      carrier: '',
+      carrier: 'Multiple Carrier',
       carrierOptions: [{
           label: 'Single Carrier',
           value: 1

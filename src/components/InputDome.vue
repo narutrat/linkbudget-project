@@ -30,7 +30,6 @@
       <!-- Construct a beam selector, which listens to event 'beamSelected' where the beam selector component sends the String beam name back when the input is changed -->
       <!-- Also pass satellite name as a prop -->
       <beam-selector :satelliteName="selectedSatellite.text" @beamSelected="selectedBeam = $event"></beam-selector>
-
     </div>
 
     <div class="col-sm-1"></div>
@@ -48,7 +47,7 @@
     <div class="col-sm-1"></div>
 
     <!-- Frequency -->
-    <div class="col-sm-2">
+    <div class="col-sm-2" style="margin-top:5px">
       <FreqDL :transponders="selectedTp"></FreqDL>
     </div>
   </div>
@@ -60,9 +59,9 @@
   <div class="row">
     <h3 style="margin-left:30px; margin-top:5px; font-weight:bold; text-align:left">Location</h3>
 
-    <div class="col-sm-7"></div>
+    <div class="col-sm-8"></div>
 
-    <div class="col-sm-1">
+    <div class="col-sm-1" style="margin-left:-6px">
       <span>Adjacent Satellite </span>
     </div>
 
@@ -72,7 +71,7 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-1 blue-box1">
+    <div class="col-sm-2 blue-box1">
       <span>Location A: {{ LocationLabelA }}</span>
     </div>
 
@@ -90,10 +89,14 @@
     <div class="col-sm-1 blue-box1">
       Dx Contours
     </div>
+
+    <!-- <div class="col-sm-1">
+      <span>{{DxContourLocationA}}</span>
+    </div> -->
   </div>
 
   <div class="row">
-    <div class="col-sm-1 blue-box1">
+    <div class="col-sm-2 blue-box1">
       <span>Location B: {{ LocationLabelB }}</span>
     </div>
 
@@ -129,7 +132,7 @@
     <h3 style="margin-left:30px; margin-top:5px; font-weight:bold; text-align:left">Carrier Setting</h3>
   </div>
 
-  <div class="row" style="text-align:left">
+  <div class="row">
     <div class="col-sm-4">
       <div class="row">
         <div class="col-sm-6 blue-box1">
@@ -162,14 +165,12 @@
 
 
     <div class="col-sm-4">
-
       <div class="row" style="margin-top:40px">
         <div class="col-sm-6 blue-box1">
           Satellite IBO: {{ satIbo }}
         </div>
 
         <input v-model="satIbo" class="col-sm-2" style="margin-left:15px">
-
       </div>
 
       <div class="row">
@@ -252,7 +253,7 @@
 
   <div class="row">
     <div class="col-sm-3 blue-box1">
-      <span>Modem: {{ selectedModem }}</span>
+      <span>Modem: {{ selectedModem.label }}</span>
     </div>
 
     <div class="col-sm-2">
@@ -273,22 +274,22 @@
   <!-- Location A -->
 
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-5">
       <div class="row" style="margin-left:40px; text-align:left">
         <h4 style="font-weight:bold">Location A</h4>
       </div>
 
       <div class="row" style="margin-left:15px">
-        <div class="col-sm-3 blue-box1">
-          <span>Modulation: {{ selectedModCodeA }}</span>
+        <div class="col-sm-6 blue-box1">
+          <span>Modulation A: {{ selectedModCodeA }}</span>
         </div>
 
         <div class="col-sm-2">
-          <ModulationA :modem="selectedModem" @modCodeASelected="selectedModCodeA= $event"></ModulationA>
+          <ModulationA :modem="selectedModem" @modCodeSelected="selectedModCodeA= $event"></ModulationA>
         </div>
       </div>
 
-      <div class="row" style="margin-left:15px">
+      <!-- <div class="row" style="margin-left:15px">
         <div class="col-sm-3 blue-box1">
           <span>FEC: {{ selectedFecA }}</span>
         </div>
@@ -296,9 +297,24 @@
         <div class="col-sm-2">
           <fecA :modem="selectedModem" @fecASelected="selectedFecA = $event"></fecA>
         </div>
-      </div>
+      </div> -->
     </div>
 
+    <div v-if="selectedSimDuplex === 'Duplex'" class="col-sm-5">
+      <div class="row" style="margin-left:40px; text-align:left">
+        <h4 style="font-weight:bold">Location B</h4>
+      </div>
+
+      <div class="row" style="margin-left:15px">
+        <div class="col-sm-6 blue-box1">
+          <span>Modulation B: {{ selectedModCodeB }}</span>
+        </div>
+
+        <div class="col-sm-2">
+          <ModulationA :modem="selectedModem" @modCodeSelected="selectedModCodeB= $event"></ModulationA>
+        </div>
+      </div>
+    </div>
   </div>
 
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
@@ -362,7 +378,6 @@
         </div>
 
         <div class="row">
-
           <div class="col-sm-4 blue-box1">
             <span>Atmospheric Absorption: {{ atmos }}</span>
           </div>
@@ -375,7 +390,6 @@
         </div>
 
         <div class="row">
-
           <div class="col-sm-4 blue-box1">
             <span>Other Loss (XPD & Axial Ratio Loss): {{ otherLossUpA }}</span>
           </div>
@@ -449,17 +463,12 @@
             <LnaNoiseTemp @lnaTempSelected="selectedLnaTemp = $event"></LnaNoiseTemp>
           </div>
 
-          <!-- <div class="col-sm-1"></div> -->
-
           <div class="input-group col-sm-4">
             <span class="input-group-addon">{{ selectedLnaTemp }}</span>
             <input v-model="selectedLnaTemp" class="form-control" style="text-align:center">
           </div>
         </div>
-
       </div>
-
-
     </div>
   </div>
 
@@ -471,7 +480,7 @@
       <span>Link Availability: {{ selectedLinkAva }}</span>
     </div>
 
-    <div class="col-sm-2">
+    <div class="col-sm-1" style="margin-right:20px">
       <LinkAva @linkAvaSelected="selectedLinkAva = $event"></LinkAva>
     </div>
 
@@ -490,11 +499,6 @@
     <div class="col-sm-2">
       <EquiBW @equivalentBWSelected="selectedEquivalentBW = $event"></EquiBW>
     </div>
-
-    <div class="input-group col-sm-2">
-      <span class="input-group-addon">{{ selectedEquivalentBW }}</span>
-      <input v-model="selectedEquivalentBW" class="form-control" style="text-align:center">
-    </div>
   </div>
 
   <!--  -->
@@ -506,127 +510,139 @@
     <div class="col-sm-2">
       <EbeCheck @ebeSelected="selectedEbe = $event"></EbeCheck>
     </div>
-
-    <div class="input-group col-sm-2">
-      <span class="input-group-addon">{{ selectedEbe }}</span>
-      <input v-model="selectedEbe" class="form-control" style="text-align:center">
-    </div>
   </div>
 
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
-
 
 </div>
 </template>
 
 <script>
+//////////////////////////////////////////////////////////////////////////////////////
 import SatelliteSelector from './inputs/SatelliteSelector' // Don't need to put .vue here
 import BeamSelector from './inputs/BeamSelector'
 import TransponderSelector from './inputs/TransponderSelector'
 import FreqDL from './inputs/FreqDL'
-import AdjSatList from './inputs/AdjSatList'
+//////////////////////////////////////////////////////////////////////////////////////
 import Location from './inputs/Location'
 import AntSizeA from './inputs/AntSizeA'
 import AntSizeB from './inputs/AntSizeB'
-import AdjSatCheckBox from './inputs/AdjSatCheckBox'
-import PowerMarginCheck from './inputs/PowerMarginCheck'
+//////////////////////////////////////////////////////////////////////////////////////
 import CarrierMode from './inputs/CarrierMode'
-import SatelliteMode from './inputs/SatelliteMode'
 import SatObo from './inputs/SatObo'
+import SatelliteMode from './inputs/SatelliteMode'
 import SatIbo from './inputs/SatIbo'
 import Attenuation from './inputs/Attenuation'
 import DeepIn from './inputs/DeepIn'
+//////////////////////////////////////////////////////////////////////////////////////
+import PowerMarginCheck from './inputs/PowerMarginCheck'
 import BwInfoCheck from './inputs/BwInfoCheck'
+//////////////////////////////////////////////////////////////////////////////////////
 import Platform from './inputs/Platform'
 import SimplexDuplex from './inputs/SimplexDuplex'
 import Application from './inputs/Application'
 import Modem from './inputs/Modem'
 import BestModCode from './inputs/BestModCode'
-import ModulationA from './inputs/ModulationA'
-import FecA from './inputs/FecA'
+import ModulationA from './inputs/Modulation'
+//////////////////////////////////////////////////////////////////////////////////////
 import IflLoss from './inputs/IflLoss'
 import LossFeedA from './inputs/LossFeedA'
 import MisAntUpA from './inputs/MisAntUpA'
 import MisAntDnB from './inputs/MisAntDnB'
 import Atmos from './inputs/Atmos'
 import OtherLoss from './inputs/OtherLoss'
+//////////////////////////////////////////////////////////////////////////////////////
 import AntGain from './inputs/AntGain'
 import AntEff from './inputs/AntEff'
 import RxAntTemp from './inputs/RxAntTemp'
 import LnaNoiseTemp from './inputs/LnaNoiseTemp'
+//////////////////////////////////////////////////////////////////////////////////////
 import LinkAva from './inputs/LinkAva'
 import EquiBW from './inputs/EquiBW'
 import EbeCheck from './inputs/EbeCheck'
 
-
 export default {
   data() {
     return {
+      //////////////////////////////////////////////////////////////////////////////////////
       selectedSatellite: {}, // satellite object
       selectedBeam: '', // beam name (String)
       selectedTp: '',
       selectedFreq: '',
-      selectedAdj: [],
+      //////////////////////////////////////////////////////////////////////////////////////
+      // selectedAdj: [],
       selectedLocationsA: [],
       selectedLocationsB: [],
       antSizeA: "",
       antSizeB: "",
-      adjSat: [],
-      selectedPowerMargin: "",
-      selectedCarrier: "",
+      //////////////////////////////////////////////////////////////////////////////////////
+      selectedCarrier: "Multiple Carrier",
+      selectedMode: "FGM",
       satObo: "",
       satIbo: "",
-      selectedMode: "",
       atten: "",
       deepIn: "",
-      selectedBwSel: "",
-      selectedPlatform: "",
-      selectedSimDuplex: "",
-      selectedAppDVB: "",
+      //////////////////////////////////////////////////////////////////////////////////////
+      selectedPowerMargin: "Power Utilization",
+      selectedBwSel: "Bandwidth",
+      //////////////////////////////////////////////////////////////////////////////////////
+      selectedPlatform: "Broadcast",
+      selectedSimDuplex: "Duplex",
+      selectedAppDVB: "DVB-S1",
+      //////////////////////////////////////////////////////////////////////////////////////
       selectedModem: "",
-      selectedBestModCode: "",
+      selectedBestModCode: "No",
       selectedModCodeA: "",
-      selectedFecA: "",
+      selectedModCodeB: "",
+      // selectedFecA: "",
+      //////////////////////////////////////////////////////////////////////////////////////
       iflLoss: "",
       lossFeedA: "",
       misAntUpA: "",
       misAntDnB: "",
       atmos: "",
       otherLossUpA: "",
-      selectedAntGain: "",
-      selectedAntEff: "",
-      selectedRxAntTemp: "",
-      selectedLnaTemp: "",
-      selectedLinkAva: "",
-      selectedEquivalentBW: "",
-      selectedEbe: "",
+      //////////////////////////////////////////////////////////////////////////////////////
+      selectedAntGain: "Calculation",
+      selectedAntEff: "Default",
+      selectedRxAntTemp: "Default",
+      selectedLnaTemp: "Default",
+      //////////////////////////////////////////////////////////////////////////////////////
+      selectedLinkAva: "Default",
+      selectedEquivalentBW: "No",
+      selectedEbe: "Hide",
+      //////////////////////////////////////////////////////////////////////////////////////
       adjSat: [],
       adjSatOptions: ['Apstar7', 'Express80E', 'ABS2', 'Telkom3s', 'Asiasat4', 'Potok'],
     };
   },
   components: { // Allow components to be used as HTML element
+    //////////////////////////////////////////////////////////////////////////////////////
     SatelliteSelector,
     BeamSelector,
     TransponderSelector,
     FreqDL,
-    AdjSatList,
+    //////////////////////////////////////////////////////////////////////////////////////
     Location,
-    AdjSatCheckBox,
-    PowerMarginCheck,
+    //////////////////////////////////////////////////////////////////////////////////////
     CarrierMode,
     SatelliteMode,
+    //////////////////////////////////////////////////////////////////////////////////////
+    PowerMarginCheck,
     BwInfoCheck,
+    //////////////////////////////////////////////////////////////////////////////////////
     Platform,
     SimplexDuplex,
     Application,
     Modem,
     BestModCode,
     ModulationA,
-    FecA,
+    //////////////////////////////////////////////////////////////////////////////////////
     AntGain,
     AntEff,
     RxAntTemp,
     LnaNoiseTemp,
+    //////////////////////////////////////////////////////////////////////////////////////
     LinkAva,
     EquiBW,
     EbeCheck
@@ -643,6 +659,13 @@ export default {
         return obj.label;
       }).join(',');
 
+    },
+    DxContourLocationA(selectedSatellite) {
+      // adjSatContour = 'dxContour' + this.selectedSatellite.adjSat;
+      // return this.selectedLocationsA.map(function(obj) {
+      //   return obj.adjSatContour;
+      // }).join(',');
+return selectedLocationsA.selectedSatellite.adjSat;
     },
     ModLabel() {
       return this.selectedModCodeA.map(function(obj) {

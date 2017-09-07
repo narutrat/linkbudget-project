@@ -1,6 +1,6 @@
 <template>
   <select v-model="powerMargin" class="btn btn-default" @change="powerMarginChanged($event.target.value)">
-    <option value="">Select Power Utilization / Margin</option>
+    <!-- <option value="">Select Power Utilization / Margin</option> -->
     <option v-for="powerMargin in powerOptions" :value="powerMargin.label">
       {{ powerMargin.label }}
     </option>
@@ -12,7 +12,7 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      powerMargin: '',
+      powerMargin: 'Power Utilization',
       powerOptions: [{
           label: 'Power Utilization',
           value: 1
