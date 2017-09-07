@@ -1,5 +1,5 @@
 <template>
-<div class="app" style="padding:10px; margin-right:10px">
+<div class="app" style="padding:10px; margin-right:10px; text-align:left">
 
   <!-- Satellite Section -->
   <div class="row">
@@ -36,7 +36,7 @@
     <div class="col-sm-1"></div>
 
     <!-- Transponder Label -->
-    <div class="col-sm-2 blue-box1">
+    <div class="col-sm-1 blue-box1">
       <span>Transponder: {{ selectedTp }}</span>
     </div>
 
@@ -66,14 +66,14 @@
       <span>Adjacent Satellite </span>
     </div>
 
-    <div class="col-sm-1">
-      <AdjSatList></AdjSatList>
+    <div class="col-sm-1" v-for="sat in selectedSatellite.adjSat" style="text-align:center">
+      {{ sat }}
     </div>
   </div>
 
   <div class="row">
     <div class="col-sm-1 blue-box1">
-      <span>Location: {{ LocationLabel }}</span>
+      <span>Location A: {{ LocationLabelA }}</span>
     </div>
 
     <div class="col-sm-2">
@@ -85,90 +85,109 @@
       Tx Antenna Size: {{ antSizeA }}
     </div>
 
-    <input v-model="antSizeA" class="col-sm-1">
+    <input v-model="antSizeA" class="col-sm-1" style="margin-left:15px">
 
-    <div class="col-sm-2 blue-box1">
+    <div class="col-sm-1 blue-box1">
       Dx Contours
     </div>
   </div>
 
   <div class="row">
     <div class="col-sm-1 blue-box1">
-      <span>Location: {{ LocationLabel }}</span>
+      <span>Location B: {{ LocationLabelB }}</span>
     </div>
 
     <div class="col-sm-2">
-      <Location @locationSelected="locationB"></Location>
+      <Location @locationSelected="selectedLocationsB = $event"></Location>
     </div>
     <div class="col-sm-2 blue-box1">
       Tx Antenna Size: {{ antSizeB }}
     </div>
 
-    <input v-model="antSizeB" class="col-sm-1">
+    <input v-model="antSizeB" class="col-sm-1" style="margin-left:15px">
 
-    <div class="col-sm-2 blue-box1">
+    <div class="col-sm-1 blue-box1">
       Dx Contours
     </div>
   </div>
 
   <div class="row">
     <div class="col-sm-2 blue-box1">
-      <span>Adjacent Satellite: {{ adjSat }} </span>
+      <span>Adjacent Satellite: {{ selectedSatellite.adjSat }} </span>
     </div>
 
-    <AdjSatCheckBox></AdjSatCheckBox>
+    <div class="col-sm-4">
+      <div class="row" style="margin-left:10px; text-align:left" v-for="adj in adjSatOptions">
+        <input type="checkbox" v-bind:value="adj" v-model="selectedSatellite.adjSat"> {{ adj }} </input>
+      </div>
+    </div>
   </div>
 
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
 
   <div class="row">
     <h3 style="margin-left:30px; margin-top:5px; font-weight:bold; text-align:left">Carrier Setting</h3>
-
-    <div class="col-sm-2 blue-box1">
-      <span>Carrier Mode: {{ selectedCarrier }}</span>
-    </div>
-
-    <div class="col-sm-2">
-      <CarrierMode @carrierSelected="selectedCarrier = $event"></CarrierMode>
-    </div>
   </div>
 
-  <div class="row">
-    <div class="col-sm-2 blue-box1">
-      Satellite OBO: {{ satObo }}
+  <div class="row" style="text-align:left">
+    <div class="col-sm-4">
+      <div class="row">
+        <div class="col-sm-6 blue-box1">
+          <span>Carrier Mode: {{ selectedCarrier }}</span>
+        </div>
+
+        <div class="col-sm-4">
+          <CarrierMode @carrierSelected="selectedCarrier = $event"></CarrierMode>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 blue-box1">
+          Satellite OBO: {{ satObo }}
+        </div>
+
+        <input v-model="satObo" class="col-sm-2" style="margin-left:15px">
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 blue-box1">
+          Satellite Mode: {{ selectedMode }}
+        </div>
+
+        <div class="col-sm-4">
+          <SatelliteMode @modeSelected="selectedMode = $event"></SatelliteMode>
+        </div>
+      </div>
     </div>
 
-    <input v-model="satObo" class="col-sm-1">
 
-    <div class="col-sm-2 blue-box1">
-      Satellite IBO: {{ satIbo }}
+    <div class="col-sm-4">
+
+      <div class="row" style="margin-top:40px">
+        <div class="col-sm-6 blue-box1">
+          Satellite IBO: {{ satIbo }}
+        </div>
+
+        <input v-model="satIbo" class="col-sm-2" style="margin-left:15px">
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 blue-box1">
+          Attenuation: {{ atten }}
+        </div>
+
+        <input v-model="atten" class="col-sm-2" style="margin-left:15px">
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 blue-box1">
+          Deep-in: {{ deepIn }}
+        </div>
+
+        <input v-model="deepIn" class="col-sm-2" style="margin-left:15px">
+      </div>
     </div>
-
-    <input v-model="satIbo" class="col-sm-1">
-  </div>
-
-  <div class="row">
-    <div class="col-sm-2 blue-box1">
-      Satellite Mode: {{ selectedMode }}
-    </div>
-
-    <div class="col-sm-2">
-      <SatelliteMode @modeSelected="selectedMode = $event"></SatelliteMode>
-    </div>
-
-    <div class="col-sm-2 blue-box1">
-      Attenuation: {{ atten }}
-    </div>
-
-    <input v-model="atten" class="col-sm-1">
-  </div>
-
-  <div class="row">
-    <div class="col-sm-2 blue-box1">
-      Deep-in: {{ deepIn }}
-    </div>
-
-    <input v-model="deepIn" class="col-sm-1">
   </div>
 
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
@@ -180,7 +199,7 @@
       <span>Power Utilization/Margin: {{ selectedPowerMargin }}</span>
     </div>
 
-    <div class="col-sm-2">
+    <div class="col-sm-2" style="text-align:left">
       <PowerMarginCheck @powerMarginSelected="selectedPowerMargin = $event"></PowerMarginCheck>
     </div>
   </div>
@@ -190,7 +209,7 @@
       <span>BW / Info Rate: {{ selectedBwSel }}</span>
     </div>
 
-    <div class="col-sm-2">
+    <div class="col-sm-2" style="text-align:left">
       <BwInfoCheck @bwSelSelected="selectedBwSel = $event"></BwInfoCheck>
     </div>
   </div>
@@ -265,7 +284,7 @@
         </div>
 
         <div class="col-sm-2">
-          <ModulationA :modem="selectedModem" @modCodeASelected="selectedModCodeA = $event"></ModulationA>
+          <ModulationA :modem="selectedModem" @modCodeASelected="selectedModCodeA= $event"></ModulationA>
         </div>
       </div>
 
@@ -336,7 +355,7 @@
         <div class="row">
           <div class="col-sm-5" style="margin-left:25px"></div>
 
-          <div class="input-group col-sm-4">
+          <div class="input-group col-sm-4" style="margin-top:-5px; margin-bottom:5px">
             <span class="input-group-addon">Downlink</span>
             <input v-model="misAntDnB" class="form-control" style="text-align:center" />
           </div>
@@ -446,7 +465,7 @@
 
   <h3 style="margin-left:15px; margin-top:5px; font-weight:bold; text-align:left">Miscellaneous Configuration</h3>
 
-<!--  -->
+  <!--  -->
   <div class="row">
     <div class="col-sm-2 blue-box1">
       <span>Link Availability: {{ selectedLinkAva }}</span>
@@ -462,7 +481,7 @@
     </div>
   </div>
 
-<!--  -->
+  <!--  -->
   <div class="row">
     <div class="col-sm-2 blue-box1">
       <span>Equivalent BW: {{ selectedEquivalentBW }}</span>
@@ -478,7 +497,7 @@
     </div>
   </div>
 
-<!--  -->
+  <!--  -->
   <div class="row">
     <div class="col-sm-2 blue-box1">
       <span>EBE: {{ selectedEbe }}</span>
@@ -580,7 +599,9 @@ export default {
       selectedLnaTemp: "",
       selectedLinkAva: "",
       selectedEquivalentBW: "",
-      selectedEbe: ""
+      selectedEbe: "",
+      adjSat: [],
+      adjSatOptions: ['Apstar7', 'Express80E', 'ABS2', 'Telkom3s', 'Asiasat4', 'Potok'],
     };
   },
   components: { // Allow components to be used as HTML element
@@ -611,8 +632,14 @@ export default {
     EbeCheck
   },
   computed: {
-    LocationLabel() {
+    LocationLabelA() {
       return this.selectedLocationsA.map(function(obj) {
+        return obj.label;
+      }).join(',');
+
+    },
+    LocationLabelB() {
+      return this.selectedLocationsB.map(function(obj) {
         return obj.label;
       }).join(',');
 
@@ -638,16 +665,16 @@ export default {
     //   this.selectedTp = transponder;
     // },
 
-    updateAdj(satellite) {
-      this.adjSat = sat;
-    },
+    // updateAdj(satellite) {
+    //   this.adjSat = sat;
+    // },
 
-    locationA(locations) {
-      this.selectedLocationsA = locations;
-    },
-    locationB(locations) {
-      this.selectedLocationsB = locations;
-    },
+    // locationA(locations) {
+    //   this.selectedLocationsA = locations;
+    // },
+    // locationB(locations) {
+    //   this.selectedLocationsB = locations;
+    // },
 
 
   }

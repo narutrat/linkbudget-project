@@ -22,6 +22,7 @@
               // Send the current satellite object to parent template. For parent template to get a value,
               // it must listen to the event 'satelliteSelected'
               this.$emit('satelliteSelected', selectedSatellite);
+
           }
       },
       created() {
@@ -33,27 +34,31 @@
             orbitalSlot: 78.5,
             sfd: 80,
             maxAtten: 16,
+            adjSat: ['Apstar7', 'Express80E']
           },
             {
               text: 'Thaicom 6',
               value: 6,
               orbitalSlot: 78.5,
               sfd: 82,
-              maxAtten: 16
+              maxAtten: 16,
+              adjSat: ['Apstar7', 'Express80E']
             },
             {
               text: 'Thaicom 7',
               value: 7,
               orbitalSlot: 119.92,
               sfd: 80,
-              maxAtten: 16
+              maxAtten: 16,
+              adjSat: ['Asiasat4', 'Telkom3s']
             },
             {
               text: 'Thaicom 8',
               value: 8,
               orbitalSlot: 78.5,
               sfd: 81,
-              maxAtten: 16
+              maxAtten: 16,
+              adjSat: ['Apstar7', 'Express80E']
             }
           ];
       }

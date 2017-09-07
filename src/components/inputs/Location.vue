@@ -22,7 +22,7 @@
       // value is an array of selected locations
       locationChanged(value) {
         // let selectedLocationsA = this.aLocation_options.find(s => s.label === value);
-        console.log(JSON.stringify(value, undefined, 2));
+        // console.log(JSON.stringify(value, undefined, 2));
         this.$emit('locationSelected', value);
       }
     },
