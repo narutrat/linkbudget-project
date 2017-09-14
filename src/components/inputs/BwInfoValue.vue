@@ -1,12 +1,16 @@
 <template>
-  <input v-model="bandwidthVal" @input="bandwidthValChanged($event.target.value)"/>
+<div>
+
+    <input v-model="bandwidthVal" class="form-control" @input="bandwidthValChanged($event.target.value)">
+
+</div>
 </template>
 
 <script>
 // import DesignParam from './calc/DesignParam'
 
 export default {
-  // props: ['satelliteName'], // Get the satellite name from parent to create beam options
+  props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
       bandwidthVal: ''

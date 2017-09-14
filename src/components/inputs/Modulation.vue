@@ -1,7 +1,7 @@
 <template>
   <select class="btn btn-default" @change="modCodeChanged($event.target.value)">
     <option>Select Modulation Code</option>
-    <option v-for="modCode in modem.modSpec" :value="modCode">
+    <option v-for="modCode in modem.modSpec" :value="modCode.modCode">
       {{ modCode.modCode }}
     </option>
   </select>
@@ -15,16 +15,19 @@ export default {
       modCode: [],
     }
   },
-  computed: {
-    modOptions() {
-      let result = this.modemDatabase.find(x => x.label === this.modem);
-      return result ? result.modSpec : [];
-    }
-  },
+  // computed: {
+  //   modOptions() {
+  //     let result = this.modemDatabase.find(x => x.label === this.modem);
+  //     return result ? result.modSpec : [];
+  //   }
+  // },
   methods: {
     modCodeChanged(value) {
+      console.log(typeof value);
       console.log(JSON.stringify(value, undefined, 2));
-      this.$emit('modCodeSelected', value);
+
+      var modCodeObj = this.modem.modSpec.find(x => x.modCode === value);
+      this.$emit('modCodeSelected', modCodeObj);
     }
   }
 }

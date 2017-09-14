@@ -1,16 +1,16 @@
 <template>
     <div class="col-sm-2" style="text-align:center">
-      <!-- <div class="row">hpaBackoff</div> -->
-      <div class="row">3 {{this.bandwidthData.selectedBwSel}}</div>
+      <div class="row">hpaBackoff</div>
+      <!-- <div class="row">3 {{this.bandwidthData.selectedBwSel}}</div> -->
       <div class="row">
         <input v-model="this.bandwidthData.bandwidthVal" class="form-control" style="text-align:center">
       </div>
       <div class="row">
         <input v-model="guardBandVal" class="form-control" style="text-align:center">
       </div>
-      <div class="row">allowBw</div>
-      <div class="row">aggHpaBoo</div>
-      <div class="row">numMCPC</div>
+      <div class="row">{{allowBw}}</div>
+      <div class="row">{{aggHpaBoo}}</div>
+      <div class="row">{{numMCPC}}</div>
     </div>
 
 
@@ -26,11 +26,17 @@ export default {
     return {
 
       // bandwidthVal: '',
-      guardBandVal: '',
-
+      guardBandVal: 0,
+      numMCPC: 1,
+      aggHpaBoo: 3
 
     }
   },
+  computed: {
+    allowBw() {
+      return parseFloat(this.bandwidthData.bandwidthVal) * (1 + parseFloat(this.guardBandVal) / 100);
+    },
+  }
   // methods: {
   //   paraChanged() {
   //     var designPara = [];

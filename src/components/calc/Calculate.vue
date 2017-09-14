@@ -31,8 +31,8 @@
 
         <div class="col-sm-2" style="text-align:center">
           <div class="row">dB</div>
-          <div class="row">{{ bandwidthVal }} kHz</div>
-          <div class="row">{{ guardBandVal }}%</div>
+          <div class="row">kHz</div>
+          <div class="row">%</div>
           <div class="row">kHz</div>
           <div class="row">dB</div>
           <div class="row"></div>
@@ -665,14 +665,13 @@ export default {
   computed: {
     paraBW_A() {
       return {
-      bandwidthVal: this.paraData.bandwidthVal,
-      selectedBwSel: this.paraData.selectedBwSel
+      bandwidthVal: this.paraData.bandwidthValA,
+      // selectedBwSel: this.paraData.selectedBwSel
       }
     },
     paraBW_B() {
       return {
-      bandwidthVal: this.paraData.bandwidthVal,
-      selectedBwSel: 1
+      bandwidthVal: this.paraData.bandwidthValB,
       }
     },
   }

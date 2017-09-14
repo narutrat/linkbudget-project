@@ -232,16 +232,47 @@
 
   <div class="row">
     <div class="col-sm-2 blue-box1">
-      <span>BW / Info Rate: {{ bandwidthVal }}</span>
+      <span>BW / Info Rate: {{ bandwidthValA }}//{{ bandwidthValB }}</span>
     </div>
 
     <div class="col-sm-2" style="text-align:left">
       <BwInfoCheck @bwSelSelected="selectedBwSel = $event"></BwInfoCheck>
     </div>
 
-    <div class="col-sm-1">
-      <BwInfoValue class="form-control" @bandwidthValSelected="bandwidthVal = $event"></BwInfoValue>
+    <div class="col-sm-3">
+      <div v-if="selectedBwSel === 'Bandwidth' ">
+        <div class="input-group">
+          <span class="input-group-addon">Bandwidth</span>
+            <BwInfoValue @bandwidthValSelected="bandwidthValA = $event"></BwInfoValue>
+          <span class="input-group-addon">kHz</span>
+        </div>
+      </div>
+      <div v-else>
+        <div class="input-group">
+          <span class="input-group-addon">Information Rate</span>
+            <BwInfoValue @bandwidthValSelected="bandwidthValA = $event"></BwInfoValue>
+          <span class="input-group-addon">kbps</span>
+        </div>
+      </div>
     </div>
+
+    <div class="col-sm-3">
+      <div v-if="selectedBwSel === 'Bandwidth' ">
+        <div class="input-group">
+          <span class="input-group-addon">Bandwidth</span>
+            <BwInfoValue @bandwidthValSelected="bandwidthValB = $event"></BwInfoValue>
+          <span class="input-group-addon">kHz</span>
+        </div>
+      </div>
+      <div v-else>
+        <div class="input-group">
+          <span class="input-group-addon">Information Rate</span>
+            <BwInfoValue @bandwidthValSelected="bandwidthValB = $event"></BwInfoValue>
+          <span class="input-group-addon">kbps</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
@@ -310,7 +341,7 @@
 
       <div class="row" style="margin-left:15px">
         <div class="col-sm-3 blue-box1">
-          <span>Modulation A: {{ selectedModCodeA }}</span>
+          <span>Modulation A: {{ selectedModCodeA.modCode }}</span>
         </div>
 
         <div class="col-sm-2">
@@ -544,7 +575,7 @@
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
 
   <Calculate :paraData="InputPara"></Calculate>
-<!-- <span>{{selected}}</span> -->
+  <!-- <span>{{selected}}</span> -->
 </div>
 </template>
 
@@ -628,7 +659,8 @@ export default {
       selectedPowerMargin: "Power Utilization",
       pwrVal: "",
       selectedBwSel: "Bandwidth",
-      bandwidthVal: "",
+      bandwidthValA: "",
+      bandwidthValB: "",
       //////////////////////////////////////////////////////////////////////////////////////
       selectedPlatform: "Broadcast",
       selectedSimDuplex: "Duplex",
@@ -770,7 +802,8 @@ export default {
         selectedPowerMargin: this.selectedPowerMargin,
         pwrVal: this.pwrVal,
         selectedBwSel: this.selectedBwSel,
-        bandwidthVal: this.bandwidthVal,
+        bandwidthValA: this.bandwidthValA,
+        bandwidthValB: this.bandwidthValB,
         //////////////////////////////////////////////////////////////////////////////////////
         selectedPlatform: this.selectedPlatform,
         selectedSimDuplex: this.selectedSimDuplex,
