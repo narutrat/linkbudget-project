@@ -15,11 +15,11 @@ export default {
       antEff: 'Default',
       defaultOptions: [{
           label: 'Default',
-          value: 1
+          value: 60
         },
         {
           label: 'Manual',
-          value: 2
+          value: ''
         }
       ]
     }

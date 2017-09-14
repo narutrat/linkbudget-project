@@ -15,11 +15,11 @@ export default {
       rxAntTemp: 'Default',
       defaultOptions: [{
           label: 'Default',
-          value: 1
+          value: 35
         },
         {
           label: 'Manual',
-          value: 2
+          value: ''
         }
       ]
     }
@@ -28,6 +28,7 @@ export default {
     rxAntTempChanged(value) {
       let selectedRxAntTemp = this.defaultOptions.find(s => s.label === value);
       this.$emit('rxAntTempSelected', selectedRxAntTemp.label);
+
     }
   }
 }

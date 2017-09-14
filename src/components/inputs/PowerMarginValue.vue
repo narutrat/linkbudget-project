@@ -1,5 +1,5 @@
 <template>
-  <input v-model="deepIn" @input="deepInChanged($event.target.value)"/>
+  <input v-model="pwrVal" @input="pwrValChanged($event.target.value)"/>
 </template>
 
 <script>
@@ -9,13 +9,13 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      deepIn: ''
+      pwrVal: ''
     }
   },
   methods: {
-    deepInChanged(value) {
+    pwrValChanged(value) {
       // let deepInVal = this.deepIn;
-      this.$emit('deepInSelected', this.deepIn);
+      this.$emit('pwrValSelected', this.pwrVal);
     }
   }
 }

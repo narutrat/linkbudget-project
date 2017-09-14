@@ -3,7 +3,7 @@
 
   <!-- Satellite Section -->
   <div class="row">
-    <h3 style="margin-left:30px; margin-top:5px; font-weight:bold; text-align:left">Satellite</h3>
+    <h3 style="margin-left:30px; margin-top:5px; font-weight:bold">Satellite</h3>
 
     <!-- Satellite Label -->
     <div class="col-sm-1 blue-box1">
@@ -71,11 +71,11 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-2 blue-box1">
+    <div class="col-sm-1 blue-box1">
       <span>Location A: {{ LocationLabelA }}</span>
     </div>
 
-    <div class="col-sm-2">
+    <div class="col-sm-3">
       <!-- <Location @locationSelected="locationA"></Location> -->
       <Location @locationSelected="selectedLocationsA = $event"></Location>
     </div>
@@ -84,43 +84,51 @@
       Tx Antenna Size: {{ antSizeA }}
     </div>
 
-    <input v-model="antSizeA" class="col-sm-1" style="margin-left:15px">
+    <div class="col-sm-1">
+      <AntSize class="form-control" @antSizeSelected="antSizeA = $event"></AntSize>
+    </div>
 
     <div class="col-sm-1 blue-box1">
       Dx Contours
     </div>
 
-    <!-- <div class="col-sm-1">
-      <span>{{DxContourLocationA}}</span>
+    <AdjDxContour :satellite="selectedSatellite" :selectedLocations="selectedLocationsA" @dxContourVal="adjSatDxContourA = $event"></AdjDxContour>
+    <!-- <div>
+      {{adjSatDxContourA}}
     </div> -->
   </div>
 
   <div class="row">
-    <div class="col-sm-2 blue-box1">
+    <div class="col-sm-1 blue-box1">
       <span>Location B: {{ LocationLabelB }}</span>
     </div>
 
-    <div class="col-sm-2">
+    <div class="col-sm-3">
       <Location @locationSelected="selectedLocationsB = $event"></Location>
     </div>
+
     <div class="col-sm-2 blue-box1">
       Tx Antenna Size: {{ antSizeB }}
     </div>
 
-    <input v-model="antSizeB" class="col-sm-1" style="margin-left:15px">
+    <div class="col-sm-1">
+      <AntSize class="form-control" @antSizeSelected="antSizeB = $event"></AntSize>
+    </div>
 
     <div class="col-sm-1 blue-box1">
       Dx Contours
     </div>
+
+    <AdjDxContour :satellite="selectedSatellite" :selectedLocations="selectedLocationsB" @dxContourVal="adjSatDxContourB = $event"></AdjDxContour>
   </div>
 
   <div class="row">
-    <div class="col-sm-2 blue-box1">
+    <div class="col-sm-1 blue-box1">
       <span>Adjacent Satellite: {{ selectedSatellite.adjSat }} </span>
     </div>
 
     <div class="col-sm-4">
-      <div class="row" style="margin-left:10px; text-align:left" v-for="adj in adjSatOptions">
+      <div class="row" style="margin-left:5px; text-align:left" v-for="adj in adjSatOptions">
         <input type="checkbox" v-bind:value="adj" v-model="selectedSatellite.adjSat"> {{ adj }} </input>
       </div>
     </div>
@@ -135,7 +143,7 @@
   <div class="row">
     <div class="col-sm-4">
       <div class="row">
-        <div class="col-sm-6 blue-box1">
+        <div class="col-sm-4 blue-box1">
           <span>Carrier Mode: {{ selectedCarrier }}</span>
         </div>
 
@@ -145,15 +153,18 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-6 blue-box1">
+        <div class="col-sm-4 blue-box1">
           Satellite OBO: {{ satObo }}
         </div>
 
-        <input v-model="satObo" class="col-sm-2" style="margin-left:15px">
+        <div class="col-sm-3">
+          <SatObo class="form-control" @satOboSelected="satObo = $event"></SatObo>
+          <!-- <input v-model="satObo" class="col-sm-2" style="margin-left:15px"> -->
+        </div>
       </div>
 
       <div class="row">
-        <div class="col-sm-6 blue-box1">
+        <div class="col-sm-4 blue-box1">
           Satellite Mode: {{ selectedMode }}
         </div>
 
@@ -166,27 +177,37 @@
 
     <div class="col-sm-4">
       <div class="row" style="margin-top:40px">
-        <div class="col-sm-6 blue-box1">
+        <div class="col-sm-4 blue-box1">
           Satellite IBO: {{ satIbo }}
         </div>
 
-        <input v-model="satIbo" class="col-sm-2" style="margin-left:15px">
+        <div class="col-sm-3">
+          <SatIbo class="form-control" @satIboSelected="satIbo = $event"></SatIbo>
+        </div>
+
       </div>
 
       <div class="row">
-        <div class="col-sm-6 blue-box1">
+        <div class="col-sm-4 blue-box1">
           Attenuation: {{ atten }}
         </div>
 
-        <input v-model="atten" class="col-sm-2" style="margin-left:15px">
+        <div class="col-sm-3">
+          <Attenuation class="form-control" @attenSelected="atten = $event"></Attenuation>
+        </div>
+
       </div>
 
       <div class="row">
-        <div class="col-sm-6 blue-box1">
+        <div class="col-sm-4 blue-box1">
           Deep-in: {{ deepIn }}
         </div>
 
-        <input v-model="deepIn" class="col-sm-2" style="margin-left:15px">
+        <!-- <input v-model="deepIn" class="col-sm-2" style="margin-left:15px"> -->
+        <div class="col-sm-3">
+          <DeepIn class="form-control" @deepInSelected="deepIn = $event"></DeepIn>
+        </div>
+
       </div>
     </div>
   </div>
@@ -196,22 +217,30 @@
   <div class="row">
     <h3 style="margin-left:30px; margin-top:5px; font-weight:bold; text-align:left">Bandwidth Infomation</h3>
 
-    <div class="col-sm-3 blue-box1">
-      <span>Power Utilization/Margin: {{ selectedPowerMargin }}</span>
+    <div class="col-sm-2 blue-box1">
+      <span>Power Utilization/Margin: {{ pwrVal }}</span>
     </div>
 
     <div class="col-sm-2" style="text-align:left">
       <PowerMarginCheck @powerMarginSelected="selectedPowerMargin = $event"></PowerMarginCheck>
     </div>
+
+    <div class="col-sm-1">
+      <PowerMarginValue class="form-control" @pwrValSelected="pwrVal = $event"></PowerMarginValue>
+    </div>
   </div>
 
   <div class="row">
-    <div class="col-sm-3 blue-box1">
-      <span>BW / Info Rate: {{ selectedBwSel }}</span>
+    <div class="col-sm-2 blue-box1">
+      <span>BW / Info Rate: {{ bandwidthVal }}</span>
     </div>
 
     <div class="col-sm-2" style="text-align:left">
       <BwInfoCheck @bwSelSelected="selectedBwSel = $event"></BwInfoCheck>
+    </div>
+
+    <div class="col-sm-1">
+      <BwInfoValue class="form-control" @bandwidthValSelected="bandwidthVal = $event"></BwInfoValue>
     </div>
   </div>
 
@@ -220,7 +249,7 @@
   <div class="row">
     <h3 style="margin-left:30px; margin-top:5px; font-weight:bold; text-align:left">Data Infomation</h3>
 
-    <div class="col-sm-3 blue-box1">
+    <div class="col-sm-2 blue-box1">
       <span>Platform: {{ selectedPlatform }}</span>
     </div>
 
@@ -230,7 +259,7 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-3 blue-box1">
+    <div class="col-sm-2 blue-box1">
       <span>Carrier Path: {{ selectedSimDuplex }}</span>
     </div>
 
@@ -240,7 +269,7 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-3 blue-box1">
+    <div class="col-sm-2 blue-box1">
       <span>Application: {{ selectedAppDVB }}</span>
     </div>
 
@@ -252,7 +281,7 @@
   <div class="row" style="padding-left:10px; padding-bottom:20px"></div>
 
   <div class="row">
-    <div class="col-sm-3 blue-box1">
+    <div class="col-sm-2 blue-box1">
       <span>Modem: {{ selectedModem.label }}</span>
     </div>
 
@@ -262,7 +291,7 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-3 blue-box1">
+    <div class="col-sm-2 blue-box1">
       <span>Best Mod Code: {{ selectedBestModCode }}</span>
     </div>
 
@@ -280,7 +309,7 @@
       </div>
 
       <div class="row" style="margin-left:15px">
-        <div class="col-sm-6 blue-box1">
+        <div class="col-sm-3 blue-box1">
           <span>Modulation A: {{ selectedModCodeA }}</span>
         </div>
 
@@ -306,7 +335,7 @@
       </div>
 
       <div class="row" style="margin-left:15px">
-        <div class="col-sm-6 blue-box1">
+        <div class="col-sm-3 blue-box1">
           <span>Modulation B: {{ selectedModCodeB }}</span>
         </div>
 
@@ -416,7 +445,7 @@
 
           <div class="input-group col-sm-4">
             <span class="input-group-addon">{{ selectedAntGain }}</span>
-            <input v-model="selectedAntGain" class="form-control" style="text-align:center" />
+            <input v-model="antGainVal" class="form-control" style="text-align:center" />
           </div>
         </div>
 
@@ -433,7 +462,7 @@
 
           <div class="input-group col-sm-4">
             <span class="input-group-addon">{{ selectedAntEff }}</span>
-            <input v-model="selectedAntEff" class="form-control" style="text-align:center">
+            <input v-model="antEffVal" class="form-control" style="text-align:center">
           </div>
         </div>
 
@@ -450,7 +479,7 @@
 
           <div class="input-group col-sm-4">
             <span class="input-group-addon">{{ selectedRxAntTemp }}</span>
-            <input v-model="selectedRxAntTemp" class="form-control" style="text-align:center">
+            <input v-model="rxAntTempVal" class="form-control" style="text-align:center">
           </div>
         </div>
 
@@ -465,7 +494,7 @@
 
           <div class="input-group col-sm-4">
             <span class="input-group-addon">{{ selectedLnaTemp }}</span>
-            <input v-model="selectedLnaTemp" class="form-control" style="text-align:center">
+            <input v-model="lnaTempVal" class="form-control" style="text-align:center">
           </div>
         </div>
       </div>
@@ -477,7 +506,7 @@
   <!--  -->
   <div class="row">
     <div class="col-sm-2 blue-box1">
-      <span>Link Availability: {{ selectedLinkAva }}</span>
+      <span>Link Availability: {{ linkAvaVal }}</span>
     </div>
 
     <div class="col-sm-1" style="margin-right:20px">
@@ -486,7 +515,7 @@
 
     <div class="input-group col-sm-2">
       <span class="input-group-addon">{{ selectedLinkAva }}</span>
-      <input v-model="selectedLinkAva" class="form-control" style="text-align:center">
+      <input v-model="linkAvaVal" class="form-control" style="text-align:center">
     </div>
   </div>
 
@@ -514,6 +543,8 @@
 
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
 
+  <Calculate :paraData="InputPara"></Calculate>
+<!-- <span>{{selected}}</span> -->
 </div>
 </template>
 
@@ -525,8 +556,9 @@ import TransponderSelector from './inputs/TransponderSelector'
 import FreqDL from './inputs/FreqDL'
 //////////////////////////////////////////////////////////////////////////////////////
 import Location from './inputs/Location'
-import AntSizeA from './inputs/AntSizeA'
+import AntSize from './inputs/AntSize'
 import AntSizeB from './inputs/AntSizeB'
+import AdjDxContour from './inputs/AdjDxContour'
 //////////////////////////////////////////////////////////////////////////////////////
 import CarrierMode from './inputs/CarrierMode'
 import SatObo from './inputs/SatObo'
@@ -536,7 +568,9 @@ import Attenuation from './inputs/Attenuation'
 import DeepIn from './inputs/DeepIn'
 //////////////////////////////////////////////////////////////////////////////////////
 import PowerMarginCheck from './inputs/PowerMarginCheck'
+import PowerMarginValue from './inputs/PowerMarginValue'
 import BwInfoCheck from './inputs/BwInfoCheck'
+import BwInfoValue from './inputs/BwInfoValue'
 //////////////////////////////////////////////////////////////////////////////////////
 import Platform from './inputs/Platform'
 import SimplexDuplex from './inputs/SimplexDuplex'
@@ -561,6 +595,12 @@ import LinkAva from './inputs/LinkAva'
 import EquiBW from './inputs/EquiBW'
 import EbeCheck from './inputs/EbeCheck'
 
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+import Calculate from './calc/Calculate'
+// import DesignParam from './calc/DesignParam'
+
+//////////////////////////////////////////////////////////////////////////////////////
 export default {
   data() {
     return {
@@ -575,6 +615,8 @@ export default {
       selectedLocationsB: [],
       antSizeA: "",
       antSizeB: "",
+      dxContour: "",
+      adjSatDxContourA: [],
       //////////////////////////////////////////////////////////////////////////////////////
       selectedCarrier: "Multiple Carrier",
       selectedMode: "FGM",
@@ -584,7 +626,9 @@ export default {
       deepIn: "",
       //////////////////////////////////////////////////////////////////////////////////////
       selectedPowerMargin: "Power Utilization",
+      pwrVal: "",
       selectedBwSel: "Bandwidth",
+      bandwidthVal: "",
       //////////////////////////////////////////////////////////////////////////////////////
       selectedPlatform: "Broadcast",
       selectedSimDuplex: "Duplex",
@@ -607,8 +651,13 @@ export default {
       selectedAntEff: "Default",
       selectedRxAntTemp: "Default",
       selectedLnaTemp: "Default",
+      antGainVal: "",
+      antEffVal: "",
+      rxAntTempVal: "",
+      lnaTempVal: "",
       //////////////////////////////////////////////////////////////////////////////////////
       selectedLinkAva: "Default",
+      linkAvaVal: 99.99,
       selectedEquivalentBW: "No",
       selectedEbe: "Hide",
       //////////////////////////////////////////////////////////////////////////////////////
@@ -624,12 +673,20 @@ export default {
     FreqDL,
     //////////////////////////////////////////////////////////////////////////////////////
     Location,
+    AntSize,
+    AdjDxContour,
     //////////////////////////////////////////////////////////////////////////////////////
     CarrierMode,
+    SatObo,
+    SatIbo,
     SatelliteMode,
+    Attenuation,
+    DeepIn,
     //////////////////////////////////////////////////////////////////////////////////////
     PowerMarginCheck,
+    PowerMarginValue,
     BwInfoCheck,
+    BwInfoValue,
     //////////////////////////////////////////////////////////////////////////////////////
     Platform,
     SimplexDuplex,
@@ -645,7 +702,11 @@ export default {
     //////////////////////////////////////////////////////////////////////////////////////
     LinkAva,
     EquiBW,
-    EbeCheck
+    EbeCheck,
+    //////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    Calculate,
+    // DesignParam
   },
   computed: {
     LocationLabelA() {
@@ -660,18 +721,89 @@ export default {
       }).join(',');
 
     },
-    DxContourLocationA(selectedSatellite) {
-      // adjSatContour = 'dxContour' + this.selectedSatellite.adjSat;
-      // return this.selectedLocationsA.map(function(obj) {
-      //   return obj.adjSatContour;
-      // }).join(',');
-return selectedLocationsA.selectedSatellite.adjSat;
-    },
-    ModLabel() {
-      return this.selectedModCodeA.map(function(obj) {
-        return obj.modCode;
+    DxContourA() {
+      return this.selectedLocationsA.map(function(obj) {
+        return obj.dxConTourApstar7;
       }).join(',');
 
+
+    },
+    // ModValue() {
+    //   var vm = this;
+    //   let result = [];
+    //   result = this.selectedModCodeA.find(function(x) {
+    //     return x.modCode === vm.modCode;
+    //   });
+    //   if (result) {
+    //     //return result.fec;
+    //     return result.modCodeValue;
+    //   }
+    // },
+    ModLabel() {
+      return this.selectedModCodeA.map(function(obj) {
+        return obj.value;
+      }).join(',');
+
+
+    },
+    InputPara() {
+      return {
+        selectedSatellite: this.selectedSatellite,
+        selectedBeam: this.selectedBeam,
+        selectedTp: this.selectedTp,
+        selectedFreq: this.selectedFreq,
+        //////////////////////////////////////////////////////////////////////////////////////
+        selectedLocationsA: this.selectedLocationsA,
+        selectedLocationsB: this.selectedLocationsB,
+        antSizeA: this.antSizeA,
+        antSizeB: this.antSizeB,
+        dxContour: this.dxContour,
+        adjSatDxContourA: this.adjSatDxContourA,
+        //////////////////////////////////////////////////////////////////////////////////////
+        selectedCarrier: this.selectedCarrier,
+        selectedMode: this.selectedMode,
+        satObo: this.satObo,
+        satIbo: this.satIbo,
+        atten: this.atten,
+        deepIn: this.deepIn,
+        //////////////////////////////////////////////////////////////////////////////////////
+        selectedPowerMargin: this.selectedPowerMargin,
+        pwrVal: this.pwrVal,
+        selectedBwSel: this.selectedBwSel,
+        bandwidthVal: this.bandwidthVal,
+        //////////////////////////////////////////////////////////////////////////////////////
+        selectedPlatform: this.selectedPlatform,
+        selectedSimDuplex: this.selectedSimDuplex,
+        selectedAppDVB: this.selectedAppDVB,
+        //////////////////////////////////////////////////////////////////////////////////////
+        selectedModem: this.selectedModem,
+        selectedBestModCode: this.selectedBestModCode,
+        selectedModCodeA: this.selectedModCodeA,
+        selectedModCodeB: this.selectedModCodeB,
+        //////////////////////////////////////////////////////////////////////////////////////
+        iflLoss: this.iflLoss,
+        lossFeedA: this.lossFeedA,
+        misAntUpA: this.misAntUpA,
+        misAntDnB: this.misAntDnB,
+        atmos: this.atmos,
+        otherLossUpA: this.otherLossUpA,
+        //////////////////////////////////////////////////////////////////////////////////////
+        selectedAntGain: this.selectedAntGain,
+        selectedAntEff: this.selectedAntEff,
+        selectedRxAntTemp: this.selectedRxAntTemp,
+        selectedLnaTemp: this.selectedLnaTemp,
+        antGainVal: this.antGainVal,
+        antEffVal: this.antEffVal,
+        rxAntTempVal: this.rxAntTempVal,
+        lnaTempVal: this.lnaTempVal,
+        //////////////////////////////////////////////////////////////////////////////////////
+        selectedLinkAva: this.selectedLinkAva,
+        linkAvaVal: this.linkAvaVal,
+        selectedEquivalentBW: this.selectedEquivalentBW,
+        selectedEbe: this.selectedEbe,
+        //////////////////////////////////////////////////////////////////////////////////////
+
+      }
     }
   },
   methods: {
@@ -708,6 +840,7 @@ return selectedLocationsA.selectedSatellite.adjSat;
 .blue-box1 {
   margin-left: 25px;
   margin-bottom: 5px;
+  text-align: center;
   padding: 4px;
   border: black solid;
   border-radius: 8px;

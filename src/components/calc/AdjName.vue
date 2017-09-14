@@ -1,5 +1,11 @@
 <template>
-  <input v-model="deepIn" @input="deepInChanged($event.target.value)"/>
+<div>
+
+    <div class="col-sm-3">adj1</div>
+    <div class="col-sm-3">adj2</div>
+
+
+</div>
 </template>
 
 <script>
@@ -7,16 +13,12 @@
 
 export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
+  // props: ['bandwidthVal'],
   data() {
     return {
-      deepIn: ''
+      // boltzman: '',
+      // increaseT: '',
     }
   },
-  methods: {
-    deepInChanged(value) {
-      // let deepInVal = this.deepIn;
-      this.$emit('deepInSelected', this.deepIn);
-    }
-  }
 }
 </script>

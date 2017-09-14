@@ -1,5 +1,6 @@
+
 <template>
-  <input v-model="deepIn" @input="deepInChanged($event.target.value)"/>
+  <input v-model="antSize" @input="antSizeChanged($event.target.value)"/>
 </template>
 
 <script>
@@ -9,13 +10,13 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      deepIn: ''
+      antSize: ''
     }
   },
   methods: {
-    deepInChanged(value) {
+    antSizeChanged(value) {
       // let deepInVal = this.deepIn;
-      this.$emit('deepInSelected', this.deepIn);
+      this.$emit('antSizeSelected', this.antSize);
     }
   }
 }
