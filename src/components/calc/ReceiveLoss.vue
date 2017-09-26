@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="col-sm-2" style="text-align:center">
+    <div class="col-sm-2">
       <div class="row">
-        <input v-model="misAntUp" class="form-control">
+        <input v-model="this.rxLoss.misAntDnB" class="form-control" style="text-align:center">
       </div>
       <div class="row">
-        <input v-model="otherLossUp" class="form-control">
+        <input v-model="this.rxLoss.otherLoss" class="form-control" style="text-align:center">
       </div>
-      <div class="row">{{totalLossUp}}</div>
+      <div class="row">{{totalLossDn}}</div>
     </div>
   </div>
 </template>
@@ -17,18 +17,18 @@
 
 export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
-  // props: ['bandwidthVal'],
+  props: ['rxLoss'],
   data() {
     return {
-      misAntUp: '',
-      otherLossUp: '',
-      totalLossUp: ''
+      // misAntUp: '',
+      // otherLossUp: '',
+      // totalLossDn: ''
     }
   },
-  methods: {
-    paraChanged() {
-
+  computed: {
+    totalLossDn() {
+      return parseFloat(this.rxLoss.misAntDnB) + parseFloat(this.rxLoss.otherLoss);
     }
-  }
+  },
 }
 </script>

@@ -1,8 +1,8 @@
 <template>
   <select class="btn btn-default" @change="beamChanged($event.target.value)">
     <option>Select Beam</option>
-    <option v-for="beam in beamOptions" :value="beam">
-      {{ beam }}
+    <option v-for="beam in beamOptions" :value="beam.beamName">
+      {{ beam.beamName }}
     </option>
   </select>
 </template>
@@ -14,16 +14,63 @@ export default {
     return {
       beamDatabase: [{
           satellite: 'Thaicom 5',
-          beams: ["Standard-C", "Extended-C", "Global"]
-        },
+          beams: [{
+            beamName: "Standard-C",
+            transponders: ["1V", "2V", "3V"],
+            maxEirpNon: 40.51,
+            ulPol: 'H',
+            dnPol: 'V'
+          },
+          {
+            beamName: "Extended-C",
+            transponders: ["1E", "2E", "3E"],
+            maxEirpNon: 40.51,
+            ulPol: 'H',
+            dnPol: 'V'
+          },
+          {
+            beamName: "Global",
+            transponders: ["1G", "2G", "3G"],
+            maxEirpNon: 36.85,
+            ulPol: 'V',
+            dnPol: 'H'
+          }
+        ]},
+
         {
           satellite: 'Thaicom 6',
-          beams: ["C1", "C2"]
-        },
+          beams: [{
+            beamName: "C1",
+            transponders: ["1H", "2H", "3H"],
+            maxEirpNon: 41,
+            ulPol: 'V',
+            dnPol: 'H'
+          },
+          {
+            beamName: "C2",
+            transponders: ["1H", "2H", "3H"],
+            maxEirpNon: 34.66,
+            ulPol: 'V',
+            dnPol: 'H'
+          }
+        ]},
         {
           satellite: 'Thaicom 7',
-          beams: ["Regional", "Semi"]
-        }
+          beams: [{
+            beamName: "Regional",
+            transponders: ["1V", "2V", "3V"],
+            maxEirpNon: 40,
+            ulPol: 'H',
+            dnPol: 'V'
+          },
+          {
+            beamName: "Semi",
+            transponders: ["1V", "2V", "3V"],
+            maxEirpNon: 40,
+            ulPol: 'H',
+            dnPol: 'V'
+          }
+        ]}
       ],
     }
   },
@@ -44,7 +91,8 @@ export default {
     beamChanged(value) {
       // Send the current beam name to parent template. For parent template to get a value,
       // it must listen to the event 'beamSelected'
-      this.$emit('beamSelected', value);
+      let dataBeam = this.beamOptions.find(x => value === x.beamName)
+      this.$emit('beamSelected', dataBeam);
     }
   }
 }

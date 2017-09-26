@@ -6,7 +6,7 @@
 // import DesignParam from './calc/DesignParam'
 
 export default {
-  // props: ['satelliteName'], // Get the satellite name from parent to create beam options
+  // props: ['satObo'], // Get the satellite name from parent to create beam options
   data() {
     return {
       satObo: ''

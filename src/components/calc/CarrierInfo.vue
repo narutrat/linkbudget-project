@@ -1,46 +1,60 @@
 <template>
   <div>
-    <div class="row">
-      <input v-model="modCodeValue" class="form-control" style="text-align:center">
+    <div class="row" style="margin-top:5px">
+      <input v-model="this.carrierInfo.selectedModCode.modCodeValue" class="form-control" style="text-align:center">
     </div>
     <div class="row">
       <input v-model="infoValue" class="form-control" style="text-align:center">
     </div>
     <div class="row">
-      <input v-model="fecValue" class="form-control" style="text-align:center">
+      <input v-model="this.carrierInfo.selectedModCode.fec" class="form-control" style="text-align:center">
     </div>
 
-    <div class="row">{{txRate}}</div>
+    <div class="row" style="margin-top:10px">{{txRate.toFixed(2)}}</div>
 
-    <div class="row">
-      <input v-model="bt" class="form-control" style="text-align:center">
+    <div class="row" style="margin-top:5px">
+      <input v-model="this.carrierInfo.selectedModCode.bt" class="form-control" style="text-align:center">
     </div>
     <div class="row">
-      <input v-model="ebNo" class="form-control" style="text-align:center">
+      <input v-model="this.carrierInfo.selectedModCode.ebNo" class="form-control" style="text-align:center">
     </div>
-    <div class="row">{{symbolRate}}</div>
-    <div class="row">{{bwCal}}</div>
+    <div class="row" style="margin-top:10px">{{symbolRate.toFixed(2)}}</div>
+    <div class="row" style="margin-top:5px">{{this.carrierInfo.bandwidthVal}}</div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['bandwidthVal'],
+  props: ['carrierInfo'],
   data() {
     return {
       modCodeValue: '',
-      infoValue: '',
+      // infoValue: '',
       fecValue: '',
-      txRate: '',
+      // txRate: '',
       bt: '',
       ebNo: '',
-      symbolRate: '',
+      // symbolRate: '',
       bwCal: ''
 
     }
   },
-  // methods: {
-  //
-  // }
+  computed: {
+    txRate() {
+      return this.infoValue / this.carrierInfo.selectedModCode.fec;
+    },
+    infoValue() {
+      if (this.carrierInfo.selectedBwSel === 'Information Rate') {
+        var infoCal = this.carrierInfo.bandwidthVal;
+        return infoCal;
+      } else {
+        infoCal = (this.carrierInfo.bandwidthVal * this.carrierInfo.selectedModCode.fec) / this.carrierInfo.selectedModCode.bt * this.carrierInfo.selectedModCode.modCodeValue;
+        return infoCal;
+      }
+    },
+    symbolRate() {
+      return this.carrierInfo.bandwidthVal/ this.carrierInfo.selectedModCode.bt;
+    }
+  }
 }
 </script>

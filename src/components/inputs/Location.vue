@@ -28,13 +28,6 @@ export default {
   created() {
     this.aLocation_options = [{
         label: 'LLK',
-        // dxConTourApstar7: -1,
-        // dxConTourExpress80E: -2,
-        // dxConTourABS2: -4,
-        // dxConTourTelkom3s: -5,
-        // dxConTourAsiasat4: -6,
-        // dxConTourCosmos: -7,
-        // dxConTourPotok: -8,
         adjDxContour: [{
             adjSatName: 'Apstar7',
             value: -1
@@ -42,7 +35,7 @@ export default {
           {
             adjSatName: 'Express80E',
             value: -2
-          },
+          }
         ],
         lat: 14.08,
         long: 100.57,

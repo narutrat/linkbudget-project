@@ -1,15 +1,17 @@
 <template>
   <div>
-    <div class="col-sm-2" style="text-align:center">
+    <div class="col-sm-2">
       <div class="row">
-        <input v-model="iflLossUp" class="form-control">
+        <!-- <input v-model="iflLoss" class="form-control"> -->
+        <input v-model="this.txLoss.iflLoss" class="form-control" style="text-align:center">
       </div>
       <div class="row">
-        <input v-model="misAntUp" class="form-control">
+        <input v-model="this.txLoss.misAntUpA" class="form-control" style="text-align:center">
       </div>
       <div class="row">
-        <input v-model="otherLossUp" class="form-control">
+        <input v-model="this.txLoss.otherLoss" class="form-control" style="text-align:center">
       </div>
+      <!-- <div class="row">{{this.txLoss.iflLoss}}</div> -->
       <div class="row">{{totalLossUp}}</div>
     </div>
   </div>
@@ -20,19 +22,20 @@
 
 export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
-  // props: ['bandwidthVal'],
+  props: ['txLoss'],
   data() {
     return {
-      iflLossUp: '',
-      misAntUp: '',
-      otherLossUp: '',
-      totalLossUp: ''
+      // iflLoss: '',
+      // misAntUp: '',
+      // otherLossUp: 0,
+      // totalLossUp: ''
     }
   },
-  methods: {
-    paraChanged() {
-
+  computed: {
+    totalLossUp() {
+      return parseFloat(this.txLoss.iflLoss) + parseFloat(this.txLoss.misAntUpA) + parseFloat(this.txLoss.otherLoss);
     }
   }
+
 }
 </script>

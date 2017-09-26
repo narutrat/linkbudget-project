@@ -3,10 +3,10 @@
     <div class="row">
       <input v-model="gtSel" class="form-control" style="text-align:center">
     </div>
-    <div class="row">{{sfdMax}}</div>
-    <div class="row">{{satBW}}</div>
-    <div class="row">
-      <input v-model="eirpdnSat" class="form-control" style="text-align:center">
+    <div class="row" style="margin-top:5px">{{sfdMax}}</div>
+    <div class="row">{{this.satInfo_2.selectedTp.tpBW}}</div>
+    <div class="row" style="margin-top:5px">
+      <input v-model="eirpDn" class="form-control" style="text-align:center">
     </div>
 </div>
 </template>
@@ -16,14 +16,33 @@
 
 export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
-  props: ['bandwidthVal'],
+  props: ['satInfo_2'],
   data() {
     return {
-      gtSel: '',
-      sfdMax: '',
+      // gtSel: '',
+      // sfdMax: '',
       satBW: '',
-      eirpdnSat: '',
+      // eirpDn: '',
     }
   },
+  computed: {
+    sfdMax() {
+      return -(this.satInfo_2.selectedSatellite.sfd+this.gtSel)
+    },
+    gtSel() {
+      if (this.satInfo_2.selectLocation) {
+        return this.satInfo_2.selectLocation.gt;
+      }else {
+        return ;
+      }
+    },
+    eirpDn() {
+      if (this.satInfo_2.selectLocation) {
+        return this.satInfo_2.selectLocation.eirp;
+      }else {
+        return ;
+      }
+    }
+  }
 }
 </script>

@@ -20,57 +20,62 @@
 
   <div class="col-sm-2">
     <div class="row">
-      <select v-model="LocationA" class="btn btn-default">
-      <option v-for="LocationA in selectedLocations_A">
-        {{ LocationA }}
-      </option>
-    </select>
+      <select v-model="locationSel" class="btn btn-default" @change="updateLocation">
+        <option v-for="locate in locationSelected" v-bind:value="locate">
+          {{ locate }}
+        </option>
+      </select>
+    </div>
+
+    <div class="row">
+      <input v-model="latSel" class="form-control" style="text-align:center">
+      <!-- <input v-model="this.selLocations.selectedLocationsA.lat" class="form-control" style="text-align:center"> -->
     </div>
     <div class="row">
-      <input v-model="latSel_A" class="form-control" style="text-align:center">
+      <input v-model="longSel" class="form-control" style="text-align:center">
     </div>
     <div class="row">
-      <input v-model="longSel_A" class="form-control" style="text-align:center">
+      <input v-model="this.locationSelInfo.antEffVal" class="form-control" style="text-align:center">
     </div>
     <div class="row">
-      <input v-model="antEffVal_A" class="form-control" style="text-align:center">
+      {{antGainVal.toFixed(2)}}
+      <!-- {{this.locationSelInfo.antEffVal}}
+      {{this.locationSelInfo.antSizeA}}
+      {{this.locationSelInfo.frqUp_A}} -->
     </div>
     <div class="row">
-      {{antGainValCal_A}}
+      {{antGainReceive}}
     </div>
     <div class="row">
-      {{antGainReceive_A}}
+      <input v-model="this.locationSelInfo.rxAntTempVal" class="form-control" style="text-align:center">
     </div>
     <div class="row">
-      <input v-model="rxTempVal_A" class="form-control" style="text-align:center">
+      <input v-model="this.locationSelInfo.lossFeedA" class="form-control" style="text-align:center">
     </div>
     <div class="row">
-      <input v-model="lossFeed_A" class="form-control" style="text-align:center">
+      <input v-model="this.locationSelInfo.lnaTempVal" class="form-control" style="text-align:center">
     </div>
     <div class="row">
-      <input v-model="lnaTempVal_A" class="form-control" style="text-align:center">
+      <input v-model="rxLnaGain" class="form-control" style="text-align:center">
     </div>
     <div class="row">
-      <input v-model="rxLnaGain_A" class="form-control" style="text-align:center">
+      <input v-model="dnNoise" class="form-control" style="text-align:center">
     </div>
     <div class="row">
-      <input v-model="dnNoise_A" class="form-control" style="text-align:center">
+      {{tsys}}
     </div>
     <div class="row">
-      {{tsys_A}}
-    </div>
-    <div class="row">
-      {{gtES_A}}
+      {{gtES}}
     </div>
 
   </div>
 
   <div class="col-sm-2">
     <div class="row">ID</div>
-    <div class="row">{{latRad_A}}</div>
-    <div class="row">{{longRad_A}}</div>
+    <div class="row">{{latRad.toFixed(4)}}</div>
+    <div class="row">{{longRad.toFixed(4)}}</div>
     <div class="row">
-      <input v-model="antEffVal_A" class="form-control" style="text-align:center">
+      <input v-model="this.locationSelInfo.antEffVal" class="form-control" style="text-align:center">
     </div>
     <div class="row">dBi at</div>
     <div class="row">dBi</div>
@@ -89,7 +94,7 @@
     <div class="row">rad</div>
     <div class="row">%</div>
     <div class="row">{{upFrq}} GHz</div>
-    <div class="row">Size: {{antSizeA}}</div>
+    <div class="row">Size: {{antSize}}</div>
     <div class="row">D/C.Gain (dB)</div>
 
     <div class="row">
@@ -112,30 +117,86 @@
 
 export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
-  props: ['bandwidthVal'],
+  props: ['selLocations', 'locationSelInfo'],
   data() {
     return {
-      selectedLocations_A: '',
-      LocationA: '',
-      latSel_A: '',
-      longSel_A: '',
-      antEffVal_A: '',
-      antGainValCal_A: '',
-      antGainReceive_A: '',
-      rxTempVal_A: '',
-      lossFeed_A: '',
-      lnaTempVal_A: '',
-      rxLnaGain_A: '',
-      dnNoise_A: '',
-      tsys_A: '',
-      gtES_A: '',
-      latRad_A: '',
-      longRad_A: '',
+      selectedLocations: '',
+      locationSel: '',
+      // latSel: '',
+      // longSel: '',
+      antEffVal: '',
+      // antGainVal: '',
+      antGainValCal: '',
+      // antGainReceive: '',
+      // rxTempVal: '',
+      lossFeed: '',
+      lnaTempVal: '',
+      rxLnaGain: 60,
+      dnNoise: 1,
+      // tsys: '',
+      // gtES: '',
+      // latRad: '',
+      // longRad: '',
       upFrq: '',
-      antSizeA: '',
-      dcGain: '',
-      iflLoss: ''
+      antSize: '',
+      dcGain: 0,
+      iflLoss: 0,
+      celeritas: 299792500
     }
   },
+  computed: {
+    locationSelected() {
+      if (this.selLocations) {
+        return this.selLocations.map(x => x.label)
+      } else {
+        return [];
+      }
+    },
+    latSel() {
+      let result = this.selLocations.find(x => x.label === this.locationSel)
+      return result ? result.lat : [];
+      // if (this.selLocations) {
+      //   let result = this.selLocations.find(x => x.label === this.locationSel)
+      //   return result ? result.lat : [];
+      // } else {
+      //   return [];
+      // }
+    },
+    latRad() {
+      return this.latSel * Math.PI / 180;
+    },
+    longSel() {
+      let result = this.selLocations.find(x => x.label === this.locationSel)
+      return result ? result.long : [];
+    },
+    longRad() {
+      return this.longSel * Math.PI / 180;
+    },
+    antGainVal(){
+      return 10 * Math.log10((this.locationSelInfo.antEffVal / 100) * (Math.pow(Math.PI * this.locationSelInfo.antSizeA / (this.celeritas / (this.locationSelInfo.frqUp_A * 1000000000)), 2)));
+    },
+    antGainReceive() {
+      return 10 * Math.log10(4 * Math.PI * (this.locationSelInfo.antEffVal / 100) * (Math.PI * Math.pow(this.locationSelInfo.antSizeA, 2) / 4) / Math.pow((this.celeritas / (this.locationSelInfo.selectedTp.downFrq * 1000000000)), 2));
+    },
+    tsys() {
+      return parseFloat(this.locationSelInfo.rxAntTempVal) + ((Math.pow(10, (this.locationSelInfo.lossFeedA / 10)) - 1) * 290) + (Math.pow(10, (this.locationSelInfo.lossFeedA / 10)) * this.locationSelInfo.lnaTempVal) +
+        ((Math.pow(10, (this.locationSelInfo.lossFeedA / 10))) * ((Math.pow(10, (this.dnNoise / 10)) - 1) * 290) / (Math.pow(10, (this.rxLnaGain / 10)))) +
+        (((Math.pow(10, (this.iflLoss / 10))) - 1) * 290) / ((Math.pow(10, (this.rxLnaGain / 10))) * (Math.pow(10, (this.dcGain / 10))));
+    },
+    gtES() {
+      return this.antGainReceive - (10 * Math.log10(this.tsys));
+    }
+  },
+  methods: {
+    updateLocation() {
+      var objLocation = this.selLocations.find(x => x.label === this.locationSel);
+      this.$emit('locationObjSel', objLocation);
+    }
+  },
+  watch: {
+    'selLocations'(newVal, oldVal){
+      this.locationSel = this.locationSelected[0];
+    }
+  }
 }
 </script>

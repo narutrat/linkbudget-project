@@ -1,22 +1,24 @@
 <template>
   <div class="row">
-    <div class="col-sm-4" style="margin-left:10px; text-align:left">
-      <div class="row">Subsatellite Point (deg)</div>
-      <div class="row">Altitude</div>
-      <div class="row">Earth Radius</div>
+    <div class="col-sm-4" style="margin-top:5px; text-align:left">
+      <div class="row" style="margin-left:1px">Subsatellite Point (deg)</div>
+      <div class="row" style="margin-left:1px">Altitude</div>
+      <div class="row" style="margin-left:1px; margin-bottom:5px">Earth Radius</div>
     </div>
 
-    <div class="col-sm-4">
-      <div class="row">{{orbitalSlotSel}}</div>
+    <div class="col-sm-2"></div>
+
+    <div class="col-sm-2">
+      <div class="row">{{this.satInfo.selectedSatellite.orbitalSlot || 0}}</div>
       <div class="row">{{altitude}}</div>
       <div class="row">{{earthR}}</div>
     </div>
-    <div class="col-sm-4">
-      <div class="row">{{orbitPoint}}</div>
+    <div class="col-sm-2">
+      <div class="row">{{orbitPoint.toFixed(4)}}</div>
       <div class="row">km</div>
       <div class="row">km</div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-2">
       <div class="row">rad</div>
     </div>
 </div>
@@ -27,19 +29,25 @@
 
 export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
-  // props: ['bandwidthVal'],
+  props: ['satInfo'],
   data() {
     return {
-      orbitalSlotSel: '',
-      altitude: '',
-      earthR: '',
-      orbitPoint: ''
+      // orbitalSlotSel: '',
+      altitude: 35786,
+      earthR: 6378,
+      // orbitPoint: ''
     }
   },
-  methods: {
-    paraChanged() {
+  computed: {
+    orbitPoint() {
+      var vm = this;
+      if (this.satInfo.selectedSatellite) {
+          return this.satInfo.selectedSatellite.orbitalSlot * Math.PI / 180;
+      } else {
+        return [];
+      }
 
-    }
+    },
   }
 }
 </script>

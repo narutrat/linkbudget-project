@@ -22,6 +22,7 @@
     <!-- Beam Label -->
     <div class="col-sm-1 blue-box1">
       <span>Beam: {{ selectedBeam }}</span>
+      <span>Beam: {{ ulPol }}</span>
     </div>
 
     <!-- Beam selector -->
@@ -29,27 +30,30 @@
 
       <!-- Construct a beam selector, which listens to event 'beamSelected' where the beam selector component sends the String beam name back when the input is changed -->
       <!-- Also pass satellite name as a prop -->
-      <beam-selector :satelliteName="selectedSatellite.text" @beamSelected="selectedBeam = $event"></beam-selector>
+      <!-- <beam-selector :satelliteName="selectedSatellite.text" @beamSelected="selectedBeam = $event"></beam-selector> -->
+      <beam-selector :satelliteName="selectedSatellite.text" @beamSelected="updateBeam"></beam-selector>
     </div>
 
     <div class="col-sm-1"></div>
 
     <!-- Transponder Label -->
     <div class="col-sm-1 blue-box1">
-      <span>Transponder: {{ selectedTp }}</span>
+      <span>Transponder: {{ selectedTp.transponders }}</span>
     </div>
 
-    <div class="col-sm-1">
-      <!-- <transponder-selector :beams="selectedBeam" @tpSelected="updateTp"></transponder-selector> -->
-      <transponder-selector :beams="selectedBeam" @tpSelected="selectedTp = $event"></transponder-selector>
+    <div>
+      <transponder-selector :beams="selectedBeam" @tpSelected="updateTp"></transponder-selector>
+      <!-- <transponder-selector :beams="selectedBeam" @tpSelected="selectedTp = $event"></transponder-selector> -->
     </div>
 
-    <div class="col-sm-1"></div>
-
+    <!-- <div class="col-sm-1"></div> -->
+    <div class="col-sm-2">
+      Center Frequency: {{ selectedTp.downFrq }} GHz
+    </div>
     <!-- Frequency -->
-    <div class="col-sm-2" style="margin-top:5px">
+    <!-- <div class="col-sm-2" style="margin-top:5px">
       <FreqDL :transponders="selectedTp"></FreqDL>
-    </div>
+    </div> -->
   </div>
 
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
@@ -225,8 +229,42 @@
       <PowerMarginCheck @powerMarginSelected="selectedPowerMargin = $event"></PowerMarginCheck>
     </div>
 
-    <div class="col-sm-1">
+    <!-- <div class="col-sm-1">
       <PowerMarginValue class="form-control" @pwrValSelected="pwrVal = $event"></PowerMarginValue>
+    </div> -->
+
+    <div class="col-sm-3">
+      <div v-if="selectedPowerMargin === 'Power Utilization' ">
+        <div class="input-group">
+          <span class="input-group-addon">Percent Power Utilization</span>
+            <PowerMarginValue class="form-control" @pwrValSelected="pwrValA = $event"></PowerMarginValue>
+          <span class="input-group-addon">%</span>
+        </div>
+      </div>
+      <div v-else>
+        <div class="input-group">
+          <span class="input-group-addon">Margin</span>
+            <PowerMarginValue class="form-control" @pwrValSelected="pwrValA = $event"></PowerMarginValue>
+          <span class="input-group-addon">dB</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-3">
+      <div v-if="selectedPowerMargin === 'Power Utilization' ">
+        <div class="input-group">
+          <span class="input-group-addon">Percent Power Utilization</span>
+            <PowerMarginValue class="form-control" @pwrValSelected="pwrValB = $event"></PowerMarginValue>
+          <span class="input-group-addon">%</span>
+        </div>
+      </div>
+      <div v-else>
+        <div class="input-group">
+          <span class="input-group-addon">Margin</span>
+            <PowerMarginValue class="form-control" @pwrValSelected="pwrValB = $event"></PowerMarginValue>
+          <span class="input-group-addon">dB</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -390,15 +428,17 @@
 
       <div class="col-sm-6" style="margin-left:-15px">
         <div class="row">
+
           <div class="col-sm-4 blue-box1">
             IFL Loss: {{ iflLoss }}
           </div>
+          <!-- <iflLoss @iflSelected="iflLoss = $event"></iflLoss> -->
 
           <div class="col-sm-1"></div>
 
           <div class="input-group col-sm-4">
             <span class="input-group-addon">Uplink</span>
-            <input v-model="iflLoss" class="form-control" style="text-align:center">
+            <iflLoss @iflSelected="iflLoss = $event"></iflLoss>
           </div>
         </div>
 
@@ -410,7 +450,7 @@
           <div class="col-sm-1"></div>
 
           <div class="col-sm-4">
-            <input v-model="lossFeedA" class="form-control" style="text-align:center" />
+            <LossFeedA class="form-control" @lossFeedASelected="lossFeedA = $event"></LossFeedA>
           </div>
         </div>
 
@@ -424,7 +464,7 @@
 
           <div class="input-group col-sm-4">
             <span class="input-group-addon">Uplink</span>
-            <input v-model="misAntUpA" class="form-control" style="text-align:center" />
+            <MisAntUpA class="form-control" @misAntUpASelected="misAntUpA = $event"></MisAntUpA>
           </div>
         </div>
 
@@ -433,7 +473,7 @@
 
           <div class="input-group col-sm-4" style="margin-top:-5px; margin-bottom:5px">
             <span class="input-group-addon">Downlink</span>
-            <input v-model="misAntDnB" class="form-control" style="text-align:center" />
+            <MisAntDnB class="form-control" @misAntDnBSelected="misAntDnB = $event"></MisAntDnB>
           </div>
         </div>
 
@@ -445,19 +485,20 @@
           <div class="col-sm-1"></div>
 
           <div class="col-sm-4">
-            <input v-model="atmos" class="form-control" style="text-align:center" />
+            <!-- <input v-model="atmos" class="form-control" style="text-align:center" /> -->
+            <Atmos class="form-control" @atmosSelected="atmos = $event"></Atmos>
           </div>
         </div>
 
         <div class="row">
           <div class="col-sm-4 blue-box1">
-            <span>Other Loss (XPD & Axial Ratio Loss): {{ otherLossUpA }}</span>
+            <span>Other Loss (XPD & Axial Ratio Loss): {{ otherLoss }}</span>
           </div>
 
           <div class="col-sm-1"></div>
 
           <div class="col-sm-4">
-            <input v-model="otherLossUpA" class="form-control" style="text-align:center" />
+            <OtherLoss class="form-control" @otherLossSelected="otherLoss = $event"></OtherLoss>
           </div>
         </div>
       </div>
@@ -465,7 +506,7 @@
       <div class="col-sm-6">
         <div class="row">
           <div class="col-sm-4 blue-box1">
-            <span>Antenna Gain: {{ selectedAntGain }} </span>
+            <span>Antenna Gain: {{ antGainVal }} </span>
           </div>
 
           <div class="col-sm-3">
@@ -482,7 +523,7 @@
 
         <div class="row">
           <div class="col-sm-4 blue-box1">
-            <span>Antenna Efficiency: {{ selectedAntEff }}</span>
+            <span>Antenna Efficiency: {{ selectedAntEff.value }}</span>
           </div>
 
           <div class="col-sm-3">
@@ -492,8 +533,8 @@
           <!-- <div class="col-sm-1"></div> -->
 
           <div class="input-group col-sm-4">
-            <span class="input-group-addon">{{ selectedAntEff }}</span>
-            <input v-model="antEffVal" class="form-control" style="text-align:center">
+            <span class="input-group-addon">{{ selectedAntEff.label || 'Default' }}</span>
+            <input v-model="selectedAntEff.value" class="form-control" style="text-align:center">
           </div>
         </div>
 
@@ -574,7 +615,7 @@
 
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
 
-  <Calculate :paraData="InputPara"></Calculate>
+  <Calculate style="line-height:25px":paraData="InputPara"></Calculate>
   <!-- <span>{{selected}}</span> -->
 </div>
 </template>
@@ -588,7 +629,6 @@ import FreqDL from './inputs/FreqDL'
 //////////////////////////////////////////////////////////////////////////////////////
 import Location from './inputs/Location'
 import AntSize from './inputs/AntSize'
-import AntSizeB from './inputs/AntSizeB'
 import AdjDxContour from './inputs/AdjDxContour'
 //////////////////////////////////////////////////////////////////////////////////////
 import CarrierMode from './inputs/CarrierMode'
@@ -640,6 +680,9 @@ export default {
       selectedBeam: '', // beam name (String)
       selectedTp: '',
       selectedFreq: '',
+      objBeam: '',
+      ulPol: '',
+      maxEirpNon: '',
       //////////////////////////////////////////////////////////////////////////////////////
       // selectedAdj: [],
       selectedLocationsA: [],
@@ -651,9 +694,9 @@ export default {
       //////////////////////////////////////////////////////////////////////////////////////
       selectedCarrier: "Multiple Carrier",
       selectedMode: "FGM",
-      satObo: "",
-      satIbo: "",
-      atten: "",
+      // satObo: "",
+      // satIbo: "",
+      // atten: 12,
       deepIn: "",
       //////////////////////////////////////////////////////////////////////////////////////
       selectedPowerMargin: "Power Utilization",
@@ -672,21 +715,22 @@ export default {
       selectedModCodeB: "",
       // selectedFecA: "",
       //////////////////////////////////////////////////////////////////////////////////////
-      iflLoss: "",
-      lossFeedA: "",
-      misAntUpA: "",
-      misAntDnB: "",
-      atmos: "",
-      otherLossUpA: "",
+      iflLoss: 0,
+      lossFeedA: 0.3,
+      misAntUpA: 0,
+      misAntDnB: 0,
+      atmos: 0.1,
+      otherLoss: 0,
       //////////////////////////////////////////////////////////////////////////////////////
+      celeritas: 299792500,
       selectedAntGain: "Calculation",
-      selectedAntEff: "Default",
+      selectedAntEff: "",
       selectedRxAntTemp: "Default",
       selectedLnaTemp: "Default",
       antGainVal: "",
-      antEffVal: "",
-      rxAntTempVal: "",
-      lnaTempVal: "",
+      antEffVal: 60,
+      rxAntTempVal: 35,
+      lnaTempVal: 45,
       //////////////////////////////////////////////////////////////////////////////////////
       selectedLinkAva: "Default",
       linkAvaVal: 99.99,
@@ -727,6 +771,12 @@ export default {
     BestModCode,
     ModulationA,
     //////////////////////////////////////////////////////////////////////////////////////
+    IflLoss,
+    LossFeedA,
+    MisAntUpA,
+    MisAntDnB,
+    Atmos,
+    OtherLoss,
     AntGain,
     AntEff,
     RxAntTemp,
@@ -738,7 +788,7 @@ export default {
     //////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////
     Calculate,
-    // DesignParam
+
   },
   computed: {
     LocationLabelA() {
@@ -760,6 +810,30 @@ export default {
 
 
     },
+
+    satObo() {
+      if (this.selectedCarrier === "Single Carrier") {
+        return this.selectedTp.singleObo;
+      } else if (this.selectedCarrier === "Two Carrier") {
+        return this.selectedTp.twoObo;
+      } else {
+        return this.selectedTp.multiObo;
+      }
+
+    },
+    satIbo() {
+      if (this.selectedCarrier === "Single Carrier") {
+        return this.selectedTp.singleIbo;
+      } else if (this.selectedCarrier === "Two Carrier") {
+        return this.selectedTp.twoIbo;
+      } else {
+        return this.selectedTp.multiIbo;
+      }
+
+    },
+    atten() {
+      return this.selectedTp.defaultAtten;
+    },
     // ModValue() {
     //   var vm = this;
     //   let result = [];
@@ -778,29 +852,46 @@ export default {
 
 
     },
+    // antEffCal() {
+    //   if (this.selectedAntGain === 'Manual') {
+    //     this.antGainVal = '';
+    //     this.selectedAntEff = 'Manual';
+    //     this.antEffVal = (100 * (Math.pow((this.celeritas / (this.frqUp_options * 1000000000)), 2) *
+    //     (Math.pow(10, (this.antGainManual / 10))))) / (Math.PI * Math.PI * (Math.pow(this.antSize_A, 2)));
+    //
+    //   } else if (this.selectedAntEff === 'Default') {
+    //     this.antEffVal = 60;
+    //   } else {
+    //     this.antEffVal = '';
+    //   }
+    // },
     InputPara() {
       return {
         selectedSatellite: this.selectedSatellite,
         selectedBeam: this.selectedBeam,
+        maxEirpNon: this.maxEirpNon,
+        ulPol: this.ulPol,
+        dnPol: this.dnPol,
         selectedTp: this.selectedTp,
-        selectedFreq: this.selectedFreq,
+        // selectedFreq: this.selectedFreq,
         //////////////////////////////////////////////////////////////////////////////////////
         selectedLocationsA: this.selectedLocationsA,
         selectedLocationsB: this.selectedLocationsB,
         antSizeA: this.antSizeA,
         antSizeB: this.antSizeB,
-        dxContour: this.dxContour,
+        // dxContour: this.dxContour,
         adjSatDxContourA: this.adjSatDxContourA,
         //////////////////////////////////////////////////////////////////////////////////////
         selectedCarrier: this.selectedCarrier,
         selectedMode: this.selectedMode,
-        satObo: this.satObo,
-        satIbo: this.satIbo,
-        atten: this.atten,
+        // satObo: this.satObo,
+        // satIbo: this.satIbo,
+        // atten: this.atten,
         deepIn: this.deepIn,
         //////////////////////////////////////////////////////////////////////////////////////
         selectedPowerMargin: this.selectedPowerMargin,
-        pwrVal: this.pwrVal,
+        pwrValA: this.pwrValA,
+        pwrValB: this.pwrValB,
         selectedBwSel: this.selectedBwSel,
         bandwidthValA: this.bandwidthValA,
         bandwidthValB: this.bandwidthValB,
@@ -819,14 +910,14 @@ export default {
         misAntUpA: this.misAntUpA,
         misAntDnB: this.misAntDnB,
         atmos: this.atmos,
-        otherLossUpA: this.otherLossUpA,
+        otherLoss: this.otherLoss,
         //////////////////////////////////////////////////////////////////////////////////////
         selectedAntGain: this.selectedAntGain,
         selectedAntEff: this.selectedAntEff,
         selectedRxAntTemp: this.selectedRxAntTemp,
         selectedLnaTemp: this.selectedLnaTemp,
         antGainVal: this.antGainVal,
-        antEffVal: this.antEffVal,
+        antEffVal: this.selectedAntEff.value,
         rxAntTempVal: this.rxAntTempVal,
         lnaTempVal: this.lnaTempVal,
         //////////////////////////////////////////////////////////////////////////////////////
@@ -845,13 +936,18 @@ export default {
     //   this.selectedSatellite = satellite;
     // },
     // // Called from the 'beamSelected' event of BeamSelector. The 'beam' argument of this function comes from 2nd arguemnt of this.$emit() inside BeamSelector.vue
-    // updateBeam(beam) {
-    //   this.selectedBeam = beam;
-    // },
-    //
-    // updateTp(transponder) {
-    //   this.selectedTp = transponder;
-    // },
+    updateBeam(value) {
+      // this.selectedBeam = value
+      this.selectedBeam = value.beamName;
+      // this.selectedTp = value.transponders;
+      this.maxEirpNon = value.maxEirpNon;
+      this.ulPol = value.ulPol;
+      this.dnPol = value.dnPol;
+    },
+
+    updateTp(value) {
+      this.selectedTp = value
+    },
 
     // updateAdj(satellite) {
     //   this.adjSat = sat;

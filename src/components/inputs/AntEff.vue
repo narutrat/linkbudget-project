@@ -27,7 +27,7 @@ export default {
   methods: {
     antEffChanged(value) {
       let selectedAntEff = this.defaultOptions.find(s => s.label === value);
-      this.$emit('antEffSelected', selectedAntEff.label);
+      this.$emit('antEffSelected', selectedAntEff);
     }
   }
 }

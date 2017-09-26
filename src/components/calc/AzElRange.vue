@@ -34,7 +34,7 @@
 
 export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
-  // props: ['bandwidthVal'],
+  props: ['azElRange'],
   data() {
     return {
       longDiff: '',
@@ -44,5 +44,19 @@ export default {
       elAngle: '',
     }
   },
+  computed: {
+    orbitPoint() {
+      var vm = this;
+      if (this.azElRange.selectedSatellite) {
+          return this.azElRange.selectedSatellite.orbitalSlot * Math.PI / 180;
+      } else {
+        return [];
+      }
+
+    },
+    // longDiff() {
+    //   return (this.azElRange.selectedSatellite.longSel * Math.PI / 180) - (this.azElRange.selectedSatellite.orbitPoint);
+    // },
+  }
 }
 </script>

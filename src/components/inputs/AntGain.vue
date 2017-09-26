@@ -28,6 +28,8 @@ export default {
     antGainChanged(value) {
       let selectedAntGain = this.CalOptions.find(s => s.label === value);
       this.$emit('antGainSelected', selectedAntGain.label);
+
+
     }
   }
 }
