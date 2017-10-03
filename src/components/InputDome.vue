@@ -7,7 +7,7 @@
 
     <!-- Satellite Label -->
     <div class="col-sm-1 blue-box1">
-      <span>Satellite: {{ selectedSatellite.text }} </span>
+      <span>Satellite: {{ selectedSatellite.name }} </span>
     </div>
 
     <!-- Satellite selector -->
@@ -22,7 +22,7 @@
     <!-- Beam Label -->
     <div class="col-sm-1 blue-box1">
       <span>Beam: {{ selectedBeam }}</span>
-      <span>Beam: {{ ulPol }}</span>
+      <!-- <span>Beam: {{ ulPol }}</span> -->
     </div>
 
     <!-- Beam selector -->
@@ -31,14 +31,14 @@
       <!-- Construct a beam selector, which listens to event 'beamSelected' where the beam selector component sends the String beam name back when the input is changed -->
       <!-- Also pass satellite name as a prop -->
       <!-- <beam-selector :satelliteName="selectedSatellite.text" @beamSelected="selectedBeam = $event"></beam-selector> -->
-      <beam-selector :satelliteName="selectedSatellite.text" @beamSelected="updateBeam"></beam-selector>
+      <beam-selector :satelliteName="selectedSatellite.name" @beamSelected="updateBeam"></beam-selector>
     </div>
 
     <div class="col-sm-1"></div>
 
     <!-- Transponder Label -->
     <div class="col-sm-1 blue-box1">
-      <span>Transponder: {{ selectedTp.transponders }}</span>
+      <span>Transponder: {{ selectedTp.name }}</span>
     </div>
 
     <div>
@@ -48,13 +48,15 @@
 
     <!-- <div class="col-sm-1"></div> -->
     <div class="col-sm-2">
-      Center Frequency: {{ selectedTp.downFrq }} GHz
+      Center Frequency: {{ selectedTp.downlink_cf }} GHz
     </div>
     <!-- Frequency -->
     <!-- <div class="col-sm-2" style="margin-top:5px">
       <FreqDL :transponders="selectedTp"></FreqDL>
     </div> -->
   </div>
+
+{{selectedTp}}
 
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
 
@@ -76,6 +78,7 @@
 
   <div class="row">
     <div class="col-sm-1 blue-box1">
+      <!-- <span>Location A</span> -->
       <span>Location A: {{ LocationLabelA }}</span>
     </div>
 
@@ -100,11 +103,12 @@
     <!-- <div>
       {{adjSatDxContourA}}
     </div> -->
+
   </div>
 
   <div class="row">
     <div class="col-sm-1 blue-box1">
-      <span>Location B: {{ LocationLabelB }}</span>
+      <span>Location B: {{ selectedLocationsB }}</span>
     </div>
 
     <div class="col-sm-3">
@@ -351,7 +355,7 @@
 
   <div class="row">
     <div class="col-sm-2 blue-box1">
-      <span>Modem: {{ selectedModem.label }}</span>
+      <span>Modem: {{ selectedModem.name }}</span>
     </div>
 
     <div class="col-sm-2">
@@ -379,11 +383,11 @@
 
       <div class="row" style="margin-left:15px">
         <div class="col-sm-3 blue-box1">
-          <span>Modulation A: {{ selectedModCodeA.modCode }}</span>
+          <span>Modulation A: {{ selectedModCodeA }}</span>
         </div>
 
         <div class="col-sm-2">
-          <ModulationA :modem="selectedModem" @modCodeSelected="selectedModCodeA= $event"></ModulationA>
+          <Modulation :mcgs="mcgA" @modCodeSelected="selectedModCodeA= $event"></Modulation>
         </div>
       </div>
 
@@ -409,7 +413,7 @@
         </div>
 
         <div class="col-sm-2">
-          <ModulationA :modem="selectedModem" @modCodeSelected="selectedModCodeB= $event"></ModulationA>
+          <Modulation :mcgs="mcgB" @modCodeSelected="selectedModCodeB= $event"></Modulation>
         </div>
       </div>
     </div>
@@ -630,6 +634,7 @@ import FreqDL from './inputs/FreqDL'
 import Location from './inputs/Location'
 import AntSize from './inputs/AntSize'
 import AdjDxContour from './inputs/AdjDxContour'
+import AdjSatCheckBox from './inputs/AdjSatCheckBox'
 //////////////////////////////////////////////////////////////////////////////////////
 import CarrierMode from './inputs/CarrierMode'
 import SatObo from './inputs/SatObo'
@@ -648,7 +653,7 @@ import SimplexDuplex from './inputs/SimplexDuplex'
 import Application from './inputs/Application'
 import Modem from './inputs/Modem'
 import BestModCode from './inputs/BestModCode'
-import ModulationA from './inputs/Modulation'
+import Modulation from './inputs/Modulation'
 //////////////////////////////////////////////////////////////////////////////////////
 import IflLoss from './inputs/IflLoss'
 import LossFeedA from './inputs/LossFeedA'
@@ -691,8 +696,9 @@ export default {
       antSizeB: "",
       dxContour: "",
       adjSatDxContourA: [],
+      adjSatCheckBox:[],
       //////////////////////////////////////////////////////////////////////////////////////
-      selectedCarrier: "Multiple Carrier",
+      selectedCarrier: "multi",
       selectedMode: "FGM",
       // satObo: "",
       // satIbo: "",
@@ -751,6 +757,7 @@ export default {
     Location,
     AntSize,
     AdjDxContour,
+    AdjSatCheckBox,
     //////////////////////////////////////////////////////////////////////////////////////
     CarrierMode,
     SatObo,
@@ -769,7 +776,7 @@ export default {
     Application,
     Modem,
     BestModCode,
-    ModulationA,
+    Modulation,
     //////////////////////////////////////////////////////////////////////////////////////
     IflLoss,
     LossFeedA,
@@ -793,7 +800,7 @@ export default {
   computed: {
     LocationLabelA() {
       return this.selectedLocationsA.map(function(obj) {
-        return obj.label;
+        return obj.city;
       }).join(',');
 
     },
@@ -810,29 +817,40 @@ export default {
 
 
     },
-
     satObo() {
-      if (this.selectedCarrier === "Single Carrier") {
-        return this.selectedTp.singleObo;
-      } else if (this.selectedCarrier === "Two Carrier") {
-        return this.selectedTp.twoObo;
+      var vm = this;
+      let result = [];
+      if (this.selectedTp) {
+        result = this.selectedTp.backoff_settings.find(function(x) {
+          return x.num_carriers === vm.selectedCarrier;
+        });
+        if (result) {
+          return result.obo;
+        } else {
+          return 'Alert';
+        }
       } else {
-        return this.selectedTp.multiObo;
+        return '';
       }
-
     },
     satIbo() {
-      if (this.selectedCarrier === "Single Carrier") {
-        return this.selectedTp.singleIbo;
-      } else if (this.selectedCarrier === "Two Carrier") {
-        return this.selectedTp.twoIbo;
+      var vm = this;
+      let result = [];
+      if (this.selectedTp) {
+        result = this.selectedTp.backoff_settings.find(function(x) {
+          return x.num_carriers === vm.selectedCarrier;
+        });
+        if (result) {
+          return result.ibo;
+        } else {
+          return 'Alert';
+        }
       } else {
-        return this.selectedTp.multiIbo;
+        return '';
       }
-
     },
     atten() {
-      return this.selectedTp.defaultAtten;
+      return this.selectedTp.default_atten;
     },
     // ModValue() {
     //   var vm = this;
@@ -865,6 +883,24 @@ export default {
     //     this.antEffVal = '';
     //   }
     // },
+    mcgA() {
+      if (this.selectedModem) {
+        var a = this.selectedModem.applications.find(x => x.type === 'forward' || x.type === 'SCPC' || x.type === 'Broadcast')
+        return a.mcgs;
+      } else {
+        return [];
+      }
+
+    },
+    mcgB() {
+      if (this.selectedModem) {
+        var a = this.selectedModem.applications.find(x => x.type === 'return' || x.type === 'SCPC')
+        return a.mcgs;
+      } else {
+        return [];
+      }
+
+    },
     InputPara() {
       return {
         selectedSatellite: this.selectedSatellite,
@@ -879,14 +915,14 @@ export default {
         selectedLocationsB: this.selectedLocationsB,
         antSizeA: this.antSizeA,
         antSizeB: this.antSizeB,
-        // dxContour: this.dxContour,
+        dxContour: this.dxContour,
         adjSatDxContourA: this.adjSatDxContourA,
         //////////////////////////////////////////////////////////////////////////////////////
         selectedCarrier: this.selectedCarrier,
         selectedMode: this.selectedMode,
-        // satObo: this.satObo,
-        // satIbo: this.satIbo,
-        // atten: this.atten,
+        satObo: this.satObo,
+        satIbo: this.satIbo,
+        atten: this.atten,
         deepIn: this.deepIn,
         //////////////////////////////////////////////////////////////////////////////////////
         selectedPowerMargin: this.selectedPowerMargin,
@@ -938,15 +974,15 @@ export default {
     // // Called from the 'beamSelected' event of BeamSelector. The 'beam' argument of this function comes from 2nd arguemnt of this.$emit() inside BeamSelector.vue
     updateBeam(value) {
       // this.selectedBeam = value
-      this.selectedBeam = value.beamName;
+      this.selectedBeam = value;
       // this.selectedTp = value.transponders;
-      this.maxEirpNon = value.maxEirpNon;
-      this.ulPol = value.ulPol;
-      this.dnPol = value.dnPol;
+      // this.maxEirpNon = value.maxEirpNon;
+      // this.ulPol = value.ulPol;
+      // this.dnPol = value.dnPol;
     },
 
     updateTp(value) {
-      this.selectedTp = value
+      this.selectedTp = value;
     },
 
     // updateAdj(satellite) {

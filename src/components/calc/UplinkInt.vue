@@ -39,8 +39,7 @@
 // import DesignParam from './calc/DesignParam'
 
 export default {
-  // props: ['satelliteName'], // Get the satellite name from parent to create beam options
-  // props: ['bandwidthVal'],
+  props: ['uplinkInt'],
   data() {
     return {
       topo1: '',
@@ -58,5 +57,10 @@ export default {
       ciUpTotal_A: ''
     }
   },
+  computed: {
+    // topo1() {
+    //   return (Math.abs(this.adjSlot1 - this.orbitalSlotSel) - 0.15) * 1.1;
+    // },
+  }
 }
 </script>

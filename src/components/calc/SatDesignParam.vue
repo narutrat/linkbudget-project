@@ -12,14 +12,14 @@
 
   <div class="col-sm-2">
     <div class="row" style="margin-top:5px">
-      <input v-model="this.satDesign.selectedTp.defaultAtten" class="form-control" style="text-align:center">
+      <input v-model="this.satDesign.selectedTp.default_atten" class="form-control" style="text-align:center" @change="updateSatDesignParam">
     </div>
-    <div class="row" style="margin-top:10px">{{this.satDesign.selectedSatellite.maxAtten || 0}}</div>
+    <div class="row" style="margin-top:10px">{{this.satDesign.selectedTp.atten_range || 0}}</div>
     <div class="row" style="margin-top:5px">
-      <input v-model="this.satDesign.antSizeA" class="form-control" style="text-align:center">
+      <input v-model="this.satDesign.antSizeA" class="form-control" style="text-align:center" @change="updateSatDesignParam">
     </div>
     <div class="row">
-      <input v-model="this.satDesign.antSizeB" class="form-control" style="text-align:center">
+      <input v-model="this.satDesign.antSizeB" class="form-control" style="text-align:center" @change="updateSatDesignParam">
     </div>
   </div>
 
@@ -46,6 +46,27 @@ export default {
 atten: "",
 antSizeA: "",
 antSizeB: ""
+    }
+  },
+  methods: {
+    updateSatDesignParam() {
+      // this.allowBw = parseFloat(this.bandwidth) * (1 + parseFloat(this.guardBandVal) / 100);
+      this.$emit('updateSatDesignData', {
+        atten: this.atten,
+        antSizeA: this.antSizeA,
+        antSizeB: this.antSizeB,
+      })
+    },
+
+  },
+  watch: {
+    'satDesign'(newVal, oldVal) {
+      this.$emit('updateSatDesignData', {
+        atten: this.atten,
+        antSizeA: this.antSizeA,
+        antSizeB: this.antSizeB,
+      });
+      // this.allowBW= newVal.allowBWVal;
     }
   },
 }

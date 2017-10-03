@@ -35,7 +35,22 @@ export default {
     totalLossUp() {
       return parseFloat(this.txLoss.iflLoss) + parseFloat(this.txLoss.misAntUpA) + parseFloat(this.txLoss.otherLoss);
     }
-  }
+  },
+  methods: {
+    updateTxLoss() {
+      this.$emit('updateTransmitLoss', {
+        totalLossUp: this.totalLossUp,
+      })
+    },
+  },
+  watch: {
+    'txLoss'(newVal, oldVal) {
+      this.$emit('updateTransmitLoss', {
+        totalLossUp: this.totalLossUp,
+      });
+      // this.allowBW= newVal.allowBWVal;
+    }
+  },
 
 }
 </script>

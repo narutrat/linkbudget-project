@@ -1,14 +1,14 @@
 <template>
 <div>
   <div class="col-sm-2" style="text-align:left">
-    <div class="row">{{eirpDnClear}}</div>
-    <div class="row">{{pathLoss}}</div>
+    <div class="row">{{eirpDnClear.toFixed(4)}}</div>
+    <div class="row">{{pathLoss.toFixed(4)}}</div>
     <div class="row">
-      <input v-model="atmos" class="form-control" style="text-align:center">
+      <input v-model="atmosDownlinkLoss" class="form-control" style="text-align:center">
     </div>
-    <div class="row">{{pathLossAtmos}}</div>
-    <div class="row">{{receivePwrClear}}</div>
-    <div class="row">{{eirpDnDenClear}}</div>
+    <div class="row">{{pathLossAtmos.toFixed(4)}}</div>
+    <div class="row">{{receivePwrClear.toFixed(4)}}</div>
+    <div class="row">{{eirpDnDenClear.toFixed(4)}}</div>
   </div>
 
 </div>
@@ -19,15 +19,47 @@
 
 export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
-  // props: ['bandwidthVal'],
+  props: ['downlinkLoss'],
   data() {
     return {
-      eirpDnClear: '',
-      pathLoss: '',
-      atmos: '',
-      pathLossAtmos: '',
-      receivePwrClear: '',
-      eirpDnDenClear: ''
+      eirpDnClear: 0,
+      // pathLoss: '',
+      // atmosDownlinkLoss: '',
+      // pathLossAtmos: '',
+      // receivePwrClear: '',
+      // eirpDnDenClear: ''
+    }
+  },
+  computed: {
+    // eirpDnClear() {
+    //   return this.downlinkLoss.oboCal_A - this.downlinkLoss.eirpdnSat_B;
+    // },
+    pathLoss() {
+      return 20 * (Math.log10(4 * Math.PI * this.downlinkLoss.frqDn_A * 1000000000 * this.downlinkLoss.slantRange * 1000 / this.downlinkLoss.celeritas));
+    },
+    atmosDownlinkLoss(){
+      return this.downlinkLoss.atmos;
+    },
+    pathLossAtmos() {
+      return (20 * (Math.log10(4 * Math.PI * this.downlinkLoss.frqDn_A * 1000000000 * this.downlinkLoss.slantRange * 1000 / this.downlinkLoss.celeritas))) + parseFloat(this.atmosDownlinkLoss);
+    },
+    receivePwrClear() {
+      return parseFloat(this.eirpDnClear) - parseFloat(this.pathLossAtmos) + parseFloat(this.downlinkLoss.antGainReceive) - parseFloat(this.downlinkLoss.totalLossDn);
+    },
+    eirpDnDenClear() {
+      return this.eirpDnClear - (10 * Math.log10(this.downlinkLoss.bandwidth * 1000));
+    },
+  },
+  watch: {
+    'downlinkLoss'(newVal, oldVal) {
+      this.$emit('updateDownlinkLoss', {
+        eirpDnClear: this.eirpDnClear,
+        pathLoss: this.pathLoss,
+        atmos: this.atmosDownlinkLoss,
+        pathLossAtmos: this.pathLossAtmos,
+        receivePwrClear: this.receivePwrClear,
+        eirpDnDenClear: this.eirpDnDenClear,
+      });
     }
   },
 }

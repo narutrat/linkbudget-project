@@ -11,8 +11,7 @@ export default {
   props: ['satellite', 'selectedLocations'],
   data() {
     return {
-
-    }
+      }
   },
   methods: {
     joinContour(contour) {

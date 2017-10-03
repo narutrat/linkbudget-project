@@ -30,5 +30,20 @@ export default {
       return parseFloat(this.rxLoss.misAntDnB) + parseFloat(this.rxLoss.otherLoss);
     }
   },
+  methods: {
+    updateReceive() {
+      this.$emit('updateReceiveLoss', {
+        totalLossDn: this.totalLossDn,
+      })
+    },
+  },
+  watch: {
+    'rxLoss'(newVal, oldVal) {
+      this.$emit('updateReceiveLoss', {
+        totalLossDn: this.totalLossDn,
+      });
+      // this.allowBW= newVal.allowBWVal;
+    }
+  },
 }
 </script>

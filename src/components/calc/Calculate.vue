@@ -2,7 +2,6 @@
 <!-- <div> -->
 <div>
   <div class="row" style="margin-left:10px; text-align:center; border:solid 2px">
-bbb: {{this.selectLocationA.gt}}
     <div class="col-sm-6" style="border-right:solid 2px">
       <div class="row" style="border-bottom:solid 1px; padding:5px; font-weight:bold; font-size:16px; background-color: #337AB7; color: white; text-shadow:1px 1px black">
         <div class="col-sm-4" style="text-align:left">Design Parameter</div>
@@ -13,7 +12,6 @@ bbb: {{this.selectLocationA.gt}}
       </div>
 
       <div class="row" style="padding:10px">
-
         <div class="col-sm-4" style="text-align:left">
           <div class="row">HPA Backoff per Carrier</div>
           <div class="row" style="margin-top:15px">Occupied Bandwidth</div>
@@ -24,7 +22,6 @@ bbb: {{this.selectLocationA.gt}}
         </div>
 
         <div class="col-sm-2" style="text-align:left"></div>
-
 
         <DesignParam @updateBW="dataDesignParamUpdateA" :bandwidthData="dataDesignParamA"></DesignParam>
 
@@ -38,8 +35,6 @@ bbb: {{this.selectLocationA.gt}}
           <div class="row">dB</div>
           <div class="row"></div>
         </div>
-
-
       </div>
     </div>
 
@@ -70,7 +65,7 @@ bbb: {{this.selectLocationA.gt}}
         Satellite Design Parameter
       </div>
 
-      <SatDesignParam :satDesign="dataSatDesignParam"></SatDesignParam>
+      <SatDesignParam @updateSatDesignData="dataSatDesignParamUpdate" :satDesign="dataSatDesignParam"></SatDesignParam>
 
     </div>
 
@@ -89,8 +84,8 @@ bbb: {{this.selectLocationA.gt}}
         <div class="row">OBO / Carrier (dB)</div>
         <div class="row">Transponder Gain (dBm^2)</div>
       </div>
-      <CarrierOperation :carrierOperation="dataCarrierOperationA"></CarrierOperation>
-      <CarrierOperation></CarrierOperation>
+      <CarrierOperation @updateCarrierOperationData="dataCarrierOperationUpdate" :carrierOperation="dataCarrierOperationA"></CarrierOperation>
+      <CarrierOperation @updateCarrierOperationData="dataCarrierOperationUpdate" :carrierOperation="dataCarrierOperationA"></CarrierOperation>
     </div>
 
   </div>
@@ -105,8 +100,8 @@ bbb: {{this.selectLocationA.gt}}
       </div>
 
       <AdjustableLinkAva :adjustableLinkAva="dataAdjustbleLinkAva"></AdjustableLinkAva>
-      <AdjustableParam ></AdjustableParam>
-      <AdjustableParam ></AdjustableParam>
+      <AdjustableParam @updateAdjustableParamData="dataAdjustableParamUpdate" :adjustableParam="dataAdjustbleParamA"></AdjustableParam>
+      <AdjustableParam @updateAdjustableParamData="dataAdjustableParamUpdate" :adjustableParam="dataAdjustbleParamA"></AdjustableParam>
 
       <div class="col-sm-2">
         <div class="row">dB (ITU-R 618-6, 99)</div>
@@ -182,10 +177,10 @@ bbb: {{this.selectLocationA.gt}}
       <div class="col-sm-2" style="text-align:center"></div>
 
       <div class="col-sm-2" style="text-align:center">
-        <CarrierInfo :carrierInfo="dataCarrierInfoA"></CarrierInfo>
+        <CarrierInfo @updateCarrierInfo="dataCarrierInfoUpdate" :carrierInfo="dataCarrierInfoA"></CarrierInfo>
       </div>
       <div class="col-sm-2" style="text-align:center">
-        <CarrierInfo :carrierInfo="dataCarrierInfoB"></CarrierInfo>
+        <CarrierInfo @updateCarrierInfo="dataCarrierInfoUpdate" :carrierInfo="dataCarrierInfoB"></CarrierInfo>
       </div>
 
       <div class="col-sm-2" style="text-align:center">
@@ -204,7 +199,7 @@ bbb: {{this.selectLocationA.gt}}
         <div class="col-sm-4" style="text-align:left">Satellite Information</div>
       </div>
 
-      <SatInfo :satInfo="dataSatInfo"></SatInfo>
+      <SatInfo @updateSatInfo="dataSatInfoUpdate" :satInfo="dataSatInfo"></SatInfo>
 
       <div class="row" style="border-bottom:solid 1px; padding:5px; font-weight:bold; font-size:16px; background-color: #337AB7; color: white; text-shadow:1px 1px black">
         <div class="col-sm-6"></div>
@@ -223,11 +218,11 @@ bbb: {{this.selectLocationA.gt}}
         <div class="col-sm-2"></div>
 
         <div class="col-sm-2" style="margin-top:5px">
-          <SatInfo_2 :satInfo_2="dataSatInfo_2A"></SatInfo_2>
+          <SatInfo_2 @updateSatInfo2="dataSatInfo2UpdateA" :satInfo_2="dataSatInfo_2A"></SatInfo_2>
         </div>
 
         <div class="col-sm-2" style="margin-top:5px">
-          <SatInfo_2 :satInfo_2="dataSatInfo_2B"></SatInfo_2>
+          <SatInfo_2 @updateSatInfo2="dataSatInfo2UpdateB" :satInfo_2="dataSatInfo_2B"></SatInfo_2>
         </div>
 
         <div class="col-sm-2" style="margin-top:5px; text-align:center">
@@ -246,7 +241,7 @@ bbb: {{this.selectLocationA.gt}}
         <div class="col-sm-4" style="text-align:left">Earth Station A</div>
       </div>
       <div>
-        <LocationInfo @locationObjSel="selectLocationA = $event" :selLocations="dataLocationInfo.selectedLocationsA" :locationSelInfo="dataLocationInfo"></LocationInfo>
+        <LocationInfo @locationObjSel="selectLocationA = $event" @updateLocationInfo="dataLocationInfoUpdate" :selLocations="dataLocationInfo.selectedLocationsA" :locationSelInfo="dataLocationInfo"></LocationInfo>
       </div>
     </div>
     <div class="col-sm-6" style="border-right:solid 2px">
@@ -254,7 +249,8 @@ bbb: {{this.selectLocationA.gt}}
         <div class="col-sm-4" style="text-align:left">Earth Station B</div>
       </div>
       <div>
-        <LocationInfo @locationObjSel="selectLocationB = $event" :selLocations="dataLocationInfo.selectedLocationsB" :locationSelInfo="dataLocationInfo"></LocationInfo>
+        <!-- <LocationInfo @locationObjSel="selectLocationB = $event" @updateLocationInfo="dataLocationInfoUpdate" :selLocations="dataLocationInfo.selectedLocationsB" :locationSelInfo="dataLocationInfo"></LocationInfo> -->
+        <!-- <LocationInfo @locationObjSel="selectLocationB = $event" @updateLocationInfo="dataLocationInfoUpdate" :selLocations="dataLocationInfo.selectedLocationsB" :locationSelInfo="dataLocationInfo"></LocationInfo> -->
         <!-- {{selectLocationB}} -->
       </div>
 
@@ -279,10 +275,10 @@ bbb: {{this.selectLocationA.gt}}
       </div>
       <div class="col-sm-2"></div>
       <div>
-        <TransmitLoss :txLoss="dataTransmitLoss"></TransmitLoss>
+        <TransmitLoss @updateTransmitLoss="dataTransmitLossUpdate" :txLoss="dataTransmitLoss"></TransmitLoss>
       </div>
       <div>
-        <TransmitLoss :txLoss="dataTransmitLoss"></TransmitLoss>
+        <TransmitLoss @updateTransmitLoss="dataTransmitLossUpdate" :txLoss="dataTransmitLoss"></TransmitLoss>
       </div>
     </div>
     <div class="col-sm-6" style="border-right:solid 2px">
@@ -302,10 +298,10 @@ bbb: {{this.selectLocationA.gt}}
       </div>
       <div class="col-sm-2"></div>
       <div>
-        <ReceiveLoss :rxLoss="dataReceiveLoss"></ReceiveLoss>
+        <ReceiveLoss @updateReceiveLoss="dataReceiveLossUpdate" :rxLoss="dataReceiveLoss"></ReceiveLoss>
       </div>
       <div>
-        <ReceiveLoss :rxLoss="dataReceiveLoss"></ReceiveLoss>
+        <ReceiveLoss @updateReceiveLoss="dataReceiveLossUpdate" :rxLoss="dataReceiveLoss"></ReceiveLoss>
       </div>
     </div>
   </div>
@@ -319,7 +315,7 @@ bbb: {{this.selectLocationA.gt}}
         <div class="col-sm-12" style="text-align:left">Azimuth-Elevation-Slant Range Calculation</div>
       </div>
       <div>
-        <AzElRange :azElRange="dataAzElRange"></AzElRange>
+        <AzElRange @updateAzElRange="dataAzElRangeUpdate" :azElRange="dataAzElRange"></AzElRange>
       </div>
     </div>
     <div class="col-sm-6" style="border-right:solid 2px">
@@ -330,7 +326,7 @@ bbb: {{this.selectLocationA.gt}}
         <div class="col-sm-12" style="text-align:left">Azimuth-Elevation-Slant Range Calculation</div>
       </div>
       <div>
-        <AzElRange></AzElRange>
+        <AzElRange :azElRange="dataAzElRange"></AzElRange>
       </div>
 
     </div>
@@ -357,11 +353,11 @@ bbb: {{this.selectLocationA.gt}}
       <div class="col-sm-2"></div>
 
       <div>
-        <UplinkLoss></UplinkLoss>
+        <UplinkLoss @updateUplinkLoss="dataUplinkLossUpdate" :uplinkLoss="dataUplinkLoss"></UplinkLoss>
       </div>
 
       <div>
-        <UplinkLoss></UplinkLoss>
+        <UplinkLoss @updateUplinkLoss="dataUplinkLossUpdate" :uplinkLoss="dataUplinkLoss"></UplinkLoss>
       </div>
 
     </div>
@@ -384,20 +380,20 @@ bbb: {{this.selectLocationA.gt}}
       </div>
 
       <div>
-        <DownlinkLoss></DownlinkLoss>
+        <DownlinkLoss @updateDownlinkLoss="dataDownlinkLossUpdate" :downlinkLoss="dataDownlinkLoss"></DownlinkLoss>
+      </div>
+
+      <!-- <div>
+        <DownlinkLoss @updateDownlinkLoss="dataDownlinkLossUpdate" :downlinkLoss="dataDownlinkLoss"></DownlinkLoss>
       </div>
 
       <div>
-        <DownlinkLoss></DownlinkLoss>
+        <DownlinkLoss @updateDownlinkLoss="dataDownlinkLossUpdate" :downlinkLoss="dataDownlinkLoss"></DownlinkLoss>
       </div>
 
       <div>
-        <DownlinkLoss></DownlinkLoss>
-      </div>
-
-      <div>
-        <DownlinkLoss></DownlinkLoss>
-      </div>
+        <DownlinkLoss @updateDownlinkLoss="dataDownlinkLossUpdate" :downlinkLoss="dataDownlinkLoss"></DownlinkLoss>
+      </div> -->
 
     </div>
   </div>
@@ -421,11 +417,11 @@ bbb: {{this.selectLocationA.gt}}
       <div class="col-sm-2"></div>
 
       <div>
-        <UplinkNoise></UplinkNoise>
+        <UplinkNoise @updateUplinkNoise="dataUplinkNoiseUpdate" :uplinkNoise="dataUplinkNoise"></UplinkNoise>
       </div>
 
       <div>
-        <UplinkNoise></UplinkNoise>
+        <UplinkNoise @updateUplinkNoise="dataUplinkNoiseUpdate" :uplinkNoise="dataUplinkNoise"></UplinkNoise>
       </div>
 
       <div class="col-sm-2" style="text-align:left">
@@ -460,6 +456,10 @@ bbb: {{this.selectLocationA.gt}}
       </div>
 
       <div>
+        <DownlinkNoise @updateDownlinkNoise="dataDownlinkNoiseUpdate" :downlinkNoise="dataDownlinkNoise"></DownlinkNoise>
+      </div>
+
+      <!-- <div>
         <DownlinkNoise></DownlinkNoise>
       </div>
 
@@ -469,11 +469,7 @@ bbb: {{this.selectLocationA.gt}}
 
       <div>
         <DownlinkNoise></DownlinkNoise>
-      </div>
-
-      <div>
-        <DownlinkNoise></DownlinkNoise>
-      </div>
+      </div> -->
 
     </div>
   </div>
@@ -517,7 +513,7 @@ bbb: {{this.selectLocationA.gt}}
       </div>
 
       <div>
-        <EirpDn></EirpDn>
+        <EirpDn :eirpDown="dataEirpDown"></EirpDn>
       </div>
 
     </div>
@@ -540,8 +536,8 @@ bbb: {{this.selectLocationA.gt}}
         <div class="col-sm-4"></div>
         <div class="col-sm-8">
           <div class="row" style="font-size:14px; margin-bottom:2px;">
-              <AdjName></AdjName>
-              <AdjName></AdjName>
+            <AdjName :adjName="dataAdjName"></AdjName>
+            <AdjName :adjName="dataAdjName"></AdjName>
           </div>
         </div>
       </div>
@@ -582,8 +578,8 @@ bbb: {{this.selectLocationA.gt}}
         <div class="col-sm-4"></div>
         <div class="col-sm-8">
           <div class="row" style="font-size:14px; margin-bottom:2px;">
-            <AdjName></AdjName>
-            <AdjName></AdjName>
+            <AdjName :adjName="dataAdjName"></AdjName>
+            <AdjName :adjName="dataAdjName"></AdjName>
           </div>
         </div>
       </div>
@@ -610,11 +606,20 @@ bbb: {{this.selectLocationA.gt}}
     </div>
   </div>
 
-{{this.paraData.rxAntTempVal}}
+  <!-- {{this.paraData.selectedSatellite.maxAtten}}
 {{this.frqUp_A}}
-<!-- {{this.bandwidthA}} -->
-<!-- {{this.paraData.antSizeA}}
+{{this.aggBackoff}}
+{{this.carrierInfo}} -->
+  <!-- {{this.totalLossUp}}
+{{this.hpaPowerBoth}} -->
+  <!-- {{this.paraData.dxContour}} -->
+  <!-- {{this.paraData.selectedLocationsA}} <br> -->
+  {{locationInfo}}
+  <!-- {{this.paraData.adjSatDxContourA}} -->
+  <!-- {{this.bandwidthA}} -->
+  <!-- {{this.paraData.antSizeA}}
 {{this.paraData.selectedModCodeA}} -->
+
 
 </div>
 </template>
@@ -661,17 +666,36 @@ export default {
       bandwidthVal: '',
       guardBandVal: '',
       // updatePara: [],
+      allowBW: '',
       allowBWA: '',
       allowBWB: '',
       allowBWVal: '',
       updateBW: '',
       bandwidth: '',
       aggBackoff: {},
+      selectedLocationsA: '',
       selectLocationA: {},
       selectLocationB: {},
       // dataFreqUpdate: {},
       frqUp_A: '',
       frqUp_B: '',
+      sfdMax: 0,
+      carrierInfo: '',
+      altitude: '',
+      earthR: '',
+      orbitPoint: '',
+      locationInfo: '',
+      antGainVal: '',
+      hpaPowerBoth: '',
+      totalLossUp: '',
+      opFluxDen: '',
+      receivePwrClear: '',
+      aggIbo: '',
+      selectedSatellite: '',
+      adjSatName: '',
+      selectLocation: '',
+      selLocations: '',
+      locationSelInfo: ''
     }
   },
   components: {
@@ -704,20 +728,133 @@ export default {
 
   },
   methods: {
+    /////////////////////////////
+    // Receive Data from Child //
+    /////////////////////////////
+
+    /////////////// DesignParam ///////////////
     dataDesignParamUpdateA(value) {
       this.bandwidthA = value.bandwidth;
       this.allowBWA = value.allowBW;
+      this.numMCPC = value.numMCPC;
+      this.aggHpaBoo = value.aggHpaBoo;
     },
     dataDesignParamUpdateB(value) {
       this.bandwidthB = value.bandwidth;
       this.allowBWB = value.allowBW;
+      this.numMCPC = value.numMCPC;
+      this.aggHpaBoo = value.aggHpaBoo;
     },
+    /////////////// Utilization ///////////////
+    dataUtilizationUpdate(value) {},
+    /////////////// SatDesignParam ///////////////
+    dataSatDesignParamUpdate(value) {
+      this.atten = value.atten;
+      this.antSizeA = value.antSizeA;
+      this.antSizeB = value.antSizeB;
+    },
+    /////////////// Carrier Operating Point ///////////////
+    dataCarrierOperationUpdate(value) {
+      this.allowIboClear = value.allowIboClear;
+      this.iboCal = value.iboCal;
+      this.oboCal = value.oboCal;
+      this.tpGain = value.tpGain;
+      this.iboUpfade = value.iboUpfade;
+      this.oboUpfade = value.oboUpfade;
+    },
+    /////////////// AdjustableParam ///////////////
+    dataAdjustableParamUpdate(value) {
+      this.sfdAtten = value.sfdAtten;
+      this.allowFluxDen = value.allowFluxDen;
+      this.hpaPowerBoth = value.hpaPowerBoth;
+      this.hpaMax = value.hpaMax;
+    },
+    /////////////// AggBackoff ///////////////
     dataAggBackoffUpdate(value) {
       this.aggBackoff = value;
     },
+    /////////////// Frequency Assigned ///////////////
     dataFreqUpdate(value) {
       this.frqUp_A = value.frqUpA;
       this.frqUp_B = value.frqUpB;
+      this.frqDn_A = value.frqDnA;
+      this.frqDn_B = value.frqDnB;
+    },
+    /////////////// CalculateCN ///////////////
+    dataCalculateCNUpdate(value) {},
+    /////////////// Carrier Information ///////////////
+    dataCarrierInfoUpdate(value) {
+      this.carrierInfo = value;
+    },
+    /////////////// SatInfo ///////////////
+    dataSatInfoUpdate(value) {
+      this.altitude = value.altitude;
+      this.earthR = value.earthR;
+      this.orbitPoint = value.orbitPoint;
+    },
+    /////////////// SatInfo_2 ///////////////
+    dataSatInfo2UpdateA(value) {
+      this.tpBW = value.tpBW;
+      this.sfdMax = value.sfdMax;
+      this.gtSel = value.gtSel;
+      this.eirpDn = value.eirpDn;
+    },
+    dataSatInfo2UpdateB(value) {
+      this.tpBW = value.tpBW;
+      this.sfdMax = value.sfdMax;
+      this.gtSel = value.gtSel;
+      this.eirpDn = value.eirpDn;
+    },
+    /////////////// LocationInfo ///////////////
+    dataLocationInfoUpdate(value) {
+      console.log('The incoming value is ' + JSON.stringify(value, undefined,2));
+      this.locationInfo = value;
+    },
+    dataTransmitLossUpdate(value) {
+      this.totalLossUp = value.totalLossUp;
+    },
+    dataReceiveLossUpdate(value) {
+      this.totalLossDn = value.totalLossDn;
+    },
+    dataAzElRangeUpdate(value) {
+      this.longDiff = value.longDiff;
+      this.centralAngle = value.centralAngle;
+      this.slantRange = value.slantRange;
+      this.azAngle = value.azAngle;
+      this.elAngle = value.elAngle;
+    },
+    dataUplinkLossUpdate(value) {
+      this.eirpUpVal = value.eirpUpVal;
+      this.powerDen = value.powerDen;
+      this.atmos = value.atmos;
+      this.spreadLoss = value.spreadLoss;
+      this.opFluxDen = value.opFluxDen;
+      this.gainSqrM = value.gainSqrM;
+    },
+    dataDownlinkLossUpdate(value) {
+      this.eirpDnClear = value.eirpDnClear;
+      this.pathLoss = value.pathLoss;
+      this.atmos = value.atmos;
+      this.pathLossAtmos = value.pathLossAtmos;
+      this.receivePwrClear = value.receivePwrClear;
+      this.eirpDnDenClear = value.eirpDnDenClear;
+    },
+    dataUplinkNoiseUpdate(value) {
+      this.boltzman = value.boltzman;
+      this.noiseBW = value.noiseBW;
+      this.cnUpClear = value.cnUpClear;
+      this.cnUpUpfade = value.cnUpUpfade;
+      this.opFluxDenUpfade = value.opFluxDenUpfade;
+      this.eirpUpfade = value.eirpUpfade;
+      this.cnBothfade = value.cnBothfade;
+    },
+    dataDownlinkNoiseUpdate(value) {
+      this.increaseT = value.increaseT;
+      this.noisePwrClear = value.noisePwrClear;
+      this.noisePwrDnfade = value.noisePwrDnfade;
+      this.cnDnClear = value.cnDnClear;
+      this.cnDnfadeClear = value.cnDnfadeClear;
+      this.noisePwrTotal = value.noisePwrTotal;
     }
   },
 
@@ -732,12 +869,16 @@ export default {
       return {
         // hpaBackoff_A -> Adjustable.hpaPowerBoth, Adjustable.hpaMax
         bandwidthVal: this.paraData.bandwidthValA,
+        hpaPowerBoth: this.hpaPowerBoth,
+        hpaMax: this.hpaMax
       }
     },
     dataDesignParamB() {
       return {
         // hpaBackoff_B -> Adjustable.hpaPowerBoth, Adjustable.hpaMax
         bandwidthVal: this.paraData.bandwidthValB,
+        hpaPowerBoth: this.hpaPowerBoth,
+        hpaMax: this.hpaMax
       }
     },
 
@@ -762,7 +903,8 @@ export default {
         selectedTp: this.paraData.selectedTp,
         antSizeA: this.paraData.antSizeA,
         antSizeB: this.paraData.antSizeB,
-        atten: this.paraData.atten
+        atten: this.paraData.atten,
+
       }
     },
     /////////////////////////////////////
@@ -771,15 +913,21 @@ export default {
     dataCarrierOperationA() {
       return {
         // allowIboClear -> DesignParam.allowBw, Aggregrate.aggIbo,
+        aggIbo: this.aggBackoff.aggIbo,
+        allowBW: this.allowBWA,
+        selectedTp: this.paraData.selectedTp,
         // iboCal -> Adjustable.sfdAtten, Uplink Loss.opFluxDen
+        sfdAtten: this.sfdAtten,
+        opFluxDen: this.opFluxDen,
         // oboCal -> Uplink Loss.opFluxDen,
+        eirpDn: this.eirpDn,
         // tpGain -> Aggregrate.aggIbo, .aggObo
-
+        sfdMax: this.sfdMax,
         // iboUpfade -> rainCal
         // oboUpfade -> UplinkNoise.opFluxDenUpfade,
         antSizeA: this.paraData.antSizeA,
         selectedSatellite: this.paraData.selectedSatellite,
-        selectedTp: this.paraData.selectedTp,
+        opFluxDenUpfade: this.opFluxDenUpfade,
         // atten: this.paraData.atten,
 
       }
@@ -795,9 +943,15 @@ export default {
     ///////////////////////////////////
     // Adjustable Parameters Section //
     ///////////////////////////////////
-    dataAdjustbleParam() {
+    dataAdjustbleParamA() {
       return {
-        linkAvaVal: this.paraData.linkAvaVal
+        selectedSatellite: this.paraData.selectedSatellite,
+        selectedTp: this.paraData.selectedTp,
+        linkAvaVal: this.paraData.linkAvaVal,
+        sfdMax: this.sfdMax,
+        aggIbo: this.aggBackoff.aggIbo,
+        numMCPC: this.numMCPC,
+        aggHpaBoo: this.aggHpaBoo
       }
     },
     ////////////////////////
@@ -810,6 +964,9 @@ export default {
         selectedCarrier: this.paraData.selectedCarrier,
         allowBWA: this.allowBWA,
         allowBWB: this.allowBWB,
+        satObo: this.paraData.satObo,
+        satIbo: this.paraData.satIbo,
+        atten: this.paraData.atten,
       }
     },
     ////////////////////////////////
@@ -863,6 +1020,8 @@ export default {
         // selectLocationA: this.selectLocationA.gt,
         selectedSatellite: this.paraData.selectedSatellite,
         selectedTp: this.paraData.selectedTp,
+        gt: this.locationInfo.gt,
+        eirpdown: this.locationInfo.eirpdown,
       }
     },
     dataSatInfo_2B() {
@@ -880,6 +1039,7 @@ export default {
         selectedSatellite: this.paraData.selectedSatellite,
         selectedLocationsA: this.paraData.selectedLocationsA,
         selectedLocationsB: this.paraData.selectedLocationsB,
+        selectedBeam: this.paraData.selectedBeam,
         selectedTp: this.paraData.selectedTp,
         antEffVal: this.paraData.antEffVal,
         antSizeA: this.paraData.antSizeA,
@@ -921,6 +1081,11 @@ export default {
     dataAzElRange() {
       return {
         selectedSatellite: this.paraData.selectedSatellite,
+        locationInfo: this.locationInfo,
+        selectedLocationsA: this.paraData.selectedLocationsA,
+        selectedLocationsB: this.paraData.selectedLocationsB,
+        altitude: this.altitude,
+        earthR: this.earthR,
       }
     },
     /////////////////////////////////////
@@ -928,7 +1093,14 @@ export default {
     /////////////////////////////////////
     dataUplinkLoss() {
       return {
-        // iflLoss: this.paraData.iflLoss,
+        antGainVal: this.locationInfo.antGainVal,
+        hpaPowerBoth: this.hpaPowerBoth,
+        totalLossUp: this.totalLossUp,
+        bandwidth: this.bandwidthA,
+        atmos: this.paraData.atmos,
+        slantRange: this.slantRange,
+        frqUp_A: this.frqUp_A,
+        celeritas: this.locationInfo.celeritas
       }
     },
     ///////////////////////////////////////
@@ -936,7 +1108,13 @@ export default {
     ///////////////////////////////////////
     dataDownlinkLoss() {
       return {
-        // iflLoss: this.paraData.iflLoss,
+        totalLossDn: this.totalLossDn,
+        bandwidth: this.bandwidthA,
+        atmos: this.paraData.atmos,
+        slantRange: this.slantRange,
+        frqDn_A: this.frqDn_A,
+        celeritas: this.locationInfo.celeritas,
+        antGainReceive: this.locationInfo.antGainReceive,
       }
     },
     //////////////////////////
@@ -944,7 +1122,16 @@ export default {
     //////////////////////////
     dataUplinkNoise() {
       return {
-        // iflLoss: this.paraData.iflLoss,
+        bandwidth: this.bandwidthA,
+        opFluxDen: this.opFluxDen,
+        gainSqrM: this.gainSqrM,
+        gtSel: this.gtSel,
+        eirpUpVal: this.eirpUpVal,
+        spreadLoss: this.spreadLoss,
+        eirpDn: this.eirpDn,
+        sfdAtten: this.sfdAtten,
+        receivePwrClear: this.receivePwrClear,
+        noisePwrDnfade: this.noisePwrDnfade
       }
     },
     ////////////////////////////
@@ -952,7 +1139,9 @@ export default {
     ////////////////////////////
     dataDownlinkNoise() {
       return {
-        // iflLoss: this.paraData.iflLoss,
+        bandwidth: this.bandwidthA,
+        tsys: this.locationInfo.tsys,
+        receivePwrClear: this.receivePwrClear,
       }
     },
     ////////////////////////
@@ -966,14 +1155,25 @@ export default {
     ///////////////////////
     // EIRP Down Section //
     ///////////////////////
-    dataEirpDn() {
+    dataEirpDown() {
       return {
-        // iflLoss: this.paraData.iflLoss,
+        // eirpDn: this.selectLocationA.data.value,
+        oboCal: this.oboCal,
+        aggObo: this.aggBackoff.aggObo,
+        allowBW: this.allowBWA,
       }
     },
     /////////////////////////////////////////
     // Uplink Adj Sat Interference Section //
     /////////////////////////////////////////
+    dataAdjName() {
+      return {
+        adjSatName: this.paraData.adjSatDxContourA,
+        selectedSatellite: this.paraData.selectedSatellite,
+        selectedLocationsA: this.paraData.selectedLocationsA,
+        selectedLocationsB: this.paraData.selectedLocationsB,
+      }
+    },
     dataUplinkInt() {
       return {
         // iflLoss: this.paraData.iflLoss,

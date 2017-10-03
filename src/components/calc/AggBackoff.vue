@@ -7,8 +7,8 @@
   </div>
 
   <div class="col-sm-2">
-    <div class="row">{{aggIbo || '-'}}</div>
-    <div class="row">{{aggObo || '-'}}</div>
+    <div class="row">{{this.aggBackoff.satIbo || '-'}}</div>
+    <div class="row">{{this.aggBackoff.satObo || '-'}}</div>
     <div class="row">{{percentAllowBw_A.toFixed(4)}}</div>
   </div>
 
@@ -23,8 +23,6 @@
   </div>
 
   <div class="col-sm-2">
-    <!-- <div class="row"> </div>
-    <div class="row"> </div> -->
     <div class="row" style="margin-top:50px">% (B to A)</div>
   </div>
 </div>
@@ -39,29 +37,11 @@ export default {
     }
   },
   computed: {
-    aggIbo() {
-      if (this.aggBackoff.selectedCarrier === "Single Carrier") {
-        return this.aggBackoff.selectedTp.singleIbo;
-      } else if (this.aggBackoff.selectedCarrier === "Two Carrier") {
-        return this.aggBackoff.selectedTp.twoIbo;
-      } else {
-        return this.aggBackoff.selectedTp.multiIbo;
-      }
-    },
-    aggObo() {
-      if (this.aggBackoff.selectedCarrier === "Single Carrier") {
-        return this.aggBackoff.selectedTp.singleObo;
-      } else if (this.aggBackoff.selectedCarrier === "Two Carrier") {
-        return this.aggBackoff.selectedTp.twoObo;
-      } else {
-        return this.aggBackoff.selectedTp.multiObo;
-      }
-    },
     percentAllowBw_A() {
-      return this.aggBackoff.allowBWA / 1000 * 100 / this.aggBackoff.selectedTp.tpBW;
+      return this.aggBackoff.allowBWA / 1000 * 100 / this.aggBackoff.selectedTp.bandwidth;
     },
     percentAllowBw_B() {
-      return this.aggBackoff.allowBWB  / 1000 * 100 / this.aggBackoff.selectedTp.tpBW;
+      return this.aggBackoff.allowBWB  / 1000 * 100 / this.aggBackoff.selectedTp.bandwidth;
     },
     // AggBackoffData() {
     //   var getAggData = [];

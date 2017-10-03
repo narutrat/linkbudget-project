@@ -1,6 +1,6 @@
 <template>
     <div class="col-sm-2" style="text-align:center">
-      <div class="row">hpaBackoff</div>
+      <div class="row">{{hpaBackoff}}</div>
       <!-- <div class="row">3 {{this.bandwidthData.selectedBwSel}}</div> -->
       <div class="row" style="margin-top:5px">
         <!-- <input v-model="this.bandwidthData.bandwidthVal" class="form-control" style="text-align:center"> -->
@@ -39,13 +39,18 @@ export default {
     allowBw() {
       return parseFloat(this.bandwidth) * (1 + parseFloat(this.guardBandVal) / 100);
     },
+    hpaBackoff() {
+      return (-10 * Math.log10(this.bandwidthData.hpaPowerBoth / this.bandwidthData.hpaMax)).toFixed(0);
+    },
   },
   methods: {
     updateBandwidth() {
       // this.allowBw = parseFloat(this.bandwidth) * (1 + parseFloat(this.guardBandVal) / 100);
       this.$emit('updateBW', {
         bandwidth: this.bandwidth,
-        allowBW: this.allowBw
+        allowBW: this.allowBw,
+        numMCPC: this.numMCPC,
+        aggHpaBoo: this.aggHpaBoo
       })
     },
 
@@ -55,7 +60,9 @@ export default {
       this.bandwidth = newVal.bandwidthVal;
       this.$emit('updateBW', {
         bandwidth: this.bandwidth,
-        allowBW: this.allowBw
+        allowBW: this.allowBw,
+        numMCPC: this.numMCPC,
+        aggHpaBoo: this.aggHpaBoo
       });
       // this.allowBW= newVal.allowBWVal;
     }

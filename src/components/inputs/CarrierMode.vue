@@ -15,15 +15,15 @@ export default {
       carrier: 'Multiple Carrier',
       carrierOptions: [{
           label: 'Single Carrier',
-          value: 1
+          value: 'single'
         },
         {
           label: 'Two Carrier',
-          value: 2
+          value: 'two'
         },
         {
           label: 'Multiple Carrier',
-          value: 3
+          value: 'multi'
         }
       ]
     }
@@ -31,7 +31,7 @@ export default {
   methods: {
     carrierChanged(value) {
       let selectedCarrier = this.carrierOptions.find(s => s.label === value);
-      this.$emit('carrierSelected', selectedCarrier.label);
+      this.$emit('carrierSelected', selectedCarrier.value);
     }
   }
 }

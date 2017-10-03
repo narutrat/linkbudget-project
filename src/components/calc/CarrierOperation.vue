@@ -1,17 +1,17 @@
 <template>
   <div>
   <div class="col-sm-2" style="text-align:center; margin-top:10px">
-    <div class="row">allowIboClear</div>
-    <div class="row">iboCal</div>
-    <div class="row">oboCal</div>
-    <div class="row">tpGain</div>
+    <div class="row">{{allowIboClear.toFixed(2)}}</div>
+    <div class="row">{{iboCal.toFixed(2)}}</div>
+    <div class="row">{{oboCal.toFixed(2)}}</div>
+    <div class="row">{{tpGain.toFixed(2)}}</div>
   </div>
 
   <div class="col-sm-2" style="text-align:center; margin-top:10px">
-    <div class="row">allowIboClear</div>
-    <div class="row">iboUpfade</div>
-    <div class="row">oboUpfade</div>
-    <div class="row">tpGain</div>
+    <div class="row">{{allowIboClear.toFixed(2)}}</div>
+    <div class="row">{{iboUpfade.toFixed(2)}}</div>
+    <div class="row">{{oboUpfade.toFixed(2)}}</div>
+    <div class="row">{{tpGain.toFixed(2)}}</div>
     <!-- <div class="row">{{this.carrierOperation.selectedTp.defaultAtten}}</div> -->
   </div>
   </div>
@@ -31,33 +31,34 @@ export default {
   },
   computed: {
     allowIboClear() {
-      return this.aggIbo - (10 * Math.log10(this.allowBw / (this.satBW * 1000)));
+      return this.carrierOperation.aggIbo - (10 * Math.log10(this.carrierOperation.allowBW / (this.carrierOperation.selectedTp.tpBW * 1000)));
     },
     iboCal() {
-      return this.sfdAtten - this.opFluxDen;
+      return this.carrierOperation.sfdAtten - this.carrierOperation.opFluxDen;
     },
     oboCal() {
-      return this.eirpdnSat - (this.opFluxDen + this.tpGain);
+      return this.carrierOperation.eirpDn - (this.carrierOperation.opFluxDen + this.tpGain);
     },
     tpGain() {
-      return parseFloat(this.eirpdnSat) - 4.2 - (parseFloat(this.sfdMax) - 5.2 - (parseFloat(this.maxAttenSel) - parseFloat(this.atten)));
+      return parseFloat(this.carrierOperation.eirpDn) - 4.2 - (parseFloat(this.carrierOperation.sfdMax) - 5.2 - (parseFloat(this.carrierOperation.selectedSatellite.maxAtten) - parseFloat(this.carrierOperation.selectedTp.defaultAtten)));
     },
     iboUpfade() {
       return this.iboCal + 2.07174802169227;
     },
     oboUpfade() {
-      return this.eirpdnSat - (this.opFluxDenUpfade + this.tpGain);
+      return this.carrierOperation.eirpDn - (this.carrierOperation.opFluxDenUpfade + this.tpGain);
     },
   },
   watch: {
     'carrierOperation'(newVal, oldVal) {
 
-      this.$emit('CarrierOperationSelected', {
-        allowIboClear: this.allowIboClear
-        // aggIbo: this.aggIbo,
-        // aggObo: this.aggObo,
-        // percentAllowBw_A: this.percentAllowBw_A,
-        // percentAllowBw_B: this.percentAllowBw_B
+      this.$emit('updateCarrierOperationData', {
+        allowIboClear: this.allowIboClear,
+        iboCal: this.iboCal,
+        oboCal: this.oboCal,
+        tpGain: this.tpGain,
+        iboUpfade: this.iboUpfade,
+        oboUpfade: this.oboUpfade
       });
       // this.allowBW= newVal.allowBWVal;
     }

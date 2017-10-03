@@ -55,6 +55,22 @@ export default {
     symbolRate() {
       return this.carrierInfo.bandwidthVal/ this.carrierInfo.selectedModCode.bt;
     }
-  }
+  },
+  watch: {
+    'carrierInfo'(newVal, oldVal) {
+      this.$emit('updateCarrierInfo', {
+        modCodeValue: this.carrierInfo.selectedModCode.modCodeValue,
+        infoValue: this.infoValue,
+        fec: this.carrierInfo.selectedModCode.fec,
+        txRate: this.carrierInfo.selectedModCode.bt,
+        bt: this.txRate,
+        ebNo: this.carrierInfo.selectedModCode.ebNo,
+        symbolRate: this.symbolRate,
+        bandwidthVal: this.bandwidthVal,
+      });
+      // this.allowBW= newVal.allowBWVal;
+    }
+  },
+
 }
 </script>

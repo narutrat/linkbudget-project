@@ -16,7 +16,7 @@
     <div class="row">G/T</div>
   </div>
 
-  <div class="col-sm-2"></div>
+  <div class="col-sm-2">Country: {{country}}</div>
 
   <div class="col-sm-2">
     <div class="row">
@@ -93,8 +93,8 @@
     <div class="row">rad</div>
     <div class="row">rad</div>
     <div class="row">%</div>
-    <div class="row">{{upFrq}} GHz</div>
-    <div class="row">Size: {{antSize}}</div>
+    <div class="row">{{this.locationSelInfo.frqUp_A}} GHz</div>
+    <div class="row">Size: {{this.locationSelInfo.antSizeA}}</div>
     <div class="row">D/C.Gain (dB)</div>
 
     <div class="row">
@@ -108,7 +108,8 @@
     </div>
 
   </div>
-
+{{eirpdown.value}}
+{{ gt.value }}
 </div>
 </template>
 
@@ -147,32 +148,30 @@ export default {
   computed: {
     locationSelected() {
       if (this.selLocations) {
-        return this.selLocations.map(x => x.label)
+        return this.selLocations.map(x => x.city)
       } else {
         return [];
       }
     },
+    country() {
+      let result = this.selLocations.find(x => x.city === this.locationSel)
+      return result ? result.country : [];
+    },
     latSel() {
-      let result = this.selLocations.find(x => x.label === this.locationSel)
+      let result = this.selLocations.find(x => x.city === this.locationSel)
       return result ? result.lat : [];
-      // if (this.selLocations) {
-      //   let result = this.selLocations.find(x => x.label === this.locationSel)
-      //   return result ? result.lat : [];
-      // } else {
-      //   return [];
-      // }
     },
     latRad() {
       return this.latSel * Math.PI / 180;
     },
     longSel() {
-      let result = this.selLocations.find(x => x.label === this.locationSel)
-      return result ? result.long : [];
+      let result = this.selLocations.find(x => x.city === this.locationSel)
+      return result ? result.lon : [];
     },
     longRad() {
       return this.longSel * Math.PI / 180;
     },
-    antGainVal(){
+    antGainVal() {
       return 10 * Math.log10((this.locationSelInfo.antEffVal / 100) * (Math.pow(Math.PI * this.locationSelInfo.antSizeA / (this.celeritas / (this.locationSelInfo.frqUp_A * 1000000000)), 2)));
     },
     antGainReceive() {
@@ -185,7 +184,23 @@ export default {
     },
     gtES() {
       return this.antGainReceive - (10 * Math.log10(this.tsys));
-    }
+    },
+    eirpdown() {
+      if (this.selLocations && this.locationSelInfo.selectedBeam) {
+        var result = this.selLocations.find(x => x.city === this.locationSel)
+        return result ? result.data.find(x => x.beam === this.locationSelInfo.selectedBeam && x.type ==='downlink') : [];
+      } else {
+        return [];
+      }
+    },
+    gt() {
+      if (this.selLocations && this.locationSelInfo.selectedBeam) {
+        var result = this.selLocations.find(x => x.city === this.locationSel)
+        return result ? result.data.find(x => x.beam === this.locationSelInfo.selectedBeam && x.type ==='uplink') : [];
+      } else {
+        return [];
+      }
+    },
   },
   methods: {
     updateLocation() {
@@ -194,8 +209,57 @@ export default {
     }
   },
   watch: {
-    'selLocations'(newVal, oldVal){
+    'selLocations' (newVal, oldVal) {
       this.locationSel = this.locationSelected[0];
+    },
+    'locationSelInfo' (newVal, oldVal) {
+      console.log('The outgoing value is ' + JSON.stringify( {
+        selLocations: this.selLocations,
+        locationSelected: this.locationSelected,
+        country: this.country,
+        latSel: this.latSel,
+        latRad: this.latRad,
+        longSel: this.longSel,
+        longRad: this.longRad,
+        antEffVal: this.locationSelInfo.antEffVal, //a
+        //b
+        antGainVal: this.antGainVal,
+        antGainReceive: this.antGainReceive,
+        rxAntTempVal: this.locationSelInfo.rxAntTempVal,
+        lossFeedA: this.locationSelInfo.lossFeedA,
+        lnaTempVal: this.locationSelInfo.lnaTempVal,
+        rxLnaGain: this.rxLnaGain,
+        dnNoise: this.dnNoise,
+        tsys: this.tsys,
+        gtES: this.gtES,
+        celeritas: this.celeritas,
+        eirpdown: this.eirpdown,
+        gt: this.gt
+      }, undefined,2))
+
+      this.$emit('updateLocationInfo', {
+        selLocations: this.selLocations,
+        locationSelected: this.locationSelected,
+        country: this.country,
+        latSel: this.latSel,
+        latRad: this.latRad,
+        longSel: this.longSel,
+        longRad: this.longRad,
+        antEffVal: this.locationSelInfo.antEffVal, //a
+        //b
+        antGainVal: this.antGainVal,
+        antGainReceive: this.antGainReceive,
+        rxAntTempVal: this.locationSelInfo.rxAntTempVal,
+        lossFeedA: this.locationSelInfo.lossFeedA,
+        lnaTempVal: this.locationSelInfo.lnaTempVal,
+        rxLnaGain: this.rxLnaGain,
+        dnNoise: this.dnNoise,
+        tsys: this.tsys,
+        gtES: this.gtES,
+        celeritas: this.celeritas,
+        eirpdown: this.eirpdown,
+        gt: this.gt
+      })
     }
   }
 }

@@ -9,7 +9,7 @@
     <div class="col-sm-2"></div>
 
     <div class="col-sm-2">
-      <div class="row">{{this.satInfo.selectedSatellite.orbitalSlot || 0}}</div>
+      <div class="row">{{this.satInfo.selectedSatellite.orbital_slot || 0}}</div>
       <div class="row">{{altitude}}</div>
       <div class="row">{{earthR}}</div>
     </div>
@@ -42,12 +42,22 @@ export default {
     orbitPoint() {
       var vm = this;
       if (this.satInfo.selectedSatellite) {
-          return this.satInfo.selectedSatellite.orbitalSlot * Math.PI / 180;
+          return this.satInfo.selectedSatellite.orbital_slot * Math.PI / 180;
       } else {
         return [];
       }
 
     },
-  }
+  },
+  watch: {
+    'satInfo'(newVal, oldVal) {
+      this.$emit('updateSatInfo', {
+        altitude: this.altitude,
+        earthR: this.earthR,
+        orbitPoint: this.orbitPoint,
+      });
+      // this.allowBW= newVal.allowBWVal;
+    }
+  },
 }
 </script>

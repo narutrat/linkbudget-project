@@ -1,18 +1,18 @@
 <template>
   <select class="btn btn-default" @change="modCodeChanged($event.target.value)">
     <option>Select Modulation Code</option>
-    <option v-for="modCode in modem.modSpec" :value="modCode.modCode">
-      {{ modCode.modCode }}
+    <option v-for="mcg in mcgs" :value="mcg.name">
+      {{ mcg.name }}
     </option>
   </select>
 </template>
 
 <script>
 export default {
-  props: ['modem'], // Get the satellite name from parent to create beam options
+  props: ['mcgs'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      modCode: [],
+      // modCode: [],
     }
   },
   // computed: {
@@ -26,7 +26,7 @@ export default {
       console.log(typeof value);
       console.log(JSON.stringify(value, undefined, 2));
 
-      var modCodeObj = this.modem.modSpec.find(x => x.modCode === value);
+      var modCodeObj = this.mcgs.find(x => x.name === value);
       this.$emit('modCodeSelected', modCodeObj);
     }
   }
