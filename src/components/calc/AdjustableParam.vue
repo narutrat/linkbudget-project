@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-2">
-    <div class="row" style="margin-top:15px">xxx</div>
+    <div class="row" style="margin-top:15px">rain</div>
     <div class="row" style="margin-top:25px">xxx</div>
     <!-- <div class="row" style="margin-top:8px">____</div> -->
     <div class="row" style="margin-top:8px">{{sfdAtten}}</div>
@@ -27,11 +27,20 @@ export default {
       hpaPowerBoth: 100,
     }
   },
+  created() {
+
+      this.$http.get('satellites').then(response => {
+        this.rain = response.body.rainValue;
+        console.log(response);
+      }).catch((e) => {
+        console.log(e);
+      })
+  },
   computed: {
     sfdAtten() {
       // return parseFloat(this.adjustableParam.sfdMaxA) - parseFloat(this.adjustableParam.selectedSatellite.maxAtten) - parseFloat(this.adjustableParam.selectedTp.defaultAtten);
       if (this.adjustableParam.selectedSatellite && this.adjustableParam.selectedTp) {
-        return this.adjustableParam.sfdMax - (parseFloat(this.adjustableParam.selectedSatellite.maxAtten) - this.adjustableParam.selectedTp.defaultAtten);
+        return this.adjustableParam.sfdMax - (parseFloat(this.adjustableParam.selectedTp.atten_range) - this.adjustableParam.selectedTp.default_atten);
       } else {
         return 0 ;
       }
@@ -55,7 +64,7 @@ export default {
         allowFluxDen: this.allowFluxDen,
         hpaPowerBoth: this.hpaPowerBoth,
         hpaMax: this.hpaMax
-        
+
         // % availability
         // rain
 

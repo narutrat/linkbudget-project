@@ -47,7 +47,7 @@ export default {
       return this.eirpUpVal - this.spreadLoss;
     },
     gainSqrM() {
-      return 10 * Math.log10(4 * Math.PI * (Math.pow(((this.uplinkLoss.frqUp_A * 1000000000) / this.uplinkLoss.celeritas), 2)));
+      return 10 * Math.log10(4 * Math.PI * (Math.pow(((this.uplinkLoss.frqUp * 1000000000) / this.uplinkLoss.celeritas), 2)));
     },
   },
   watch: {

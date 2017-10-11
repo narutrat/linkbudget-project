@@ -1,18 +1,34 @@
 <template>
   <div>
     <div class="col-sm-2">
-      <div class="row">
-        <!-- <input v-model="iflLoss" class="form-control"> -->
-        <input v-model="this.txLoss.iflLoss" class="form-control" style="text-align:center">
+      <!-- <div class="row">
+
+        <input v-model="this.txLoss.iflLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
       </div>
       <div class="row">
-        <input v-model="this.txLoss.misAntUpA" class="form-control" style="text-align:center">
+        <input v-model="this.txLoss.misAntUpA" class="form-control" style="text-align:center" @input="updateTxLoss">
       </div>
       <div class="row">
-        <input v-model="this.txLoss.otherLoss" class="form-control" style="text-align:center">
+        <input v-model="this.txLoss.otherLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
       </div>
-      <!-- <div class="row">{{this.txLoss.iflLoss}}</div> -->
-      <div class="row">{{totalLossUp}}</div>
+
+      <div class="row">{{totalLossUp}}</div> -->
+      <!-- {{this.txLoss.iflLoss}} // {{this.txLoss.misAntUpA}} // {{this.txLoss.otherLoss}} -->
+
+
+      <tr>
+
+        <input v-model="this.txLoss.iflLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
+      </tr>
+      <tr>
+        <input v-model="this.txLoss.misAntUpA" class="form-control" style="text-align:center" @input="updateTxLoss">
+      </tr>
+      <tr>
+        <input v-model="this.txLoss.otherLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
+      </tr>
+
+      <tr>{{totalLossUp}}</tr>
+
     </div>
   </div>
 </template>

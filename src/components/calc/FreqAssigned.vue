@@ -57,18 +57,10 @@ export default {
       return this.freqAssigned.selectedTp.downlink_cf;
     },
     frqUp_A() {
-      if (this.freqAssigned.selectedBeam === "Standard C") {
-        return (parseFloat(this.freqAssigned.selectedTp.downlink_cf) + 2.225).toFixed(3);
-      } else {
-        return (parseFloat(this.freqAssigned.selectedTp.downlink_cf) + 3.025).toFixed(3);
-      }
+      return this.freqAssigned.selectedTp.uplink_cf;
     },
     frqUp_B() {
-      if (this.freqAssigned.selectedBeam === "Standard C") {
-        return (parseFloat(this.freqAssigned.selectedTp.downlink_cf) + 2.225).toFixed(3);
-      } else {
-        return (parseFloat(this.freqAssigned.selectedTp.downlink_cf) + 3.025).toFixed(3);
-      }
+      return this.freqAssigned.selectedTp.uplink_cf;
     },
   },
   methods: {

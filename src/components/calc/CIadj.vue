@@ -1,8 +1,8 @@
 <template>
 <div>
   <div class="col-sm-2">
-    <div class="row">1{{ciUpTotal}}</div>
-    <div class="row">2{{ciDnTotal}}</div>
+    <div class="row">{{ciTotalA.toFixed(4)}}</div>
+    <div class="row">{{ciTotalB.toFixed(4)}}</div>
   </div>
 
 </div>
@@ -13,11 +13,36 @@
 
 export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
-  // props: ['bandwidthVal'],
+  props: ['ciAdj'],
   data() {
     return {
-      ciUpTotal: '',
-      ciDnTotal: ''
+      // boltzman: '',
+      // ciUpTotal: '',
+    }
+  },
+  computed: {
+    ciTotalA() {
+      if (this.ciAdj.ciTotalA) {
+        return this.ciAdj.ciTotalA;
+      } else {
+        return 0;
+      }
+    },
+    ciTotalB() {
+      if (this.ciAdj.ciTotalB) {
+        return this.ciAdj.ciTotalB;
+      } else {
+        return 0;
+      }
+    },
+  },
+  watch: {
+    'ciAdj'(newVal, oldVal) {
+      this.$emit('updateCiAdj', {
+        ciTotalA: this.ciAdj.ciTotalA,
+        ciTotalB: this.ciAdj.ciTotalB,
+      });
+      // this.allowBW= newVal.allowBWVal;
     }
   },
 }

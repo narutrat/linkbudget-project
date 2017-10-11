@@ -4,7 +4,7 @@
       <!-- <div class="row">3 {{this.bandwidthData.selectedBwSel}}</div> -->
       <div class="row" style="margin-top:5px">
         <!-- <input v-model="this.bandwidthData.bandwidthVal" class="form-control" style="text-align:center"> -->
-        <input class="form-control" style="text-align:center" v-model="bandwidth" @input="updateBandwidth">
+        <input v-model="bandwidth" class="form-control" style="text-align:center" @input="updateBandwidth">
 
       </div>
       <div class="row">

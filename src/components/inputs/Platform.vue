@@ -12,13 +12,13 @@ export default {
   // props: ['satelliteName'], // Get the satellite name from parent to create beam options
   data() {
     return {
-      platform: 'Broadcast',
+      platform: 'VSAT',
       platformOptions: [{
-          label: 'Broadcast',
+          label: 'VSAT',
           value: 1
         },
         {
-          label: 'VSAT',
+          label: 'Broadcast',
           value: 2
         }
       ]

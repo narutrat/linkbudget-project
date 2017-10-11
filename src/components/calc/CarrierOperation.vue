@@ -1,17 +1,17 @@
 <template>
   <div>
   <div class="col-sm-2" style="text-align:center; margin-top:10px">
-    <div class="row">{{allowIboClear.toFixed(2)}}</div>
-    <div class="row">{{iboCal.toFixed(2)}}</div>
-    <div class="row">{{oboCal.toFixed(2)}}</div>
-    <div class="row">{{tpGain.toFixed(2)}}</div>
+    <div class="row">{{allowIboClear.toFixed(4)}}</div>
+    <div class="row">{{iboCal.toFixed(4)}}</div>
+    <div class="row">{{oboCal.toFixed(4)}}</div>
+    <div class="row">{{tpGain.toFixed(4)}}</div>
   </div>
 
   <div class="col-sm-2" style="text-align:center; margin-top:10px">
-    <div class="row">{{allowIboClear.toFixed(2)}}</div>
-    <div class="row">{{iboUpfade.toFixed(2)}}</div>
-    <div class="row">{{oboUpfade.toFixed(2)}}</div>
-    <div class="row">{{tpGain.toFixed(2)}}</div>
+    <div class="row">{{allowIboClear.toFixed(4)}}</div>
+    <div class="row">{{iboUpfade.toFixed(4)}}</div>
+    <div class="row">{{oboUpfade.toFixed(4)}}</div>
+    <div class="row">{{tpGain.toFixed(4)}}</div>
     <!-- <div class="row">{{this.carrierOperation.selectedTp.defaultAtten}}</div> -->
   </div>
   </div>
@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     allowIboClear() {
-      return this.carrierOperation.aggIbo - (10 * Math.log10(this.carrierOperation.allowBW / (this.carrierOperation.selectedTp.tpBW * 1000)));
+      return this.carrierOperation.aggIbo - (10 * Math.log10(this.carrierOperation.allowBW / (this.carrierOperation.selectedTp.bandwidth * 1000)));
     },
     iboCal() {
       return this.carrierOperation.sfdAtten - this.carrierOperation.opFluxDen;
@@ -40,10 +40,10 @@ export default {
       return this.carrierOperation.eirpDn - (this.carrierOperation.opFluxDen + this.tpGain);
     },
     tpGain() {
-      return parseFloat(this.carrierOperation.eirpDn) - 4.2 - (parseFloat(this.carrierOperation.sfdMax) - 5.2 - (parseFloat(this.carrierOperation.selectedSatellite.maxAtten) - parseFloat(this.carrierOperation.selectedTp.defaultAtten)));
+      return parseFloat(this.carrierOperation.eirpDn) - 4.2 - (parseFloat(this.carrierOperation.sfdMax) - 5.2 - (parseFloat(this.carrierOperation.selectedTp.atten_range) - parseFloat(this.carrierOperation.selectedTp.default_atten)));
     },
     iboUpfade() {
-      return this.iboCal + 2.07174802169227;
+      return this.iboCal + this.carrierOperation.rain;
     },
     oboUpfade() {
       return this.carrierOperation.eirpDn - (this.carrierOperation.opFluxDenUpfade + this.tpGain);

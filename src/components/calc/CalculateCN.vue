@@ -1,83 +1,90 @@
 <template>
 <div>
-  <div class="row" style="border-bottom:solid 2px; padding:5px; font-weight:bold; font-size:14px; background-color: #337AB7; color: white; text-shadow:1px 1px black">
-    <div class="col-sm-4" style="text-align:left">CALCULATE C/N TOTAL</div>
-    <div class="col-sm-2">Cl.sky</div>
-    <div class="col-sm-2">Up Fade</div>
-    <div class="col-sm-2">Down Fade</div>
-    <div class="col-sm-2">Both Fade</div>
-  </div>
-
-  <div class="row" style="padding:5px">
-    <div class="col-sm-4" style="text-align:left">C/I Up Adj. Sat (dB) (Key-in)</div>
-    <div class="col-sm-2">ciUpTotal</div>
-    <div class="col-sm-2">ciUpTotal</div>
-    <div class="col-sm-2">ciUpTotal</div>
-    <div class="col-sm-2">ciUpTotal</div>
-  </div>
-
-  <div class="row" style="padding:5px">
-    <div class="col-sm-4" style="text-align:left">C/N (Uplink) (dB)</div>
-    <div class="col-sm-2">cnUpClear</div>
-    <div class="col-sm-2">cnUpUpfade</div>
-    <div class="col-sm-2">cnUpClear</div>
-    <div class="col-sm-2">cnUpUpfade</div>
-  </div>
-
-  <div class="row" style="padding:5px">
-    <div class="col-sm-4" style="text-align:left">C/N (Downlink) (dB)</div>
-    <div class="col-sm-2">cnDnClear</div>
-    <div class="col-sm-2">cnDnUpfade</div>
-    <div class="col-sm-2">cnDnfadeClear</div>
-    <div class="col-sm-2">cnDnfadeUpfade</div>
-  </div>
-
-  <div class="row" style="padding:5px">
-    <div class="col-sm-4" style="text-align:left">C/I (Intermodulation) (dB)</div>
-    <div class="col-sm-2">interMod</div>
-    <div class="col-sm-2">interMod</div>
-    <div class="col-sm-2">interMod</div>
-    <div class="col-sm-2">interMod</div>
-  </div>
-
-  <div class="row" style="padding:5px">
-    <div class="col-sm-4" style="text-align:left">C/I (Co-Channel 20+ Xpol Iso.25) (dB)</div>
-    <div class="col-sm-2">ciCoch</div>
-    <div class="col-sm-2">ciCoch</div>
-    <div class="col-sm-2">ciCoch</div>
-    <div class="col-sm-2">ciCoch</div>
-  </div>
-
-  <div class="row" style="padding:5px; border-bottom:solid 1px">
-    <div class="col-sm-4" style="text-align:left">C/I dn Adj. Sat (dB) (Key-in)</div>
-    <div class="col-sm-2">ciDnTotal</div>
-    <div class="col-sm-2">ciDnTotal</div>
-    <div class="col-sm-2">ciDnTotal</div>
-    <div class="col-sm-2">ciDnTotal</div>
-  </div>
-
-  <div class="row" style="padding:5px; border-bottom:solid 1px">
-    <div class="col-sm-4" style="text-align:left">C/N TOTAL</div>
-    <div class="col-sm-2">cnTotalClear</div>
-    <div class="col-sm-2">cnTotalUpfade</div>
-    <div class="col-sm-2">cnTotalDnfade</div>
-    <div class="col-sm-2">cnTotalBothfade</div>
-  </div>
-
-  <div class="row" style="padding:5px; border-bottom:solid 1px">
-    <div class="col-sm-4" style="text-align:left">Eb/No</div>
-    <div class="col-sm-2">ebnoClear</div>
-    <div class="col-sm-2">ebnoUpfade</div>
-    <div class="col-sm-2">ebnoDnfade</div>
-    <div class="col-sm-2">ebnoBothfade</div>
-  </div>
-
-  <div class="row" style="padding:5px">
-    <div class="col-sm-4" style="text-align:left">Margin</div>
-    <div class="col-sm-2">marginClear</div>
-    <div class="col-sm-2">marginUpfade</div>
-    <div class="col-sm-2">marginDnfade</div>
-    <div class="col-sm-2">marginBothfade</div>
+  <div class="col-sm-2" style="text-align:left">
+    <div class="row">{{ciUpTotal}}</div>
+    <div class="row">{{cnUp.toFixed(4)}}</div>
+    <div class="row">{{cnDn.toFixed(4)}}</div>
+    <div class="row">{{interMod}}</div>
+    <div class="row">{{ciCoch}}</div>
+    <div class="row">{{ciAdj.toFixed(4)}}</div>
+    <div class="row">{{cnTotal.toFixed(4)}}</div>
+    <div class="row">{{ebno.toFixed(4)}}</div>
+    <div class="row">{{margin.toFixed(4)}}</div>
   </div>
 </div>
 </template>
+
+<script>
+// import DesignParam from './calc/DesignParam'
+
+export default {
+  // props: ['satelliteName'], // Get the satellite name from parent to create beam options
+  props: ['calculateCN'],
+  data() {
+    return {
+
+    }
+  },
+  computed: {
+    ciUpTotal() {
+      return this.calculateCN.ciUpTotal;
+    },
+    cnUp() {
+      if (this.calculateCN.cnUp) {
+        return this.calculateCN.cnUp;
+      } else {
+        return 0;
+      }
+    },
+    cnDn() {
+      if (this.calculateCN.cnDn) {
+        return this.calculateCN.cnDn;
+      } else {
+        return 0;
+      }
+    },
+    interMod() {
+      return this.calculateCN.interMod;
+    },
+    ciCoch() {
+      return this.calculateCN.ciCoch;
+    },
+    ciAdj() {
+      if (this.calculateCN.ciAdj) {
+        return this.calculateCN.ciAdj;
+      } else {
+        return 0;
+      }
+    },
+    cnTotal() {
+      if (this.calculateCN.cnDn) {
+        return 10 * Math.log10(1 / (1 / Math.pow(10, this.ciUpTotal / 10) + 1 / Math.pow(10, this.cnUp / 10) +
+          1 / Math.pow(10, this.cnDn / 10) + 1 / Math.pow(10, this.interMod / 10) + 1 / Math.pow(10, this.ciCoch / 10) + 1 / Math.pow(10, this.ciAdj / 10)));
+      } else {
+        return 0;
+      }
+    },
+    ebno() {
+      if (this.cnTotal) {
+        return this.cnTotal - (10 * Math.log10(this.calculateCN.infoValue * 1000)) + (10 * Math.log10(this.calculateCN.bandwidth * 1000));
+      } else {
+        return 0;
+      }
+    },
+    margin() {
+      if (this.ebno) {
+        return parseFloat(this.ebno) - parseFloat(this.calculateCN.ebNoThreshold);
+      } else {
+        return 0;
+      }
+    },
+  },
+  watch: {
+    'calculateCN'(newVal, oldVal) {
+      this.$emit('updateCalculateCN', {
+        cnTotal: this.cnTotal
+      });
+    }
+  },
+}
+</script>

@@ -1,8 +1,8 @@
 <template>
-  <select class="btn btn-default" @change="modCodeChanged($event.target.value)">
+<select class="btn btn-default" @change="modCodeChanged($event.target.value)">
     <option>Select Modulation Code</option>
     <option v-for="mcg in mcgs" :value="mcg.name">
-      {{ mcg.name }}
+      {{mcg.name}}
     </option>
   </select>
 </template>

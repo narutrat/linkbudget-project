@@ -47,9 +47,8 @@ export default {
   },
   computed: {
     orbitPoint() {
-      var vm = this;
       if (this.azElRange.selectedSatellite) {
-        return this.azElRange.selectedSatellite.orbitalSlot * Math.PI / 180;
+        return this.azElRange.selectedSatellite.orbital_slot * Math.PI / 180;
       } else {
         return [];
       }
@@ -71,17 +70,17 @@ export default {
       return Math.sqrt(Math.pow(this.azElRange.altitude, 2) + (2 * this.azElRange.earthR * (this.azElRange.altitude + this.azElRange.earthR) * (1 - Math.cos(this.azElRange.locationInfo.latRad) * Math.cos(this.longDiff))));
     },
     azAngle() {
-      var c = (this.azElRange.selectedSatellite.orbitalSlot - this.azElRange.locationInfo.longSel) * Math.PI / 180;
+      var c = (this.azElRange.selectedSatellite.orbital_slot - this.azElRange.locationInfo.longSel) * Math.PI / 180;
       var a = Math.abs(Math.atan(Math.tan((Math.abs(c))) / Math.sin(this.azElRange.locationInfo.latRad)) * 180 / Math.PI);
 
       if (this.azElRange.locationInfo.latSel >= 0) {
-        if (this.azElRange.locationInfo.longSel - this.azElRange.selectedSatellite.orbitalSlot >= 0) {
+        if (this.azElRange.locationInfo.longSel - this.azElRange.selectedSatellite.orbital_slot >= 0) {
           return 180 + a;
         } else {
           return 180 - a
         }
       } else {
-        if (this.azElRange.locationInfo.longSel - this.azElRange.selectedSatellite.orbitalSlot >= 0) {
+        if (this.azElRange.locationInfo.longSel - this.azElRange.selectedSatellite.orbital_slot >= 0) {
           return 360 + a;
         } else {
           return a
@@ -89,7 +88,7 @@ export default {
       }
     },
     elAngle() {
-      var c = (this.azElRange.selectedSatellite.orbitalSlot - this.azElRange.locationInfo.longSel) * Math.PI / 180;
+      var c = (this.azElRange.selectedSatellite.orbital_slot - this.azElRange.locationInfo.longSel) * Math.PI / 180;
       return (180 / Math.PI) * Math.atan((Math.cos(c) * Math.cos(this.azElRange.locationInfo.latRad) - 0.15126) / Math.sqrt(Math.pow(Math.sin(c), 2) + Math.pow(Math.cos(c), 2) * Math.pow(Math.sin(this.azElRange.locationInfo.latRad), 2)));
     },
   },

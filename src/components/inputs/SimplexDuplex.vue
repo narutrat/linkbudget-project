@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  // props: ['satelliteName'], // Get the satellite name from parent to create beam options
+  props: ['carrierPath'], // Get the satellite name from parent to create beam options
   data() {
     return {
       simDuplex: 'Duplex',
@@ -24,6 +24,11 @@ export default {
       ]
     }
   },
+  // computed: {
+  //   simDuplex() {
+  //       return this.carrierPath.selectedSimDuplex;
+  //   }
+  // },
   methods: {
     simDuplexChanged(value) {
       let selectedSimDuplex = this.simDuplexOptions.find(s => s.label === value);

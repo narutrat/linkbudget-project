@@ -12,14 +12,14 @@
 
   <div class="col-sm-2">
     <div class="row" style="margin-top:5px">
-      <input v-model="this.satDesign.selectedTp.default_atten" class="form-control" style="text-align:center" @change="updateSatDesignParam">
+      <input v-model="atten" class="form-control" style="text-align:center" @input="updateSatDesignParam">
     </div>
     <div class="row" style="margin-top:10px">{{this.satDesign.selectedTp.atten_range || 0}}</div>
     <div class="row" style="margin-top:5px">
-      <input v-model="this.satDesign.antSizeA" class="form-control" style="text-align:center" @change="updateSatDesignParam">
+      <input v-model="antSizeA" class="form-control" style="text-align:center" @input="updateSatDesignParam">
     </div>
     <div class="row">
-      <input v-model="this.satDesign.antSizeB" class="form-control" style="text-align:center" @change="updateSatDesignParam">
+      <input v-model="antSizeB" class="form-control" style="text-align:center" @input="updateSatDesignParam">
     </div>
   </div>
 
@@ -43,10 +43,33 @@ export default {
   props: ['satDesign'],
   data() {
     return {
-atten: "",
-antSizeA: "",
-antSizeB: ""
+// atten: 0,
+// antSizeA: "",
+// antSizeB: ""
     }
+  },
+  computed: {
+    atten() {
+      if (this.satDesign.selectedTp.default_atten) {
+        return this.satDesign.selectedTp.default_atten;
+      } else {
+        return 0;
+      }
+    },
+    antSizeA() {
+      if (this.satDesign.antSizeA) {
+        return this.satDesign.antSizeA;
+      } else {
+        return 0;
+      }
+    },
+    antSizeB() {
+      if (this.satDesign.antSizeB) {
+        return this.satDesign.antSizeB;
+      } else {
+        return 0;
+      }
+    },
   },
   methods: {
     updateSatDesignParam() {
@@ -61,6 +84,8 @@ antSizeB: ""
   },
   watch: {
     'satDesign'(newVal, oldVal) {
+      // this.atten = newVal.atten;
+      // this.antSizeA = newVal.antSizeA;
       this.$emit('updateSatDesignData', {
         atten: this.atten,
         antSizeA: this.antSizeA,

@@ -92,7 +92,7 @@
     </div>
 
     <div class="col-sm-1">
-      <AntSize class="form-control" @antSizeSelected="antSizeA = $event"></AntSize>
+      <AntSize class="form-control" @antSizeSelected="antSizeA = $event" @change="lossValueA"></AntSize>
     </div>
 
     <div class="col-sm-1 blue-box1">
@@ -108,7 +108,7 @@
 
   <div class="row">
     <div class="col-sm-1 blue-box1">
-      <span>Location B: {{ selectedLocationsB }}</span>
+      <span>Location B: {{ LocationLabelB }}</span>
     </div>
 
     <div class="col-sm-3">
@@ -166,8 +166,8 @@
         </div>
 
         <div class="col-sm-3">
-          <SatObo class="form-control" @satOboSelected="satObo = $event"></SatObo>
-          <!-- <input v-model="satObo" class="col-sm-2" style="margin-left:15px"> -->
+          <!-- <SatObo class="form-control" @satOboSelected="satObo = $event"></SatObo> -->
+          <input v-model="satObo" class="form-control col-sm-2" style="margin-left:15px">
         </div>
       </div>
 
@@ -190,7 +190,8 @@
         </div>
 
         <div class="col-sm-3">
-          <SatIbo class="form-control" @satIboSelected="satIbo = $event"></SatIbo>
+          <input v-model="satIbo" class="form-control col-sm-2" style="margin-left:15px">
+          <!-- <SatIbo class="form-control" @satIboSelected="satIbo = $event"></SatIbo> -->
         </div>
 
       </div>
@@ -201,7 +202,8 @@
         </div>
 
         <div class="col-sm-3">
-          <Attenuation class="form-control" @attenSelected="atten = $event"></Attenuation>
+          <input v-model="atten" class="form-control col-sm-2" style="margin-left:15px">
+          <!-- <Attenuation class="form-control" @attenSelected="atten = $event"></Attenuation> -->
         </div>
 
       </div>
@@ -337,7 +339,7 @@
     </div>
 
     <div class="col-sm-2">
-      <SimplexDuplex @simDuplexSelected="selectedSimDuplex = $event"></SimplexDuplex>
+      <SimplexDuplex :carrierPath="selectedPath" @simDuplexSelected="selectedSimDuplex = $event"></SimplexDuplex>
     </div>
   </div>
 
@@ -356,6 +358,8 @@
   <div class="row">
     <div class="col-sm-2 blue-box1">
       <span>Modem: {{ selectedModem.name }}</span>
+    <!-- //  {{ selectedModem}} -->
+    <!-- {{this.selectedModem.applications.roll_off_factor}} -->
     </div>
 
     <div class="col-sm-2">
@@ -379,6 +383,7 @@
     <div class="col-sm-5">
       <div class="row" style="margin-left:40px; text-align:left">
         <h4 style="font-weight:bold">Location A</h4>
+
       </div>
 
       <div class="row" style="margin-left:15px">
@@ -388,6 +393,7 @@
 
         <div class="col-sm-2">
           <Modulation :mcgs="mcgA" @modCodeSelected="selectedModCodeA= $event"></Modulation>
+
         </div>
       </div>
 
@@ -527,7 +533,7 @@
 
         <div class="row">
           <div class="col-sm-4 blue-box1">
-            <span>Antenna Efficiency: {{ selectedAntEff.value }}</span>
+            <span>Antenna Efficiency: {{ antEffVal }}</span>
           </div>
 
           <div class="col-sm-3">
@@ -537,8 +543,8 @@
           <!-- <div class="col-sm-1"></div> -->
 
           <div class="input-group col-sm-4">
-            <span class="input-group-addon">{{ selectedAntEff.label || 'Default' }}</span>
-            <input v-model="selectedAntEff.value" class="form-control" style="text-align:center">
+            <span class="input-group-addon">{{ selectedAntEff }}</span>
+            <input v-model="antEffVal" class="form-control" style="text-align:center">
           </div>
         </div>
 
@@ -616,7 +622,7 @@
       <EbeCheck @ebeSelected="selectedEbe = $event"></EbeCheck>
     </div>
   </div>
-
+{{this.selectedAntGain}}
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
 
   <Calculate style="line-height:25px":paraData="InputPara"></Calculate>
@@ -711,8 +717,8 @@ export default {
       bandwidthValA: "",
       bandwidthValB: "",
       //////////////////////////////////////////////////////////////////////////////////////
-      selectedPlatform: "Broadcast",
-      selectedSimDuplex: "Duplex",
+      selectedPlatform: "VSAT",
+      selectedSimDuplex: "",
       selectedAppDVB: "DVB-S1",
       //////////////////////////////////////////////////////////////////////////////////////
       selectedModem: "",
@@ -721,20 +727,20 @@ export default {
       selectedModCodeB: "",
       // selectedFecA: "",
       //////////////////////////////////////////////////////////////////////////////////////
-      iflLoss: 0,
+      iflLoss: '',
       lossFeedA: 0.3,
-      misAntUpA: 0,
-      misAntDnB: 0,
+      misAntUpA: '',
+      misAntDnB: '',
       atmos: 0.1,
       otherLoss: 0,
       //////////////////////////////////////////////////////////////////////////////////////
       celeritas: 299792500,
       selectedAntGain: "Calculation",
-      selectedAntEff: "",
+      selectedAntEff: "Default",
       selectedRxAntTemp: "Default",
       selectedLnaTemp: "Default",
-      antGainVal: "",
-      antEffVal: 60,
+      // antGainVal: "",
+      // antEffVal: 60,
       rxAntTempVal: 35,
       lnaTempVal: 45,
       //////////////////////////////////////////////////////////////////////////////////////
@@ -806,7 +812,7 @@ export default {
     },
     LocationLabelB() {
       return this.selectedLocationsB.map(function(obj) {
-        return obj.label;
+        return obj.city;
       }).join(',');
 
     },
@@ -814,7 +820,6 @@ export default {
       return this.selectedLocationsA.map(function(obj) {
         return obj.dxConTourApstar7;
       }).join(',');
-
 
     },
     satObo() {
@@ -849,39 +854,40 @@ export default {
         return '';
       }
     },
+    interMod() {
+      var vm = this;
+      let result = [];
+      if (this.selectedTp) {
+        result = this.selectedTp.backoff_settings.find(function(x) {
+          return x.num_carriers === vm.selectedCarrier;
+        });
+        if (result) {
+          return result.intermod;
+        } else {
+          return 'Alert';
+        }
+      } else {
+        return '';
+      }
+    },
     atten() {
       return this.selectedTp.default_atten;
     },
-    // ModValue() {
-    //   var vm = this;
-    //   let result = [];
-    //   result = this.selectedModCodeA.find(function(x) {
-    //     return x.modCode === vm.modCode;
-    //   });
-    //   if (result) {
-    //     //return result.fec;
-    //     return result.modCodeValue;
-    //   }
-    // },
-    ModLabel() {
-      return this.selectedModCodeA.map(function(obj) {
-        return obj.value;
-      }).join(',');
-
-
+    selectedPath() {
+      if (this.selectedPlatform === 'Broadcast') {
+        return  this.selectedSimDuplex = 'Simplex'
+      } else {
+        return this.selectedSimDuplex = 'Duplex'
+      }
     },
-    // antEffCal() {
-    //   if (this.selectedAntGain === 'Manual') {
-    //     this.antGainVal = '';
-    //     this.selectedAntEff = 'Manual';
-    //     this.antEffVal = (100 * (Math.pow((this.celeritas / (this.frqUp_options * 1000000000)), 2) *
-    //     (Math.pow(10, (this.antGainManual / 10))))) / (Math.PI * Math.PI * (Math.pow(this.antSize_A, 2)));
-    //
-    //   } else if (this.selectedAntEff === 'Default') {
-    //     this.antEffVal = 60;
+    // mcgA() {
+    //   if (this.selectedModem) {
+    //     var a = this.selectedModem.applications;
+    //     return a.roll_off_factor;
     //   } else {
-    //     this.antEffVal = '';
+    //     return [];
     //   }
+    //
     // },
     mcgA() {
       if (this.selectedModem) {
@@ -899,8 +905,22 @@ export default {
       } else {
         return [];
       }
-
     },
+    antGainVal() {
+      if (this.selectedAntGain === "Calculation") {
+          return 10 * Math.log10((this.antEffVal / 100) * (Math.pow(Math.PI * this.antSizeA / (this.celeritas / (this.selectedTp.uplink_cf * 1000000000)), 2)));
+          // return 'A';
+      } else {
+        return 0;
+      }
+    },
+    antEffVal() {
+      if (this.selectedAntEff === "Default") {
+        return 60;
+      } else {
+        return 0;
+      }
+  },
     InputPara() {
       return {
         selectedSatellite: this.selectedSatellite,
@@ -922,6 +942,7 @@ export default {
         selectedMode: this.selectedMode,
         satObo: this.satObo,
         satIbo: this.satIbo,
+        interMod: this.interMod,
         atten: this.atten,
         deepIn: this.deepIn,
         //////////////////////////////////////////////////////////////////////////////////////
@@ -953,7 +974,7 @@ export default {
         selectedRxAntTemp: this.selectedRxAntTemp,
         selectedLnaTemp: this.selectedLnaTemp,
         antGainVal: this.antGainVal,
-        antEffVal: this.selectedAntEff.value,
+        antEffVal: this.antEffVal,
         rxAntTempVal: this.rxAntTempVal,
         lnaTempVal: this.lnaTempVal,
         //////////////////////////////////////////////////////////////////////////////////////
@@ -995,6 +1016,21 @@ export default {
     // locationB(locations) {
     //   this.selectedLocationsB = locations;
     // },
+    lossValueA() {
+      if (this.antSizeA <= 3.8) {
+        this.iflLoss = 2;
+        this.misAntUpA = 0.2;
+        this.misAntDnA = 0.2;
+      } else if (this.antSizeA > 3.8 && this.antSizeA <= 6.1) {
+        this.iflLoss = 2.5;
+        this.misAntUpA = 0.3;
+        this.misAntDnA = 0.3;
+      } else {
+        this.iflLoss = 3;
+        this.misAntUpA = 0.3;
+        this.misAntDnA = 0.3;
+      }
+    },
 
 
   }

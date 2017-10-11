@@ -7,8 +7,8 @@
   </div>
 
   <div class="col-sm-2">
-    <div class="row">{{this.aggBackoff.satIbo || '-'}}</div>
-    <div class="row">{{this.aggBackoff.satObo || '-'}}</div>
+    <div class="row">{{aggIbo || '-'}}</div>
+    <div class="row">{{aggObo || '-'}}</div>
     <div class="row">{{percentAllowBw_A.toFixed(4)}}</div>
   </div>
 
@@ -43,6 +43,12 @@ export default {
     percentAllowBw_B() {
       return this.aggBackoff.allowBWB  / 1000 * 100 / this.aggBackoff.selectedTp.bandwidth;
     },
+    aggIbo() {
+      return -(this.aggBackoff.satIbo);
+    },
+    aggObo() {
+      return -(this.aggBackoff.satObo);
+    }
     // AggBackoffData() {
     //   var getAggData = [];
     //

@@ -1,14 +1,15 @@
 <template>
 <div>
   <div class="col-sm-2">
-    <div class="row">{{boltzman}}</div>
-    <div class="row">{{increaseT.toFixed(2)}}</div>
-    <div class="row">{{noiseBW}}</div>
-    <div class="row">{{noisePwrClear}}</div>
-    <div class="row">{{noisePwrDnfade}}</div>
-    <div class="row">{{cnDnClear}}</div>
-    <div class="row">{{cnDnfadeClear}}</div>
-    <div class="row">-->{{noisePwrTotal}}</div>
+    <div class="row">{{boltzman.toFixed(4)}}</div>
+    <div class="row">{{increaseT.toFixed(4)}}</div>
+    <div class="row">{{noiseBW.toFixed(4)}}</div>
+    <div class="row">{{noisePwrClear.toFixed(4)}}</div>
+    <div class="row">{{noisePwrDnfade.toFixed(4)}}</div>
+    <div class="row">{{cnDnClear.toFixed(4)}}</div>
+    <div class="row">{{cnDnfadeClear.toFixed(4)}}</div>
+    <div class="row">{{noisePwrTotal.toFixed(4)}}</div>
+    <!-- <div class="row">{{this.downlinkNoise.receivePwrClear}}</div> -->
   </div>
 
 </div>
@@ -29,12 +30,12 @@ export default {
       // noisePwrDnfade: '',
       // cnDnClear: '',
       // cnDnfadeClear: '',
-      noisePwrTotal: ''
+      // noisePwrTotal: ''
     }
   },
   computed: {
     increaseT() {
-      return 280 * (1 - Math.exp(-0.293214851232992 / 4.34));
+      return 280 * (1 - Math.exp(-this.downlinkNoise.rain / 4.34));
     },
     noiseBW() {
       return 10 * Math.log10(this.downlinkNoise.bandwidth * 1000);
@@ -49,11 +50,16 @@ export default {
       return this.downlinkNoise.receivePwrClear - this.noisePwrClear;
     },
     cnDnfadeClear() {
-      return this.downlinkNoise.receivePwrClear - this.noisePwrDnfade - 0.293214851232992;
+      return this.downlinkNoise.receivePwrClear - this.noisePwrDnfade - this.downlinkNoise.rain;
     },
-    // noisePwrTotal() {
-    //   return -this.downlinkNoise.cnTotalClear + this.downlinkNoise.receivePwrClear;
-    // },
+    noisePwrTotal() {
+      if (this.downlinkNoise.cnTotal && this.downlinkNoise.receivePwrClear) {
+        return -this.downlinkNoise.cnTotal + this.downlinkNoise.receivePwrClear;
+      } else {
+        return 0;
+      }
+
+    },
   },
   watch: {
     'downlinkNoise'(newVal, oldVal) {

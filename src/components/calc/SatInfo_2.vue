@@ -8,6 +8,7 @@
     <div class="row" style="margin-top:5px">
       <input v-model="eirpDn" class="form-control" style="text-align:center">
     </div>
+
 </div>
 </template>
 
@@ -27,25 +28,25 @@ export default {
   },
   computed: {
     sfdMax() {
-      if (this.satInfo_2.selectedSatellite.sfd) {
-        return -(this.satInfo_2.selectedSatellite.sfd+this.gtSel);
+      if (this.satInfo_2.selectedTp.sfd) {
+        return this.satInfo_2.selectedTp.sfd-this.gtSel;
       } else {
         return 0;
       }
 
     },
     gtSel() {
-      if (this.satInfo_2.selectLocation) {
-        return this.satInfo_2.gtData;
+      if (this.satInfo_2.selectedBeam && this.satInfo_2.selectLocation) {
+        return this.satInfo_2.gt;
       }else {
-        return ;
+        return 0;
       }
     },
     eirpDn() {
-      if (this.satInfo_2.selectLocation) {
-        return this.satInfo_2.eirpdownData;
+      if (this.satInfo_2.selectedBeam && this.satInfo_2.selectLocation) {
+        return this.satInfo_2.eirpdown;
       }else {
-        return ;
+        return 0;
       }
     }
   },
@@ -53,7 +54,6 @@ export default {
     'satInfo_2'(newVal, oldVal) {
 
       this.$emit('updateSatInfo2', {
-        tpBW: this.satInfo_2.selectedTp.tpBW,
         sfdMax: this.sfdMax,
         gtSel: this.gtSel,
         eirpDn: this.eirpDn
