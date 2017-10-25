@@ -1,33 +1,33 @@
 <template>
   <div>
     <div class="col-sm-2">
-      <!-- <div class="row">
+      <div class="row">
 
-        <input v-model="this.txLoss.iflLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
+        <input v-model="iflLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
       </div>
       <div class="row">
-        <input v-model="this.txLoss.misAntUpA" class="form-control" style="text-align:center" @input="updateTxLoss">
+        <input v-model="misAntUpA" class="form-control" style="text-align:center" @input="updateTxLoss">
       </div>
       <div class="row">
-        <input v-model="this.txLoss.otherLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
+        <input v-model="otherLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
       </div>
 
-      <div class="row">{{totalLossUp}}</div> -->
+      <div class="row">{{totalLossUp}}</div>
       <!-- {{this.txLoss.iflLoss}} // {{this.txLoss.misAntUpA}} // {{this.txLoss.otherLoss}} -->
 
 
-      <tr>
+      <!-- <tr>
 
-        <input v-model="this.txLoss.iflLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
+        <input v-model="iflLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
       </tr>
       <tr>
-        <input v-model="this.txLoss.misAntUpA" class="form-control" style="text-align:center" @input="updateTxLoss">
+        <input v-model="misAntUpA" class="form-control" style="text-align:center" @input="updateTxLoss">
       </tr>
       <tr>
-        <input v-model="this.txLoss.otherLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
+        <input v-model="otherLoss" class="form-control" style="text-align:center" @input="updateTxLoss">
       </tr>
 
-      <tr>{{totalLossUp}}</tr>
+      <tr>{{totalLossUp}}</tr> -->
 
     </div>
   </div>
@@ -41,27 +41,36 @@ export default {
   props: ['txLoss'],
   data() {
     return {
-      // iflLoss: '',
-      // misAntUp: '',
-      // otherLossUp: 0,
+      iflLoss: '',
+      misAntUpA: '',
+      otherLoss: '',
       // totalLossUp: ''
     }
   },
   computed: {
     totalLossUp() {
-      return parseFloat(this.txLoss.iflLoss) + parseFloat(this.txLoss.misAntUpA) + parseFloat(this.txLoss.otherLoss);
+      return parseFloat(this.iflLoss) + parseFloat(this.misAntUpA) + parseFloat(this.otherLoss);
     }
   },
   methods: {
     updateTxLoss() {
       this.$emit('updateTransmitLoss', {
+        iflLoss: this.iflLoss,
+        misAntUpA: this.misAntUpA,
+        otherLoss: this.otherLoss,
         totalLossUp: this.totalLossUp,
       })
     },
   },
   watch: {
     'txLoss'(newVal, oldVal) {
+      this.iflLoss = newVal.iflLoss;
+      this.misAntUpA = newVal.misAntUpA;
+      this.otherLoss = newVal.otherLoss;
       this.$emit('updateTransmitLoss', {
+        iflLoss: this.iflLoss,
+        misAntUpA: this.misAntUpA,
+        otherLoss: this.otherLoss,
         totalLossUp: this.totalLossUp,
       });
       // this.allowBW= newVal.allowBWVal;

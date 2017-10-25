@@ -3,6 +3,9 @@
   <div class="col-sm-1" v-for="dxContour in dxContours" style="text-align:center">
     {{joinContour(dxContour)}}
   </div>
+  <!-- <div>
+    {{adjOptions}}
+  </div> -->
 </div>
 </template>
 
@@ -11,6 +14,7 @@ export default {
   props: ['satellite', 'selectedLocations'],
   data() {
     return {
+      adjOptions: [],
       }
   },
   methods: {
@@ -44,6 +48,16 @@ export default {
 
     }
   },
+  // watch: {
+  //   'satellite' (newVal) {
+  //     this.$http.post('adjacent_satellite', {'satellite':newVal}).then(response => {
+  //       this.adjOptions = response.body.adjacent_satellite;
+  //       console.log(response);
+  //     }).catch((e) => {
+  //       console.log(e);
+  //     })
+  //   }
+  // }
   // methods: {
   //   dxContour(satelliteName) {
   //     // let result = this.adjSatSel.find(x => x.label === this.selectedSatellite.adjSat);

@@ -9,17 +9,17 @@
   <div class="col-sm-2"></div>
 
   <div class="col-sm-2" style="margin-top:5px">
-    <div class="row">{{frqUp_A}}</div>
+    <div class="row">{{frqUpA}}</div>
     <div class="row">
-      <input v-model="frqDn_A" class="form-control" style="text-align:center">
+      <input v-model="frqDnA" class="form-control" style="text-align:center" @input="updateDownFrq">
     </div>
   </div>
 
 
   <div class="col-sm-2" style="margin-top:5px">
-    <div class="row">{{frqUp_B}}</div>
+    <div class="row">{{frqUpB}}</div>
     <div class="row">
-      <input v-model="frqDn_B" class="form-control" style="text-align:center">
+      <input v-model="frqDnB" class="form-control" style="text-align:center" @input="updateDownFrq">
     </div>
   </div>
 
@@ -46,43 +46,46 @@ export default {
     return {
       // frqUp_A: '',
       // frqUp_B: '',
-
+      frqDnA: "",
+      frqDnB: ""
     }
   },
   computed: {
-    frqDn_A() {
-      return this.freqAssigned.selectedTp.downlink_cf;
-    },
-    frqDn_B() {
-      return this.freqAssigned.selectedTp.downlink_cf;
-    },
-    frqUp_A() {
+    // frqDn_A() {
+    //   return this.freqAssigned.selectedTp.downlink_cf;
+    // },
+    // frqDn_B() {
+    //   return this.freqAssigned.selectedTp.downlink_cf;
+    // },
+    frqUpA() {
       return this.freqAssigned.selectedTp.uplink_cf;
     },
-    frqUp_B() {
+    frqUpB() {
       return this.freqAssigned.selectedTp.uplink_cf;
     },
   },
   methods: {
-    // updateDownFrq() {
-    //   // this.allowBw = parseFloat(this.bandwidth) * (1 + parseFloat(this.guardBandVal) / 100);
-    //   this.$emit('updateFrq', {
-    //     frqDn_A: this.frqDn_A,
-    //     frqDn_B: this.frqDn_B,
-    //   })
-    // },
+    updateDownFrq() {
+      // this.allowBw = parseFloat(this.bandwidth) * (1 + parseFloat(this.guardBandVal) / 100);
+      this.$emit('updateFrq', {
+        frqDnA: this.frqDnA,
+        frqDnB: this.frqDnB,
+        frqUpA: this.frqUpA,
+        frqUpB: this.frqUpB,
+      })
+    },
   },
   watch: {
     // updateFreq() {
     // this.allowBw = parseFloat(this.bandwidth) * (1 + parseFloat(this.guardBandVal) / 100);
     'freqAssigned' (newVal, oldVal) {
-      // this.frqDn_A = newVal.frqDn_A;
-      // this.frqDn_B = newVal.frqDn_B;
+      this.frqDnA = newVal.frqDnA;
+      this.frqDnB = newVal.frqDnB;
       this.$emit('updateFrq', {
-        frqUpA: this.frqUp_A,
-        frqUpB: this.frqUp_B,
-        frqDnA: this.frqDn_A,
-        frqDnB: this.frqDn_B,
+        frqUpA: this.frqUpA,
+        frqUpB: this.frqUpB,
+        frqDnA: this.frqDnA,
+        frqDnB: this.frqDnB,
       })
     },
   }

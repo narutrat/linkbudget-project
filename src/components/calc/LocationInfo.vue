@@ -1,22 +1,22 @@
 <template>
 <div>
   <div class="col-sm-4" style="text-align:left">
-    <div class="row">Location</div>
-    <div class="row">Latitude (deg)</div>
-    <div class="row">Longitude (deg)</div>
-    <div class="row">Antenna Efficiency Tx/Rx</div>
-    <div class="row">Xmitted Ant Gain</div>
+    <div class="row" style="margin-top:6px">Location</div>
+    <div class="row" style="margin-top:6px">Latitude (deg)</div>
+    <div class="row" style="margin-top:8px">Longitude (deg)</div>
+    <div class="row" style="margin-top:8px">Antenna Efficiency Tx/Rx</div>
+    <div class="row" style="margin-top:6px">Xmitted Ant Gain</div>
     <div class="row">Receive Antenna Gain</div>
-    <div class="row">Receive Antenna Temperature</div>
-    <div class="row">Loss from Ant Feed to LNA</div>
-    <div class="row">Receive LNA Noise Temperature</div>
-    <div class="row">Receive LNA Gain</div>
-    <div class="row">Downconverter Noise Figure</div>
-    <div class="row">Receive ES Tsys</div>
+    <div class="row" style="margin-top:6px">Receive Antenna Temp</div>
+    <div class="row" style="margin-top:9px">Loss from Ant Feed to LNA</div>
+    <div class="row" style="margin-top:9px">Receive LNA Noise Temp</div>
+    <div class="row" style="margin-top:10px">Receive LNA Gain</div>
+    <div class="row" style="margin-top:10px">Downconverter Noise Figure</div>
+    <div class="row" style="margin-top:4px">Receive ES Tsys</div>
     <div class="row">G/T</div>
   </div>
 
-  <div class="col-sm-2">Country: {{country}}</div>
+  <div class="col-sm-2" style="margin-top:3px">{{country}}</div>
 
   <div class="col-sm-2">
     <div class="row">
@@ -47,13 +47,13 @@
       {{antGainReceive.toFixed(2)}}
     </div>
     <div class="row">
-      <input v-model="this.selLocations.rxAntTempVal" class="form-control" style="text-align:center" @input="updateLocation">
+      <input v-model="rxAntTempVal" class="form-control" style="text-align:center" @input="updateLocation">
     </div>
     <div class="row">
-      <input v-model="this.selLocations.lossFeed" class="form-control" style="text-align:center" @input="updateLocation">
+      <input v-model="lossFeed" class="form-control" style="text-align:center" @input="updateLocation">
     </div>
     <div class="row">
-      <input v-model="this.selLocations.lnaTempVal" class="form-control" style="text-align:center" @input="updateLocation">
+      <input v-model="lnaTempVal" class="form-control" style="text-align:center" @input="updateLocation">
     </div>
     <div class="row">
       <input v-model="rxLnaGain" class="form-control" style="text-align:center">
@@ -71,39 +71,39 @@
   </div>
 
   <div class="col-sm-2">
-    <div class="row">ID</div>
-    <div class="row">{{latRad.toFixed(4)}}</div>
-    <div class="row">{{longRad.toFixed(4)}}</div>
-    <div class="row">
+    <div class="row" style="margin-top:4px">ID</div>
+    <div class="row" style="margin-top:8px">{{latRad.toFixed(4)}}</div>
+    <div class="row" style="margin-top:8px">{{longRad.toFixed(4)}}</div>
+    <div class="row" style="margin-top:6px">
       <input v-model="this.selLocations.antEffVal" class="form-control" style="text-align:center" @input="updateLocation">
     </div>
     <div class="row">dBi at</div>
     <div class="row">dBi</div>
-    <div class="row">Kelvin</div>
-    <div class="row">dB</div>
-    <div class="row">Kelvin</div>
-    <div class="row">dB</div>
-    <div class="row">dB</div>
-    <div class="row">Kelvin</div>
-    <div class="row">dBi/K</div>
+    <div class="row" style="margin-top:4px">Kelvin</div>
+    <div class="row" style="margin-top:10px">dB</div>
+    <div class="row" style="margin-top:9px">Kelvin</div>
+    <div class="row" style="margin-top:9px">dB</div>
+    <div class="row" style="margin-top:9px">dB</div>
+    <div class="row" style="margin-top:5px">Kelvin</div>
+    <div class="row" style="margin-top:1px">dBi/K</div>
   </div>
 
   <div class="col-sm-2">
-    <div class="row"></div>
-    <div class="row">rad</div>
-    <div class="row">rad</div>
-    <div class="row">%</div>
-    <div class="row">{{this.selLocations.frqUp}} GHz</div>
+    <!-- <div class="row" style="margin-top:30px"></div> -->
+    <div class="row" style="margin-top:36px">rad</div>
+    <div class="row" style="margin-top:8px">rad</div>
+    <div class="row" style="margin-top:8px">%</div>
+    <div class="row" style="margin-top:8px">{{this.selLocations.frqUp}} GHz</div>
     <div class="row">Size: {{this.selLocations.antSize}}</div>
-    <div class="row">D/C.Gain (dB)</div>
+    <div class="row" style="margin-top:6px">D/C.Gain (dB)</div>
 
     <div class="row">
-      <input v-model="dcGain" class="form-control" style="text-align:center">
+      <input v-model="dcGain" class="form-control" style="text-align:center; margin-top:4px">
     </div>
 
-    <div class="row">IFL Loss (dB)</div>
+    <div class="row" style="margin-top:4px">IFL Loss (dB)</div>
 
-    <div class="row">
+    <div class="row" style="margin-top:7px">
       <input v-model="iflLoss" class="form-control" style="text-align:center">
     </div>
 
@@ -132,6 +132,8 @@ export default {
       // rxTempVal: '',
       lossFeed: '',
       lnaTempVal: '',
+      rxAntTempVal: '',
+
       rxLnaGain: 60,
       dnNoise: 1,
       // tsys: '',
@@ -140,8 +142,8 @@ export default {
       // longRad: '',
       upFrq: '',
       antSize: '',
-      dcGain: 0,
-      iflLoss: 0,
+      dcGain: '',
+      iflLoss: '',
       celeritas: 299792500
     }
   },
@@ -178,8 +180,8 @@ export default {
       return 10 * Math.log10(4 * Math.PI * (this.selLocations.antEffVal / 100) * (Math.PI * Math.pow(this.selLocations.antSize, 2) / 4) / Math.pow((this.celeritas / (this.selLocations.selectedTp.downlink_cf * 1000000000)), 2));
     },
     tsys() {
-      return parseFloat(this.selLocations.rxAntTempVal) + ((Math.pow(10, (this.selLocations.lossFeed / 10)) - 1) * 290) + (Math.pow(10, (this.selLocations.lossFeed / 10)) * this.selLocations.lnaTempVal) +
-        ((Math.pow(10, (this.selLocations.lossFeed / 10))) * ((Math.pow(10, (this.dnNoise / 10)) - 1) * 290) / (Math.pow(10, (this.rxLnaGain / 10)))) +
+      return parseFloat(this.rxAntTempVal) + ((Math.pow(10, (this.lossFeed / 10)) - 1) * 290) + (Math.pow(10, (this.lossFeed / 10)) * this.lnaTempVal) +
+        ((Math.pow(10, (this.lossFeed / 10))) * ((Math.pow(10, (this.dnNoise / 10)) - 1) * 290) / (Math.pow(10, (this.rxLnaGain / 10)))) +
         (((Math.pow(10, (this.iflLoss / 10))) - 1) * 290) / ((Math.pow(10, (this.rxLnaGain / 10))) * (Math.pow(10, (this.dcGain / 10))));
     },
     gtES() {
@@ -221,23 +223,29 @@ export default {
         //b
         antGainVal: this.antGainVal,
         antGainReceive: this.antGainReceive,
-        rxAntTempVal: this.selLocations.rxAntTempVal,
-        lossFeedA: this.selLocations.lossFeed,
-        lnaTempVal: this.selLocations.lnaTempVal,
+        rxAntTempVal: this.rxAntTempVal,
+        lossFeed: this.lossFeed,
+        lnaTempVal: this.lnaTempVal,
         rxLnaGain: this.rxLnaGain,
         dnNoise: this.dnNoise,
         tsys: this.tsys,
         gtES: this.gtES,
         celeritas: this.celeritas,
         eirpdown: this.eirpdown.value,
-        gt: this.gt.value
+        gt: this.gt.value,
+        dcGain: this.dcGain,
+        iflLoss: this.iflLoss
       })
     }
   },
   watch: {
     'selLocations' (newVal, oldVal) {
       this.locationSel = this.locationSelected[0];
-
+      this.rxAntTempVal = newVal.rxAntTempVal;
+      this.lossFeed = newVal.lossFeed;
+      this.lnaTempVal = newVal.lnaTempVal;
+      this.dcGain = newVal.dcGain;
+      this.iflLoss = newVal.iflLoss;
       this.$emit('updateLocationInfo', {
 
         // selLocations: this.selLocations,
@@ -252,16 +260,18 @@ export default {
         //b
         antGainVal: this.antGainVal,
         antGainReceive: this.antGainReceive,
-        rxAntTempVal: this.selLocations.rxAntTempVal,
-        lossFeedA: this.selLocations.lossFeed,
-        lnaTempVal: this.selLocations.lnaTempVal,
+        rxAntTempVal: this.rxAntTempVal,
+        lossFeed: this.lossFeed,
+        lnaTempVal: this.lnaTempVal,
         rxLnaGain: this.rxLnaGain,
         dnNoise: this.dnNoise,
         tsys: this.tsys,
         gtES: this.gtES,
         celeritas: this.celeritas,
         eirpdown: this.eirpdown.value,
-        gt: this.gt.value
+        gt: this.gt.value,
+        dcGain: this.dcGain,
+        iflLoss: this.iflLoss
       })
     },
     // 'selLocations' (newVal, oldVal) {

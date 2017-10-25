@@ -1,12 +1,12 @@
 <template>
 <div>
-  <div class="col-sm-2" style="text-align:left">
+  <div class="col-sm-2" style="text-align:center">
     <div class="row">{{ciUpTotal}}</div>
     <div class="row">{{cnUp.toFixed(4)}}</div>
     <div class="row">{{cnDn.toFixed(4)}}</div>
     <div class="row">{{interMod}}</div>
-    <div class="row">{{ciCoch}}</div>
-    <div class="row">{{ciAdj.toFixed(4)}}</div>
+    <div class="row" style="margin-top:15px">{{ciCoch}}</div>
+    <div class="row" style="margin-top:10px">{{ciAdj.toFixed(4)}}</div>
     <div class="row">{{cnTotal.toFixed(4)}}</div>
     <div class="row">{{ebno.toFixed(4)}}</div>
     <div class="row">{{margin.toFixed(4)}}</div>

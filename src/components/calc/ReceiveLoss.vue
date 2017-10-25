@@ -2,10 +2,10 @@
   <div>
     <div class="col-sm-2">
       <div class="row">
-        <input v-model="this.rxLoss.misAntDnB" class="form-control" style="text-align:center">
+        <input v-model="misAntDnB" class="form-control" style="text-align:center" @input="updateReceive">
       </div>
       <div class="row">
-        <input v-model="this.rxLoss.otherLoss" class="form-control" style="text-align:center">
+        <input v-model="otherLoss" class="form-control" style="text-align:center" @input="updateReceive">
       </div>
       <div class="row">{{totalLossDn}}</div>
     </div>
@@ -20,26 +20,32 @@ export default {
   props: ['rxLoss'],
   data() {
     return {
-      // misAntUp: '',
-      // otherLossUp: '',
+      misAntDnB: '',
+      otherLoss: '',
       // totalLossDn: ''
     }
   },
   computed: {
     totalLossDn() {
-      return parseFloat(this.rxLoss.misAntDnB) + parseFloat(this.rxLoss.otherLoss);
+      return parseFloat(this.misAntDnB) + parseFloat(this.otherLoss);
     }
   },
   methods: {
     updateReceive() {
       this.$emit('updateReceiveLoss', {
+        misAntDnB: this.misAntDnB,
+        otherLoss: this.otherLoss,
         totalLossDn: this.totalLossDn,
       })
     },
   },
   watch: {
     'rxLoss'(newVal, oldVal) {
+      this.misAntDnB = newVal.misAntDnB;
+      this.otherLoss = newVal.otherLoss;
       this.$emit('updateReceiveLoss', {
+        misAntDnB: this.misAntDnB,
+        otherLoss: this.otherLoss,
         totalLossDn: this.totalLossDn,
       });
       // this.allowBW= newVal.allowBWVal;

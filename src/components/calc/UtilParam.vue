@@ -22,6 +22,10 @@
       <div class="row">% (Max=100)</div>
       <div class="row">% (Max=100)</div>
     </div>
+
+    <div class="row" style="text-align:left">
+      <button v-on:click="goalseekHPA">Calculate by Power Utilization</button>
+    </div>
 </div>
 </template>
 
@@ -79,6 +83,23 @@ export default {
     }
 
 
+  },
+  methods: {
+    goalseekHPA() {
+      this.hpaPowerBothA = 10;
+    //   while (this.pwrUtilA <= this.powerUVal - 0.001) {
+    //     this.hpaPowerBothA = this.hpaPowerBothA + 0.001;
+    //   }
+    //   while (this.pwrUtilA <= this.powerUVal - 0.00001) {
+    //     this.hpaPowerBothA = this.hpaPowerBothA + 0.00001;
+    //   }
+    //   while (this.pwrUtilA <= this.powerUVal - 0.0000001) {
+    //     this.hpaPowerBothA = this.hpaPowerBothA + 0.0000001;
+    //   }
+    //   return this.hpaPowerBothA;
+    console.log('Sending: ' + JSON.stringify(this.hpaPowerBothA))
+    this.$emit('updateHPA', this.hpaPowerBothA);
+    },
   }
 }
 </script>

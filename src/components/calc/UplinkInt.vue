@@ -3,18 +3,18 @@
   <div class="col-sm-2">
     <div class="row">{{topo}}</div>
     <div class="row">
-      <input v-model="this.uplinkInt.ulPden" class="form-control">
+      <input v-model="ulPden" class="form-control" style="text-align:center" @input="updateUp">
     </div>
     <div class="row">
-      <input v-model="this.uplinkInt.esInTcGt" class="form-control">
+      <input v-model="esInTcGt" class="form-control" style="text-align:center; margin-top:7px" @input="updateUp">
     </div>
     <div class="row">
-      <input v-model="this.uplinkInt.polImp" class="form-control">
+      <input v-model="polImp" class="form-control" style="text-align:center; margin-top:7px" @input="updateUp">
     </div>
     <div class="row">
-      <input v-model="this.uplinkInt.ulSidelobe" class="form-control">
+      <input v-model="ulSidelobe" class="form-control" style="text-align:center; margin-top:12px" @input="updateUp">
     </div>
-    <div class="row">{{ciUp.toFixed(4)}}</div>
+    <div class="row" style="margin-top:8px">{{ciUp.toFixed(4)}}</div>
   </div>
   <!-- <div class="col-sm-2">
     <div class="row">1{{topo2}}</div>
@@ -42,60 +42,84 @@ export default {
   props: ['uplinkInt'],
   data() {
     return {
-      topo1: '',
-      topo2: '',
-      ulPden1: '',
-      ulPden2: '',
-      esInTcGt1: '',
-      esInTcGt2: '',
+      topo: '',
+      // topo2: '',
+      ulPden: '',
+      // ulPden2: '',
+      esInTcGt: '',
+      // esInTcGt2: '',
       // polImp: 5,
-      polImp2: '',
+      polImp: '',
       // ulSidelobe: 0,
-      ulSidelobe2: '',
+      ulSidelobe: '',
       // ciUp1_A: '',
       ciUp2_A: '',
       ciUpTotal_A: ''
     }
   },
   computed: {
-    topo() {
-      // return (Math.abs(this.adjSlot1 - this.selectedSatellite.orbital_slot) - 0.15) * 1.1;
-      // return (Math.abs(76.5 - this.uplinkInt.selectedSatellite.orbital_slot) - 0.15) * 1.1;
-      return this.uplinkInt.topo;
-    },
-    ulPden() {
-      // var vm = this;
-      // let result = [];
-      // result = this.adjSatDatabase.find(function(x) {
-      //   return x.text === this.satellite && x.beams === vm.beams && x.adjSat === vm.adjSat[0];
-      // });
-      // if (result) {
-      //   return result.uplinkPdens;
-      // }
-      return this.uplinkInt.ulPden;
-    },
-    esInTcGt() {
-      // var vm = this;
-      // let result = [];
-      // result = this.adjSatDatabase.find(function(x) {
-      //   return x.text === this.satellite && x.beams === vm.beams && x.adjSat === vm.adjSat[0];
-      // });
-      // if (result) {
-      //   return result.esInTcGt;
-      // }
-      return this.uplinkInt.esInTcGt;
-    },
+    // topo() {
+    //   // return (Math.abs(this.adjSlot1 - this.selectedSatellite.orbital_slot) - 0.15) * 1.1;
+    //   // return (Math.abs(76.5 - this.uplinkInt.selectedSatellite.orbital_slot) - 0.15) * 1.1;
+    //   return this.uplinkInt.topo;
+    // },
+    // ulPden() {
+    //   // var vm = this;
+    //   // let result = [];
+    //   // result = this.adjSatDatabase.find(function(x) {
+    //   //   return x.text === this.satellite && x.beams === vm.beams && x.adjSat === vm.adjSat[0];
+    //   // });
+    //   // if (result) {
+    //   //   return result.uplinkPdens;
+    //   // }
+    //   return this.uplinkInt.ulPden;
+    // },
+    // esInTcGt() {
+    //   // var vm = this;
+    //   // let result = [];
+    //   // result = this.adjSatDatabase.find(function(x) {
+    //   //   return x.text === this.satellite && x.beams === vm.beams && x.adjSat === vm.adjSat[0];
+    //   // });
+    //   // if (result) {
+    //   //   return result.esInTcGt;
+    //   // }
+    //   return this.uplinkInt.esInTcGt;
+    // },
     ciUp() {
       return parseFloat(this.uplinkInt.powerDen) + parseFloat(this.uplinkInt.antGainVal) + parseFloat(this.uplinkInt.gtSel) - (parseFloat(this.ulPden) +
-      29 - (25 * Math.log10(parseFloat(this.topo))) + parseFloat(this.esInTcGt)) + parseFloat(this.uplinkInt.polImp) +parseFloat(this.uplinkInt.ulSidelobe);
+      29 - (25 * Math.log10(parseFloat(this.topo))) + parseFloat(this.esInTcGt)) + parseFloat(this.polImp) +parseFloat(this.ulSidelobe);
+    },
+  },
+  methods: {
+    updateUp() {
+      this.$emit('updateUplinkInt', {
+        topo: this.topo,
+        ciUp: this.ciUp,
+        ulPden: this.ulPden,
+        esInTcGt: this.esInTcGt,
+        polImp: this.polImp,
+        ulSidelobe: this.ulSidelobe,
+
+      });
     },
   },
   watch: {
     'uplinkInt'(newVal, oldVal) {
+      this.topo = newVal.topo;
+      this.ulPden = newVal.ulPden;
+      this.esInTcGt = newVal.esInTcGt;
+      this.polImp = newVal.polImp;
+      this.ulSidelobe = newVal.ulSidelobe;
+
       this.$emit('updateUplinkInt', {
+        topo: this.topo,
         ciUp: this.ciUp,
+        ulPden: this.ulPden,
+        esInTcGt: this.esInTcGt,
+        polImp: this.polImp,
+        ulSidelobe: this.ulSidelobe,
+
       });
-      // this.allowBW= newVal.allowBWVal;
     }
   },
 }

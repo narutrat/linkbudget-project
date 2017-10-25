@@ -40,7 +40,7 @@ export default {
       return this.carrierOperation.eirpDn - (this.carrierOperation.opFluxDen + this.tpGain);
     },
     tpGain() {
-      return parseFloat(this.carrierOperation.eirpDn) - 4.2 - (parseFloat(this.carrierOperation.sfdMax) - 5.2 - (parseFloat(this.carrierOperation.selectedTp.atten_range) - parseFloat(this.carrierOperation.selectedTp.default_atten)));
+      return parseFloat(this.carrierOperation.eirpDn) - this.carrierOperation.aggObo - (parseFloat(this.carrierOperation.sfdMax) - this.carrierOperation.aggIbo - (parseFloat(this.carrierOperation.selectedTp.atten_range) - parseFloat(this.carrierOperation.atten)));
     },
     iboUpfade() {
       return this.iboCal + this.carrierOperation.rain;

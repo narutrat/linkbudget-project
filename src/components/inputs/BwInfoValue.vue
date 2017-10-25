@@ -1,7 +1,7 @@
 <template>
 <div>
 
-    <input v-model="bandwidthVal" class="form-control" @input="bandwidthValChanged($event.target.value)">
+    <input v-model="bandwidthVal" class="form-control" style="text-align:center" @input="bandwidthValChanged($event.target.value)">
 
 </div>
 </template>

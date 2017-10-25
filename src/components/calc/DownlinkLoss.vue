@@ -1,13 +1,14 @@
 <template>
 <div>
-  <div class="col-sm-2" style="text-align:left">
+  <div class="col-sm-2" style="text-align:center">
     <div class="row">{{eirpDnClear.toFixed(4)}}</div>
     <div class="row">{{pathLoss.toFixed(4)}}</div>
-    <div class="row">
+    <!-- <div class="row">
       <input v-model="atmosDownlinkLoss" class="form-control" style="text-align:center">
-    </div>
-    <div class="row">{{pathLossAtmos.toFixed(4)}}</div>
-    <div class="row">{{receivePwrClear.toFixed(4)}}</div>
+    </div> -->
+    <div class="row">{{atmosDownlinkLoss}}</div>
+    <div class="row" style="margin-top:12px">{{pathLossAtmos.toFixed(4)}}</div>
+    <div class="row" style="margin-top:12px">{{receivePwrClear.toFixed(4)}}</div>
     <div class="row">{{eirpDnDenClear.toFixed(4)}}</div>
   </div>
 

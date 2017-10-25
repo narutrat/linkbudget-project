@@ -1,25 +1,25 @@
 <template>
   <div>
-    <div class="row" style="margin-top:5px">
-      <input v-model="this.carrierInfo.selectedModCode.modCodeValue" class="form-control" style="text-align:center">
+    <div class="row" style="margin-top:4px">
+      <input v-model="mod" class="form-control" style="text-align:center" @input="updateCarrier">
     </div>
     <div class="row">
-      <input v-model="infoValue" class="form-control" style="text-align:center">
+      <input v-model="infoValue" class="form-control" style="text-align:center" @input="updateCarrier">
     </div>
     <div class="row">
-      <input v-model="this.carrierInfo.selectedModCode.fec" class="form-control" style="text-align:center">
+      <input v-model="fec" class="form-control" style="text-align:center" @input="updateCarrier">
     </div>
 
     <div class="row" style="margin-top:10px">{{txRate.toFixed(2)}}</div>
 
     <div class="row" style="margin-top:5px">
-      <input v-model="this.carrierInfo.selectedModCode.bt" class="form-control" style="text-align:center">
+      <input v-model="bt" class="form-control" style="text-align:center" @input="updateCarrier">
     </div>
     <div class="row">
-      <input v-model="this.carrierInfo.selectedModCode.ebNo" class="form-control" style="text-align:center">
+      <input v-model="ebNo" class="form-control" style="text-align:center" @input="updateCarrier">
     </div>
-    <div class="row" style="margin-top:10px">{{symbolRate.toFixed(2)}}</div>
-    <div class="row" style="margin-top:5px">{{this.carrierInfo.bandwidthVal}}</div>
+    <div class="row" style="margin-top:8px">{{symbolRate.toFixed(2)}}</div>
+    <div class="row" style="margin-top:5px">{{this.carrierInfo.bandwidth}}</div>
   </div>
 </template>
 
@@ -28,45 +28,61 @@ export default {
   props: ['carrierInfo'],
   data() {
     return {
-      modCodeValue: '',
+      mod: '',
       // infoValue: '',
-      fecValue: '',
-      // txRate: '',
+      fec: '',
       bt: '',
-      ebNo: '',
-      // symbolRate: '',
-      bwCal: ''
-
     }
   },
   computed: {
     txRate() {
-      return this.infoValue / this.carrierInfo.selectedModCode.fec;
+      return this.infoValue / this.fec;
     },
     infoValue() {
       if (this.carrierInfo.selectedBwSel === 'Information Rate') {
-        var infoCal = this.carrierInfo.bandwidthVal;
+        var infoCal = this.carrierInfo.bandwidth;
         return infoCal;
       } else {
-        infoCal = (this.carrierInfo.bandwidthVal * this.carrierInfo.selectedModCode.fec) / this.carrierInfo.selectedModCode.bt * this.carrierInfo.selectedModCode.modCodeValue;
+        var infoCal = (this.carrierInfo.bandwidth * this.fec) / this.bt * this.mod;
         return infoCal;
       }
     },
     symbolRate() {
-      return this.carrierInfo.bandwidthVal/ this.carrierInfo.selectedModCode.bt;
+      return this.carrierInfo.bandwidth/ this.bt;
+    },
+    ebNo() {
+      return (this.carrierInfo.selectedModCode.es_no) - (10 * Math.log10(this.fec)*this.mod);
     }
+  },
+  methods: {
+    updateCarrier() {
+      // this.allowBw = parseFloat(this.bandwidth) * (1 + parseFloat(this.guardBandVal) / 100);
+      this.$emit('updateCarrierInfo', {
+        mod: this.mod,
+        infoValue: this.infoValue,
+        fec: this.fec,
+        txRate: this.txRate,
+        bt: this.bt,
+        ebNo: this.ebNo,
+        symbolRate: this.symbolRate,
+      })
+    },
+
   },
   watch: {
     'carrierInfo'(newVal, oldVal) {
+      this.mod = newVal.mod;
+      this.fec = newVal.fec;
+      this.bt = newVal.bt;
+      // this.infoValue = newVal.infoValue;
       this.$emit('updateCarrierInfo', {
-        modCodeValue: this.carrierInfo.selectedModCode.modCodeValue,
+        mod: this.mod,
         infoValue: this.infoValue,
-        fec: this.carrierInfo.selectedModCode.fec,
-        txRate: this.carrierInfo.selectedModCode.bt,
-        bt: this.txRate,
-        ebNo: this.carrierInfo.selectedModCode.ebNo,
+        fec: this.fec,
+        txRate: this.txRate,
+        bt: this.bt,
+        ebNo: this.ebNo,
         symbolRate: this.symbolRate,
-        bandwidthVal: this.bandwidthVal,
       });
       // this.allowBW= newVal.allowBWVal;
     }

@@ -56,7 +56,7 @@
     </div> -->
   </div>
 
-{{selectedTp}}
+  <!-- {{selectedTp}} -->
 
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
 
@@ -92,7 +92,7 @@
     </div>
 
     <div class="col-sm-1">
-      <AntSize class="form-control" @antSizeSelected="antSizeA = $event" @change="lossValueA"></AntSize>
+      <AntSize class="form-control" @antSizeSelected="antSizeA = $event"></AntSize>
     </div>
 
     <div class="col-sm-1 blue-box1">
@@ -165,9 +165,10 @@
           Satellite OBO: {{ satObo }}
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-3" style="margin-top:6px">
+          {{satObo}}
           <!-- <SatObo class="form-control" @satOboSelected="satObo = $event"></SatObo> -->
-          <input v-model="satObo" class="form-control col-sm-2" style="margin-left:15px">
+          <!-- <input v-model="satObo" class="form-control col-sm-2" style="margin-left:15px"> -->
         </div>
       </div>
 
@@ -189,8 +190,9 @@
           Satellite IBO: {{ satIbo }}
         </div>
 
-        <div class="col-sm-3">
-          <input v-model="satIbo" class="form-control col-sm-2" style="margin-left:15px">
+        <div class="col-sm-3" style="margin-top:6px">
+          {{satIbo}}
+          <!-- <input v-model="satIbo" class="form-control col-sm-2" style="margin-left:15px"> -->
           <!-- <SatIbo class="form-control" @satIboSelected="satIbo = $event"></SatIbo> -->
         </div>
 
@@ -201,8 +203,9 @@
           Attenuation: {{ atten }}
         </div>
 
-        <div class="col-sm-3">
-          <input v-model="atten" class="form-control col-sm-2" style="margin-left:15px">
+        <div class="col-sm-3" style="margin-top:6px">
+          {{atten}}<!-- <input v-model="atten" class="form-control col-sm-2" style="margin-left:15px"> -->
+
           <!-- <Attenuation class="form-control" @attenSelected="atten = $event"></Attenuation> -->
         </div>
 
@@ -242,15 +245,15 @@
     <div class="col-sm-3">
       <div v-if="selectedPowerMargin === 'Power Utilization' ">
         <div class="input-group">
-          <span class="input-group-addon">Percent Power Utilization</span>
-            <PowerMarginValue class="form-control" @pwrValSelected="pwrValA = $event"></PowerMarginValue>
+          <span class="input-group-addon">Power Utilization</span>
+          <PowerMarginValue class="form-control" @pwrValSelected="pwrValA = $event"></PowerMarginValue>
           <span class="input-group-addon">%</span>
         </div>
       </div>
       <div v-else>
         <div class="input-group">
           <span class="input-group-addon">Margin</span>
-            <PowerMarginValue class="form-control" @pwrValSelected="pwrValA = $event"></PowerMarginValue>
+          <PowerMarginValue class="form-control" @pwrValSelected="pwrValA = $event"></PowerMarginValue>
           <span class="input-group-addon">dB</span>
         </div>
       </div>
@@ -259,15 +262,15 @@
     <div class="col-sm-3">
       <div v-if="selectedPowerMargin === 'Power Utilization' ">
         <div class="input-group">
-          <span class="input-group-addon">Percent Power Utilization</span>
-            <PowerMarginValue class="form-control" @pwrValSelected="pwrValB = $event"></PowerMarginValue>
+          <span class="input-group-addon">Power Utilization</span>
+          <PowerMarginValue class="form-control" @pwrValSelected="pwrValB = $event"></PowerMarginValue>
           <span class="input-group-addon">%</span>
         </div>
       </div>
       <div v-else>
         <div class="input-group">
           <span class="input-group-addon">Margin</span>
-            <PowerMarginValue class="form-control" @pwrValSelected="pwrValB = $event"></PowerMarginValue>
+          <PowerMarginValue class="form-control" @pwrValSelected="pwrValB = $event"></PowerMarginValue>
           <span class="input-group-addon">dB</span>
         </div>
       </div>
@@ -287,14 +290,14 @@
       <div v-if="selectedBwSel === 'Bandwidth' ">
         <div class="input-group">
           <span class="input-group-addon">Bandwidth</span>
-            <BwInfoValue @bandwidthValSelected="bandwidthValA = $event"></BwInfoValue>
+          <BwInfoValue @bandwidthValSelected="bandwidthValA = $event"></BwInfoValue>
           <span class="input-group-addon">kHz</span>
         </div>
       </div>
       <div v-else>
         <div class="input-group">
           <span class="input-group-addon">Information Rate</span>
-            <BwInfoValue @bandwidthValSelected="bandwidthValA = $event"></BwInfoValue>
+          <BwInfoValue @bandwidthValSelected="infoValA = $event"></BwInfoValue>
           <span class="input-group-addon">kbps</span>
         </div>
       </div>
@@ -304,14 +307,14 @@
       <div v-if="selectedBwSel === 'Bandwidth' ">
         <div class="input-group">
           <span class="input-group-addon">Bandwidth</span>
-            <BwInfoValue @bandwidthValSelected="bandwidthValB = $event"></BwInfoValue>
+          <BwInfoValue @bandwidthValSelected="bandwidthValB = $event"></BwInfoValue>
           <span class="input-group-addon">kHz</span>
         </div>
       </div>
       <div v-else>
         <div class="input-group">
           <span class="input-group-addon">Information Rate</span>
-            <BwInfoValue @bandwidthValSelected="bandwidthValB = $event"></BwInfoValue>
+          <BwInfoValue @bandwidthValSelected="infoValB = $event"></BwInfoValue>
           <span class="input-group-addon">kbps</span>
         </div>
       </div>
@@ -339,7 +342,7 @@
     </div>
 
     <div class="col-sm-2">
-      <SimplexDuplex :carrierPath="selectedPath" @simDuplexSelected="selectedSimDuplex = $event"></SimplexDuplex>
+      <SimplexDuplex :platform="selectedPlatform" @simDuplexSelected="selectedSimDuplex = $event"></SimplexDuplex>
     </div>
   </div>
 
@@ -358,8 +361,8 @@
   <div class="row">
     <div class="col-sm-2 blue-box1">
       <span>Modem: {{ selectedModem.name }}</span>
-    <!-- //  {{ selectedModem}} -->
-    <!-- {{this.selectedModem.applications.roll_off_factor}} -->
+      <!-- //  {{ selectedModem}} -->
+      <!-- {{this.selectedModem.applications.roll_off_factor}} -->
     </div>
 
     <div class="col-sm-2">
@@ -392,10 +395,12 @@
         </div>
 
         <div class="col-sm-2">
-          <Modulation :mcgs="mcgA" @modCodeSelected="selectedModCodeA= $event"></Modulation>
 
         </div>
+        <Modulation :mcgs="mcgA" @modCodeSelected="selectedModCodeA= $event"></Modulation>
+
       </div>
+
 
       <!-- <div class="row" style="margin-left:15px">
         <div class="col-sm-3 blue-box1">
@@ -448,7 +453,8 @@
 
           <div class="input-group col-sm-4">
             <span class="input-group-addon">Uplink</span>
-            <iflLoss @iflSelected="iflLoss = $event"></iflLoss>
+            <!-- <iflLoss @iflSelected="iflLoss = $event" :dataIflLoss="iflVal"></iflLoss> -->
+            <input v-model="iflLoss" style="text-align:center" class="form-control col-sm-2">
           </div>
         </div>
 
@@ -460,7 +466,7 @@
           <div class="col-sm-1"></div>
 
           <div class="col-sm-4">
-            <LossFeedA class="form-control" @lossFeedASelected="lossFeedA = $event"></LossFeedA>
+            <LossFeedA class="form-control" style="text-align:center" @lossFeedASelected="lossFeedA = $event"></LossFeedA>
           </div>
         </div>
 
@@ -474,7 +480,7 @@
 
           <div class="input-group col-sm-4">
             <span class="input-group-addon">Uplink</span>
-            <MisAntUpA class="form-control" @misAntUpASelected="misAntUpA = $event"></MisAntUpA>
+            <MisAntUpA class="form-control" style="text-align:center" @misAntUpASelected="misAntUpA = $event"></MisAntUpA>
           </div>
         </div>
 
@@ -483,7 +489,7 @@
 
           <div class="input-group col-sm-4" style="margin-top:-5px; margin-bottom:5px">
             <span class="input-group-addon">Downlink</span>
-            <MisAntDnB class="form-control" @misAntDnBSelected="misAntDnB = $event"></MisAntDnB>
+            <MisAntDnB class="form-control" style="text-align:center" @misAntDnBSelected="misAntDnB = $event"></MisAntDnB>
           </div>
         </div>
 
@@ -496,7 +502,7 @@
 
           <div class="col-sm-4">
             <!-- <input v-model="atmos" class="form-control" style="text-align:center" /> -->
-            <Atmos class="form-control" @atmosSelected="atmos = $event"></Atmos>
+            <Atmos class="form-control" style="text-align:center" @atmosSelected="atmos = $event"></Atmos>
           </div>
         </div>
 
@@ -508,7 +514,7 @@
           <div class="col-sm-1"></div>
 
           <div class="col-sm-4">
-            <OtherLoss class="form-control" @otherLossSelected="otherLoss = $event"></OtherLoss>
+            <OtherLoss class="form-control" style="text-align:center" @otherLossSelected="otherLoss = $event"></OtherLoss>
           </div>
         </div>
       </div>
@@ -622,11 +628,15 @@
       <EbeCheck @ebeSelected="selectedEbe = $event"></EbeCheck>
     </div>
   </div>
-{{this.selectedAntGain}}
+
   <hr style="height:5px; border-width:3px; border-color:#777; margin:10px">
 
-  <Calculate style="line-height:25px":paraData="InputPara"></Calculate>
-  <!-- <span>{{selected}}</span> -->
+  <Calculate style="line-height:25px" :paraData="InputPara"></Calculate>
+
+  <!-- <span>{{this.bandwidthValA}}//</span>
+  <span>{{this.modemApp.roll_off_factor}}//</span>
+  <span>{{this.selectedModCodeA.fec}}//</span>
+  <span>{{this.selectedModCodeA.mod}}</span> -->
 </div>
 </template>
 
@@ -702,7 +712,7 @@ export default {
       antSizeB: "",
       dxContour: "",
       adjSatDxContourA: [],
-      adjSatCheckBox:[],
+      adjSatCheckBox: [],
       //////////////////////////////////////////////////////////////////////////////////////
       selectedCarrier: "multi",
       selectedMode: "FGM",
@@ -716,9 +726,11 @@ export default {
       selectedBwSel: "Bandwidth",
       bandwidthValA: "",
       bandwidthValB: "",
+      infoValA: "",
+      infoValB: "",
       //////////////////////////////////////////////////////////////////////////////////////
       selectedPlatform: "VSAT",
-      selectedSimDuplex: "",
+      selectedSimDuplex: 'Duplex',
       selectedAppDVB: "DVB-S1",
       //////////////////////////////////////////////////////////////////////////////////////
       selectedModem: "",
@@ -727,12 +739,13 @@ export default {
       selectedModCodeB: "",
       // selectedFecA: "",
       //////////////////////////////////////////////////////////////////////////////////////
-      iflLoss: '',
+      iflLoss: 2,
       lossFeedA: 0.3,
-      misAntUpA: '',
-      misAntDnB: '',
+      misAntUpA: 0.2,
+      misAntDnB: 0.2,
       atmos: 0.1,
       otherLoss: 0,
+      hpaPowerBoth: '',
       //////////////////////////////////////////////////////////////////////////////////////
       celeritas: 299792500,
       selectedAntGain: "Calculation",
@@ -874,21 +887,17 @@ export default {
       return this.selectedTp.default_atten;
     },
     selectedPath() {
-      if (this.selectedPlatform === 'Broadcast') {
-        return  this.selectedSimDuplex = 'Simplex'
-      } else {
-        return this.selectedSimDuplex = 'Duplex'
-      }
+      return this.selectedPlatform;
     },
-    // mcgA() {
-    //   if (this.selectedModem) {
-    //     var a = this.selectedModem.applications;
-    //     return a.roll_off_factor;
-    //   } else {
-    //     return [];
-    //   }
-    //
-    // },
+    modemApp() {
+      if (this.selectedModem) {
+        var a = this.selectedModem.applications.find(x => x.type === 'forward' || x.type === 'SCPC' || x.type === 'Broadcast')
+        return a;
+      } else {
+        return [];
+      }
+
+    },
     mcgA() {
       if (this.selectedModem) {
         var a = this.selectedModem.applications.find(x => x.type === 'forward' || x.type === 'SCPC' || x.type === 'Broadcast')
@@ -908,8 +917,8 @@ export default {
     },
     antGainVal() {
       if (this.selectedAntGain === "Calculation") {
-          return 10 * Math.log10((this.antEffVal / 100) * (Math.pow(Math.PI * this.antSizeA / (this.celeritas / (this.selectedTp.uplink_cf * 1000000000)), 2)));
-          // return 'A';
+        return 10 * Math.log10((this.antEffVal / 100) * (Math.pow(Math.PI * this.antSizeA / (this.celeritas / (this.selectedTp.uplink_cf * 1000000000)), 2)));
+        // return 'A';
       } else {
         return 0;
       }
@@ -918,9 +927,30 @@ export default {
       if (this.selectedAntEff === "Default") {
         return 60;
       } else {
-        return 0;
+        return '';
       }
-  },
+    },
+    // iflVal() {
+    //   return {
+    //     iflLoss: this.iflLoss
+    //   }
+    // },
+    // dataBwInfoA(){
+    //   return {
+    //     selectedBwSel: this.selectedBwSel,
+    //     bandwidth: this.bandwidthValA,
+    //     selectedModCode: this.selectedModCodeA,
+    //     bt: this.modemApp.roll_off_factor,
+    //   }
+    // },
+    // dataBwInfoB(){
+    //   return {
+    //     selectedBwSel: this.selectedBwSel,
+    //     bandwidth: this.bandwidthValB,
+    //     selectedModCode: this.selectedModCodeB,
+    //     bt: this.modemApp.roll_off_factor,
+    //   }
+    // },
     InputPara() {
       return {
         selectedSatellite: this.selectedSatellite,
@@ -952,6 +982,8 @@ export default {
         selectedBwSel: this.selectedBwSel,
         bandwidthValA: this.bandwidthValA,
         bandwidthValB: this.bandwidthValB,
+        // infoValA: this.infoValA,
+        // infoValB: this.infoValB,
         //////////////////////////////////////////////////////////////////////////////////////
         selectedPlatform: this.selectedPlatform,
         selectedSimDuplex: this.selectedSimDuplex,
@@ -959,6 +991,7 @@ export default {
         //////////////////////////////////////////////////////////////////////////////////////
         selectedModem: this.selectedModem,
         selectedBestModCode: this.selectedBestModCode,
+        bt: this.modemApp.roll_off_factor,
         selectedModCodeA: this.selectedModCodeA,
         selectedModCodeB: this.selectedModCodeB,
         //////////////////////////////////////////////////////////////////////////////////////
@@ -1005,7 +1038,14 @@ export default {
     updateTp(value) {
       this.selectedTp = value;
     },
-
+    // bandwidthValA(value) {
+    //   this.bandwidthA = value.bandwidthVal;
+    //   this.infoA = value.infoVal;
+    // },
+    // bandwidthValB(value) {
+    //   this.bandwidthB = value.bandwidthVal;
+    //   this.infoB = value.infoVal;
+    // },
     // updateAdj(satellite) {
     //   this.adjSat = sat;
     // },
@@ -1016,7 +1056,7 @@ export default {
     // locationB(locations) {
     //   this.selectedLocationsB = locations;
     // },
-    lossValueA() {
+    lossValueA(value) {
       if (this.antSizeA <= 3.8) {
         this.iflLoss = 2;
         this.misAntUpA = 0.2;

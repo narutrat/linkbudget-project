@@ -1,6 +1,6 @@
 
 <template>
-  <input v-model="antSize" @input="antSizeChanged($event.target.value)"/>
+  <input v-model="antSize" style="text-align:center" @input="antSizeChanged($event.target.value)"/>
 </template>
 
 <script>

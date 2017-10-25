@@ -1,5 +1,5 @@
 <template>
-  <input v-model="pwrVal" @input="pwrValChanged($event.target.value)"/>
+  <input v-model="pwrVal" style="text-align:center" @input="pwrValChanged($event.target.value)"/>
 </template>
 
 <script>

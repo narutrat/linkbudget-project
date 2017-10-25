@@ -7,7 +7,7 @@
     <div class="row">{{cnUpUpfade.toFixed(4)}}</div>
     <div class="row">{{opFluxDenUpfade.toFixed(4)}}</div>
     <div class="row">{{eirpUpfade.toFixed(4)}}</div>
-    <div class="row">{{cnBothfade.toFixed(4)}}</div>
+    <div class="row" style="margin-bottom:80px">{{cnBothfade.toFixed(4)}}</div>
   </div>
 
 </div>

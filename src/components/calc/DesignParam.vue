@@ -2,11 +2,12 @@
     <div class="col-sm-2" style="text-align:center">
       <div class="row">{{hpaBackoff}}</div>
       <!-- <div class="row">3 {{this.bandwidthData.selectedBwSel}}</div> -->
-      <div class="row" style="margin-top:5px">
-        <!-- <input v-model="this.bandwidthData.bandwidthVal" class="form-control" style="text-align:center"> -->
+      <div class="row">{{bandwidth}}</div>
+      <!-- <div class="row" style="margin-top:5px">
+        <input v-model="this.bandwidthData.bandwidthVal" class="form-control" style="text-align:center">
         <input v-model="bandwidth" class="form-control" style="text-align:center" @input="updateBandwidth">
 
-      </div>
+      </div> -->
       <div class="row">
         <input v-model="guardBandVal" class="form-control" style="text-align:center" @input="updateBandwidth">
       </div>
@@ -36,6 +37,9 @@ export default {
     }
   },
   computed: {
+    // bandwidth(){
+    //   return this.bandwidthData.info * this.bandwidthData.bt / this.bandwidthData.fec / this.bandwidthData.mod;
+    // },
     allowBw() {
       return parseFloat(this.bandwidth) * (1 + parseFloat(this.guardBandVal) / 100);
     },

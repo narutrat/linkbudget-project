@@ -1,8 +1,8 @@
 <template>
 <div>
   <div class="col-sm-2">
-    <div class="row">{{ciTotalA.toFixed(4)}}</div>
-    <div class="row">{{ciTotalB.toFixed(4)}}</div>
+    <div class="row">{{ciTotalUp.toFixed(4)}}</div>
+    <div class="row">{{ciTotalDn.toFixed(4)}}</div>
   </div>
 
 </div>
@@ -21,16 +21,16 @@ export default {
     }
   },
   computed: {
-    ciTotalA() {
-      if (this.ciAdj.ciTotalA) {
-        return this.ciAdj.ciTotalA;
+    ciTotalUp() {
+      if (this.ciAdj.ciTotalUp) {
+        return this.ciAdj.ciTotalUp;
       } else {
         return 0;
       }
     },
-    ciTotalB() {
-      if (this.ciAdj.ciTotalB) {
-        return this.ciAdj.ciTotalB;
+    ciTotalDn() {
+      if (this.ciAdj.ciTotalDn) {
+        return this.ciAdj.ciTotalDn;
       } else {
         return 0;
       }
@@ -39,8 +39,8 @@ export default {
   watch: {
     'ciAdj'(newVal, oldVal) {
       this.$emit('updateCiAdj', {
-        ciTotalA: this.ciAdj.ciTotalA,
-        ciTotalB: this.ciAdj.ciTotalB,
+        ciTotalUp: this.ciAdj.ciTotalUp,
+        ciTotalDn: this.ciAdj.ciTotalDn,
       });
       // this.allowBW= newVal.allowBWVal;
     }

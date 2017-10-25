@@ -43,49 +43,50 @@ export default {
   props: ['satDesign'],
   data() {
     return {
-// atten: 0,
-// antSizeA: "",
-// antSizeB: ""
+      atten: "",
+      antSizeA: "",
+      antSizeB: ""
     }
   },
-  computed: {
-    atten() {
-      if (this.satDesign.selectedTp.default_atten) {
-        return this.satDesign.selectedTp.default_atten;
-      } else {
-        return 0;
-      }
-    },
-    antSizeA() {
-      if (this.satDesign.antSizeA) {
-        return this.satDesign.antSizeA;
-      } else {
-        return 0;
-      }
-    },
-    antSizeB() {
-      if (this.satDesign.antSizeB) {
-        return this.satDesign.antSizeB;
-      } else {
-        return 0;
-      }
-    },
-  },
+  // computed: {
+  //   // atten() {
+  //   //   if (this.satDesign.selectedTp.default_atten) {
+  //   //     return this.satDesign.selectedTp.default_atten;
+  //   //   } else {
+  //   //     return 0;
+  //   //   }
+  //   // },
+  //   antSizeA() {
+  //     if (this.satDesign.antSizeA) {
+  //       return this.satDesign.antSizeA;
+  //     } else {
+  //       return 0;
+  //     }
+  //   },
+  //   antSizeB() {
+  //     if (this.satDesign.antSizeB) {
+  //       return this.satDesign.antSizeB;
+  //     } else {
+  //       return 0;
+  //     }
+  //   },
+  // },
   methods: {
     updateSatDesignParam() {
       // this.allowBw = parseFloat(this.bandwidth) * (1 + parseFloat(this.guardBandVal) / 100);
       this.$emit('updateSatDesignData', {
-        atten: this.atten,
-        antSizeA: this.antSizeA,
-        antSizeB: this.antSizeB,
+        atten: +this.atten,
+        antSizeA: +this.antSizeA,
+        antSizeB: +this.antSizeB,
       })
     },
 
   },
   watch: {
     'satDesign'(newVal, oldVal) {
-      // this.atten = newVal.atten;
-      // this.antSizeA = newVal.antSizeA;
+      this.atten = newVal.atten;
+      this.antSizeA = newVal.antSizeA;
+      this.antSizeB = newVal.antSizeB;
       this.$emit('updateSatDesignData', {
         atten: this.atten,
         antSizeA: this.antSizeA,
