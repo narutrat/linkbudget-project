@@ -16,7 +16,7 @@
     <div class="row" style="margin-top:15px">
       <input v-model="dnFadePercent" class="form-control" style="text-align:center" @input="adjustableLinkAvaUpdate">
     </div>
-    <div class="row" style="margin-top:10px">{{avrFadePercent}}</div>
+    <div class="row" style="margin-top:10px">{{avrFadePercent.toFixed(4)}}</div>
   </div>
 
 </div>
@@ -42,7 +42,7 @@ export default {
     //   return this.adjustableLinkAva.linkAvaVal;
     // },
     avrFadePercent() {
-      return (parseFloat(this.upFadePercent) + parseFloat(this.dnFadePercent)) / 2;
+      return (parseFloat(this.upFadePercent) * parseFloat(this.dnFadePercent)) / 100;
     }
   },
   methods: {
@@ -61,6 +61,7 @@ export default {
     'adjustableLinkAva'(newVal, oldVal) {
       this.upFadePercent = newVal.upFadePercent;
       this.dnFadePercent = newVal.dnFadePercent;
+      // this.avrFadePercent = newVal.avrFadePercent;
       this.$emit('updateAdjustableLinkAva', {
         upFadePercent: this.upFadePercent,
         dnFadePercent: this.dnFadePercent,

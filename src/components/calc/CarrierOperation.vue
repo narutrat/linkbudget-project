@@ -1,6 +1,7 @@
 <template>
   <div>
   <div class="col-sm-2" style="text-align:center; margin-top:10px">
+    <!-- <div class="row">{{allowIboClear.toFixed(4)}}</div> -->
     <div class="row">{{allowIboClear.toFixed(4)}}</div>
     <div class="row">{{iboCal.toFixed(4)}}</div>
     <div class="row">{{oboCal.toFixed(4)}}</div>
@@ -34,7 +35,7 @@ export default {
       return this.carrierOperation.aggIbo - (10 * Math.log10(this.carrierOperation.allowBW / (this.carrierOperation.selectedTp.bandwidth * 1000)));
     },
     iboCal() {
-      return this.carrierOperation.sfdAtten - this.carrierOperation.opFluxDen;
+      return parseFloat(this.carrierOperation.sfdAtten) - parseFloat(this.carrierOperation.opFluxDen);
     },
     oboCal() {
       return this.carrierOperation.eirpDn - (this.carrierOperation.opFluxDen + this.tpGain);
@@ -43,7 +44,7 @@ export default {
       return parseFloat(this.carrierOperation.eirpDn) - this.carrierOperation.aggObo - (parseFloat(this.carrierOperation.sfdMax) - this.carrierOperation.aggIbo - (parseFloat(this.carrierOperation.selectedTp.atten_range) - parseFloat(this.carrierOperation.atten)));
     },
     iboUpfade() {
-      return this.iboCal + this.carrierOperation.rain;
+      return parseFloat(this.iboCal) + parseFloat(this.carrierOperation.rainUp);
     },
     oboUpfade() {
       return this.carrierOperation.eirpDn - (this.carrierOperation.opFluxDenUpfade + this.tpGain);

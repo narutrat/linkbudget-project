@@ -49,13 +49,8 @@
         <div class="col-sm-2"></div>
       </div>
 
-      <div class="col-sm-4" style="text-align:left; padding:10px">
-        <div class="row">Power Utilization</div>
-        <div class="row">BW Utilization</div>
-        <div class="row">Case</div>
-      </div>
-
       <UtilParam @updateHPA="dataUtilParamUpdate" :utilParam="dataUtilParam" style="padding:10px"></UtilParam>
+
     </div>
 
 
@@ -166,7 +161,7 @@
       <CalculateCN @updateCalculateCN="dataCalculateCNUpdateAClear" :calculateCN="dataCalculateCNaClear"></CalculateCN>
       <CalculateCN :calculateCN="dataCalculateCNaUpfade"></CalculateCN>
       <CalculateCN :calculateCN="dataCalculateCNaDownfade"></CalculateCN>
-      <CalculateCN :calculateCN="dataCalculateCNaBothfade"></CalculateCN>
+      <CalculateCN @updateCalculateCN="dataCalculateCNUpdateABoth" :calculateCN="dataCalculateCNaBothfade"></CalculateCN>
 
     </div>
     <div class="col-sm-6">
@@ -196,7 +191,7 @@
       <CalculateCN @updateCalculateCN="dataCalculateCNUpdateBClear" :calculateCN="dataCalculateCNbClear"></CalculateCN>
       <CalculateCN :calculateCN="dataCalculateCNbUpfade"></CalculateCN>
       <CalculateCN :calculateCN="dataCalculateCNbDownfade"></CalculateCN>
-      <CalculateCN :calculateCN="dataCalculateCNbBothfade"></CalculateCN>
+      <CalculateCN @updateCalculateCN="dataCalculateCNUpdateBBoth" :calculateCN="dataCalculateCNbBothfade"></CalculateCN>
 
     </div>
   </div>
@@ -658,12 +653,12 @@
       <div>
         <CiTotal @updateCiTotal="dataCiTotalDnUpdateA" :ciTotal="dataCiTotalDnA"></CiTotal>
         <CiTotal @updateCiTotal="dataCiTotalDnUpdateB" :ciTotal="dataCiTotalDnB"></CiTotal>
-     </div>
+      </div>
 
     </div>
     <!-- {{this.paraData.selectedModCodeA}} -->
-    <!-- {{bwA}} // {{infoA}} <br>
-    {{bwB}} // {{infoB}} -->
+
+
   </div>
 
 </div>
@@ -837,7 +832,11 @@ export default {
       ciDnB1: '',
       ciDnB2: '',
       ciTotalDnB: '',
-      selectedModCodeA:''
+      selectedModCodeA: '',
+      upFadePercent: '',
+      dnFadePercent: '',
+      pwrUtilA: '',
+      pwrUtilB: '',
 
     }
   },
@@ -867,8 +866,7 @@ export default {
     AdjName,
     UplinkInt,
     DownlinkInt,
-    CiTotal
-
+    CiTotal,
   },
   methods: {
     /////////////////////////////
@@ -878,26 +876,50 @@ export default {
     /////////////// DesignParam ///////////////
     dataDesignParamUpdateA(value) {
       this.bandwidthA = value.bandwidth;
+      this.guardBandValA = value.guardBandVal;
       this.allowBWA = value.allowBW;
       this.numMCPC = value.numMCPC;
       this.aggHpaBoo = value.aggHpaBoo;
+      this.$emit('calDesignParamA', {
+        bandwidthA: this.bandwidthA,
+        allowBWA: this.allowBWA,
+        guardBandValA: this.guardBandValA,
+        numMCPC: this.numMCPC,
+        aggHpaBoo: this.aggHpaBoo,
+      })
     },
     dataDesignParamUpdateB(value) {
       this.bandwidthB = value.bandwidth;
+      this.guardBandValB = value.guardBandVal;
       this.allowBWB = value.allowBW;
       // this.numMCPC = value.numMCPC;
       // this.aggHpaBoo = value.aggHpaBoo;
+      this.$emit('calDesignParamB', {
+        bandwidthB: this.bandwidthB,
+        guardBandValB: this.guardBandValB,
+        allowBWB: this.allowBWB,
+      })
     },
     /////////////// Utilization ///////////////
     dataUtilParamUpdate(value) {
-      this.hpaPowerBothA = value.hpaPowerBothA;
-      this.hpaPowerBothB = value.hpaPowerBothB;
+      this.pwrUtilA = value.pwrUtilA;
+      this.pwrUtilB = value.pwrUtilB;
+      this.$emit('calUtilParam', {
+        pwrUtilA: this.pwrUtilA,
+        pwrUtilB: this.pwrUtilB,
+      })
+      // this.hpaPowerBothB = value.hpaPowerBoth;
     },
     /////////////// SatDesignParam ///////////////
     dataSatDesignParamUpdate(value) {
       this.atten = value.atten;
       this.antSizeA = value.antSizeA;
       this.antSizeB = value.antSizeB;
+      this.$emit('calAnt', {
+        atten: this.atten,
+        antSizeA: this.antSizeA,
+        antSizeB: this.antSizeB,
+      })
     },
     /////////////// Carrier Operating Point ///////////////
     dataCarrierOperationUpdateA(value) {
@@ -917,21 +939,37 @@ export default {
       this.oboUpfadeB = value.oboUpfade;
     },
     /////////////// AdjustableParam ///////////////
-    dataAdjustableLinkAva(value){
+    dataAdjustableLinkAva(value) {
       this.upFadePercent = value.upFadePercent;
       this.dnFadePercent = value.dnFadePercent;
+      this.avrFadePercent = value.avrFadePercent;
+      this.$emit('calLinkAva', {
+        upFadePercent: this.upFadePercent,
+        dnFadePercent: this.dnFadePercent,
+        avrFadePercent: this.avrFadePercent
+      })
     },
     dataAdjustableParamUpdateA(value) {
       this.sfdAttenA = value.sfdAtten;
       this.allowFluxDenA = value.allowFluxDen;
       this.hpaPowerBothA = value.hpaPowerBoth;
       this.hpaMaxA = value.hpaMax;
+      this.rainUpA = value.rainUp;
+      this.rainDownA = value.rainDown;
+      this.$emit('calAdjustableParamA', {
+        hpaPowerBothA: this.hpaPowerBothA,
+      })
     },
     dataAdjustableParamUpdateB(value) {
       this.sfdAttenB = value.sfdAtten;
       this.allowFluxDenB = value.allowFluxDen;
       this.hpaPowerBothB = value.hpaPowerBoth;
       this.hpaMaxB = value.hpaMax;
+      this.rainUpB = value.rainUp;
+      this.rainDownB = value.rainDown;
+      this.$emit('calAdjustableParamB', {
+        hpaPowerBothB: this.hpaPowerBothB,
+      })
     },
     /////////////// AggBackoff ///////////////
     dataAggBackoffUpdate(value) {
@@ -943,20 +981,82 @@ export default {
       this.frqUp_B = value.frqUpB;
       this.frqDn_A = value.frqDnA;
       this.frqDn_B = value.frqDnB;
+      this.$emit('calFreq', {
+        frqUp_A: this.frqUp_A,
+        frqUp_B: this.frqUp_B,
+        frqDn_A: this.frqDn_A,
+        frqDn_B: this.frqDn_B,
+      })
     },
     /////////////// CalculateCN ///////////////
     dataCalculateCNUpdateAClear(value) {
       this.cnTotalA = value.cnTotal;
+      this.ciUpTotalA = value.ciUpTotal;
+      this.cnUpA = value.cnUp;
+      this.cnDnA = value.cnDn;
+      this.interModA = value.interMod;
+      this.ciCochA = value.ciCoch;
+      this.ciAdjA = value.ciAdj;
+      this.ebNoA = value.ebNo;
+      this.marginA = value.margin;
+      this.$emit('calCNA', {
+        ciUpTotalA: this.ciUpTotalA,
+        cnUpA: this.cnUpA,
+        cnDnA: this.cnDnA,
+        interModA: this.interModA,
+        ciCochA: this.ciCochA,
+        ciAdjA: this.ciAdjA,
+        cnTotalA: this.cnTotalA,
+        ebNoA: this.ebNoA,
+        marginA: this.marginA,
+      })
     },
     dataCalculateCNUpdateBClear(value) {
       this.cnTotalB = value.cnTotal;
+      this.ciUpTotalB = value.ciUpTotal;
+      this.cnUpB = value.cnUp;
+      this.cnDnB = value.cnDn;
+      this.interModB = value.interMod;
+      this.ciCochB = value.ciCoch;
+      this.ciAdjB = value.ciAdj;
+      this.ebNoB = value.ebNo;
+      this.marginB = value.margin;
+      this.$emit('calCNB', {
+        ciUpTotalB: this.ciUpTotalB,
+        cnUpB: this.cnUpB,
+        cnDnB: this.cnDnB,
+        interModB: this.interModB,
+        ciCochB: this.ciCochB,
+        ciAdjB: this.ciAdjB,
+        cnTotalB: this.cnTotalB,
+        ebNoB: this.ebNoB,
+        marginB: this.marginB,
+      })
+    },
+    dataCalculateCNUpdateABoth(value) {
+      this.ebNoBothA = value.ebNo;
+      this.$emit('calCNA_Both', {
+        ebNoBothA: this.ebNoBothA,
+      })
+    },
+    dataCalculateCNUpdateBBoth(value) {
+      this.ebNoBothB = value.ebNo;
+      this.$emit('calCNB_Both', {
+        ebNoBothB: this.ebNoBothB,
+      })
     },
     /////////////// Carrier Information ///////////////
     dataCarrierInfoUpdateA(value) {
       this.carrierInfoA = value;
+      this.$emit('calCarrierA', {
+        carrierInfoA: this.carrierInfoA,
+      })
     },
     dataCarrierInfoUpdateB(value) {
       this.carrierInfoB = value;
+      this.$emit('calCarrierB', {
+        carrierInfoB: this.carrierInfoB,
+      })
     },
     /////////////// SatInfo ///////////////
     dataSatInfoUpdate(value) {
@@ -979,16 +1079,45 @@ export default {
     dataLocationInfoAUpdate(value) {
       // console.log('The incoming value A is ' + JSON.stringify(value, undefined,2));
       this.locationInfoA = value;
+
+      this.$emit('calLocationA', {
+        cityA: this.locationInfoA.city,
+        countryA: this.locationInfoA.country,
+        eirpdownA: this.locationInfoA.eirpdown,
+        gtA: this.locationInfoA.gt,
+      })
+
     },
     dataLocationInfoBUpdate(value) {
       // console.log('The incoming value B is ' + JSON.stringify(value, undefined,2));
       this.locationInfoB = value;
+
+      this.$emit('calLocationB', {
+        cityB: this.locationInfoB.city,
+        countryB: this.locationInfoB.country,
+        eirpdownB: this.locationInfoB.eirpdown,
+        gtB: this.locationInfoB.gt,
+      })
     },
     dataTransmitLossUpdateA(value) {
+      this.iflLoss = value.iflLoss;
+      this.misAntUpA = value.misAntUpA;
+      this.otherLoss = value.otherLoss;
       this.totalLossUpA = value.totalLossUp;
+      this.$emit('calTransmitLossA', {
+        iflLossA: this.iflLoss,
+        totalLossUpA: this.totalLossUpA,
+      })
     },
     dataTransmitLossUpdateB(value) {
+      this.iflLoss = value.iflLoss;
+      this.misAntUpA = value.misAntUpA;
+      this.otherLoss = value.otherLoss;
       this.totalLossUpB = value.totalLossUp;
+      this.$emit('calTransmitLossB', {
+        iflLossB: this.iflLoss,
+        totalLossUpB: this.totalLossUpB,
+      })
     },
     dataReceiveLossUpdateA(value) {
       this.totalLossDnA = value.totalLossDn;
@@ -1002,6 +1131,11 @@ export default {
       this.slantRangeA = value.slantRange;
       this.azAngleA = value.azAngle;
       this.elAngleA = value.elAngle;
+
+      this.$emit('calDataA', {
+        azAngleA: this.azAngleA,
+        elAngleA: this.elAngleA,
+      })
     },
     dataAzElRangeUpdateB(value) {
       this.longDiffB = value.longDiff;
@@ -1009,6 +1143,11 @@ export default {
       this.slantRangeB = value.slantRange;
       this.azAngleB = value.azAngle;
       this.elAngleB = value.elAngle;
+
+      this.$emit('calDataB', {
+        azAngleB: this.azAngleB,
+        elAngleB: this.elAngleB,
+      })
     },
     dataUplinkLossUpdateA(value) {
       this.eirpUpValA = value.eirpUpVal;
@@ -1161,28 +1300,28 @@ export default {
   //////////////////////////////////////////////////////////////////////////////
 
   computed: {
-    bwA(){
+    bwA() {
       if (this.paraData.selectedBwSel === 'Bandwidth') {
         return this.paraData.bandwidthValA;
       } else {
         return this.paraData.bandwidthValA * this.paraData.bt / this.paraData.selectedModCodeA.fec / this.paraData.selectedModCodeA.mod;
       }
     },
-    infoA(){
+    infoA() {
       if (this.paraData.selectedBwSel === 'Information Rate') {
         return this.paraData.bandwidthValA;
       } else {
         return this.paraData.bandwidthValA * this.paraData.selectedModCodeA.fec * this.paraData.selectedModCodeA.mod / this.paraData.bt;
       }
     },
-    bwB(){
+    bwB() {
       if (this.paraData.selectedBwSel === 'Bandwidth') {
         return this.paraData.bandwidthValB;
       } else {
         return this.paraData.bandwidthValB * this.paraData.bt / this.paraData.selectedModCodeB.fec / this.paraData.selectedModCodeB.mod;
       }
     },
-    infoB(){
+    infoB() {
       if (this.paraData.selectedBwSel === 'Information Rate') {
         return this.paraData.bandwidthValB;
       } else {
@@ -1221,6 +1360,7 @@ export default {
     dataUtilParam() {
       return {
         selectedTp: this.paraData.selectedTp,
+        pwrVal: this.paraData.pwrValA,
 
         opFluxDenA: this.opFluxDenA,
         opFluxDenB: this.opFluxDenB,
@@ -1258,17 +1398,17 @@ export default {
       return {
         selectedSatellite: this.paraData.selectedSatellite,
         selectedTp: this.paraData.selectedTp,
-        aggIbo: this.aggBackoff.satIbo,
-        aggObo: this.aggBackoff.satObo,
-        sfdAtten: this.sfdAttenA,
-        atten: this.atten,
+        aggIbo: +this.aggBackoff.satIbo,
+        aggObo: +this.aggBackoff.satObo,
+        sfdAtten: +this.sfdAttenA,
+        atten: +this.atten,
 
-        sfdMax: this.sfdMaxA,
-        allowBW: this.allowBWA,
-        opFluxDen: this.opFluxDenA,
-        eirpDn: this.eirpDnB,
-        opFluxDenUpfade: this.opFluxDenUpfadeA,
-        rain: 2.07174802169227
+        sfdMax: +this.sfdMaxA,
+        allowBW: +this.allowBWA,
+        opFluxDen: +this.opFluxDenA,
+        eirpDn: +this.eirpDnB,
+        opFluxDenUpfade: +this.opFluxDenUpfadeA,
+        rainUp: +this.rainUpA,
       }
     },
     dataCarrierOperationB() {
@@ -1285,7 +1425,7 @@ export default {
         opFluxDen: this.opFluxDenB,
         eirpDn: this.eirpDnA,
         opFluxDenUpfade: this.opFluxDenUpfadeB,
-        rain: 2.08934166796135
+        rainUp: this.rainUpB,
       }
     },
     /////////////////////////////////
@@ -1311,16 +1451,33 @@ export default {
 
         sfdMax: this.sfdMaxA,
         hpaPowerBoth: this.hpaPowerBothA,
+        pwrVal: this.paraData.pwrValA,
+        // pwrUtil : this.pwrUtilA,
+        opFluxDen: this.opFluxDenA,
+        allowFluxDen: this.allowFluxDenA,
+        percentAllowBw: this.aggBackoff.percentAllowBw_A,
 
-        latSel: this.locationInfoA.latSel,
-        longSel: this.locationInfoA.longSel,
-        frqUp: this.frqUp_A,
         orbitalSlotSel: this.paraData.selectedSatellite.orbital_slot,
+
+
+        latSelUp: this.locationInfoA.latSel,
+        longSelUp: this.locationInfoA.longSel,
+
+        frqUp: this.frqUp_A,
         upPol: this.paraData.selectedTp.uplink_pol,
         upFadePercent: this.upFadePercent,
+        elAngleUp: this.elAngleA,
+        antSizeUp: this.antSizeA,
+
+        latSelDn: this.locationInfoB.latSel,
+        longSelDn: this.locationInfoB.longSel,
+
+        frqDn: this.frqDn_A,
+        dnPol: this.paraData.selectedTp.downlink_pol,
         dnFadePercent: this.dnFadePercent,
-        elAngle: this.elAngleA,
-        antSize: this.antSizeA,
+        elAngleDn: this.elAngleB,
+        antSizeDn: this.antSizeB,
+
       }
     },
     dataAdjustbleParamB() {
@@ -1334,17 +1491,32 @@ export default {
 
         sfdMax: this.sfdMaxB,
         hpaPowerBoth: this.hpaPowerBothB,
+        pwrVal: this.paraData.pwrValB,
+        // pwrUtil : this.pwrUtilB,
+        opFluxDen: this.opFluxDenB,
+        allowFluxDen: this.allowFluxDenB,
+        percentAllowBw: this.aggBackoff.percentAllowBw_B,
 
-        latSel: this.locationInfoB.latSel,
-        longSel: this.locationInfoB.longSel,
-        frqUp: this.frqUp_B,
         orbitalSlotSel: this.paraData.selectedSatellite.orbital_slot,
+
+
+        latSelUp: this.locationInfoB.latSel,
+        longSelUp: this.locationInfoB.longSel,
+
+        frqUp: this.frqUp_B,
         upPol: this.paraData.selectedTp.uplink_pol,
         upFadePercent: this.upFadePercent,
-        dnFadePercent: this.dnFadePercent,
-        elAngle: this.elAngleB,
-        antSize: this.antSizeB,
+        elAngleUp: this.elAngleB,
+        antSizeUp: this.antSizeB,
 
+        latSelDn: this.locationInfoA.latSel,
+        longSelDn: this.locationInfoA.longSel,
+
+        frqDn: this.frqDn_B,
+        dnPol: this.paraData.selectedTp.downlink_pol,
+        dnFadePercent: this.dnFadePercent,
+        elAngleDn: this.elAngleA,
+        antSizeDn: this.antSizeA,
       }
     },
     ////////////////////////
@@ -1380,30 +1552,30 @@ export default {
     ///////////////////////////
     dataCalculateCNaClear() {
       return {
-      ciUpTotal: this.ciTotalUpA,
-      cnUp: this.cnUpClearA,
-      cnDn: this.cnDnClearA_Clear,
-      interMod : this.paraData.interMod,
-      ciCoch: 30,
-      ciAdj: this.ciTotalDnA,
-      infoValue: this.carrierInfoA.infoValue,
-      bandwidth: this.bandwidthA,
-      // ebNoThreshold: this.ebNoThresholdA
-      ebNoThreshold: this.carrierInfoA.ebNo
+        ciUpTotal: this.ciTotalUpA,
+        cnUp: this.cnUpClearA,
+        cnDn: this.cnDnClearA_Clear,
+        interMod: this.paraData.interMod,
+        ciCoch: 30,
+        ciAdj: this.ciTotalDnA,
+        infoValue: this.carrierInfoA.infoValue,
+        bandwidth: this.bandwidthA,
+        // ebNoThreshold: this.ebNoThresholdA
+        ebNoThreshold: this.carrierInfoA.ebNo
       }
     },
     dataCalculateCNaUpfade() {
       return {
-      ciUpTotal: this.ciTotalUpA,
-      cnUp: this.cnUpUpfadeA,
-      cnDn: this.cnDnClearA_Upfade,
-      interMod : this.paraData.interMod,
-      ciCoch: 30,
-      ciAdj: this.ciTotalDnA,
-      infoValue: this.carrierInfoA.infoValue,
-      bandwidth: this.bandwidthA,
-      // ebNoThreshold: this.ebNoThresholdA
-      ebNoThreshold: this.carrierInfoA.ebNo
+        ciUpTotal: this.ciTotalUpA,
+        cnUp: this.cnUpUpfadeA,
+        cnDn: this.cnDnClearA_Upfade,
+        interMod: this.paraData.interMod,
+        ciCoch: 30,
+        ciAdj: this.ciTotalDnA,
+        infoValue: this.carrierInfoA.infoValue,
+        bandwidth: this.bandwidthA,
+        // ebNoThreshold: this.ebNoThresholdA
+        ebNoThreshold: this.carrierInfoA.ebNo
       }
     },
     dataCalculateCNaDownfade() {
@@ -1411,7 +1583,7 @@ export default {
         ciUpTotal: this.ciTotalUpA,
         cnUp: this.cnUpClearA,
         cnDn: this.cnDnfadeClearA_Clear,
-        interMod : this.paraData.interMod,
+        interMod: this.paraData.interMod,
         ciCoch: 30,
         ciAdj: this.ciTotalDnA,
         infoValue: this.carrierInfoA.infoValue,
@@ -1422,72 +1594,72 @@ export default {
     },
     dataCalculateCNaBothfade() {
       return {
-      ciUpTotal: this.ciTotalUpA,
-      cnUp: this.cnUpUpfadeA,
-      cnDn: this.cnDnfadeClearA_Upfade,
-      interMod : this.paraData.interMod,
-      ciCoch: 30,
-      ciAdj: this.ciTotalDnA,
-      infoValue: this.carrierInfoA.infoValue,
-      bandwidth: this.bandwidthA,
-      // ebNoThreshold: this.ebNoThresholdA
-      ebNoThreshold: this.carrierInfoA.ebNo
+        ciUpTotal: this.ciTotalUpA,
+        cnUp: this.cnUpUpfadeA,
+        cnDn: this.cnDnfadeClearA_Upfade,
+        interMod: this.paraData.interMod,
+        ciCoch: 30,
+        ciAdj: this.ciTotalDnA,
+        infoValue: this.carrierInfoA.infoValue,
+        bandwidth: this.bandwidthA,
+        // ebNoThreshold: this.ebNoThresholdA
+        ebNoThreshold: this.carrierInfoA.ebNo
       }
     },
     dataCalculateCNbClear() {
       return {
-      ciUpTotal: this.ciTotalUpB,
-      cnUp: this.cnUpClearB,
-      cnDn: this.cnDnClearB_Clear,
-      interMod : this.paraData.interMod,
-      ciCoch: 25,
-      ciAdj: this.ciTotalDnB,
-      infoValue: this.carrierInfoB.infoValue,
-      bandwidth: this.bandwidthB,
-      // ebNoThreshold: this.ebNoThresholdA
-      ebNoThreshold: this.carrierInfoB.ebNo
+        ciUpTotal: this.ciTotalUpB,
+        cnUp: this.cnUpClearB,
+        cnDn: this.cnDnClearB_Clear,
+        interMod: this.paraData.interMod,
+        ciCoch: 25,
+        ciAdj: this.ciTotalDnB,
+        infoValue: this.carrierInfoB.infoValue,
+        bandwidth: this.bandwidthB,
+        // ebNoThreshold: this.ebNoThresholdA
+        ebNoThreshold: this.carrierInfoB.ebNo
       }
     },
     dataCalculateCNbUpfade() {
       return {
-      ciUpTotal: this.ciTotalUpB,
-      cnUp: this.cnUpUpfadeB,
-      cnDn: this.cnDnClearB_Upfade,
-      interMod : this.paraData.interMod,
-      ciCoch: 25,
-      ciAdj: this.ciTotalDnB,
-      infoValue: this.carrierInfoB.infoValue,
-      bandwidth: this.bandwidthB,
-      // ebNoThreshold: this.ebNoThresholdA
-      ebNoThreshold: this.carrierInfoB.ebNo
+        ciUpTotal: this.ciTotalUpB,
+        cnUp: this.cnUpUpfadeB,
+        cnDn: this.cnDnClearB_Upfade,
+        interMod: this.paraData.interMod,
+        ciCoch: 25,
+        ciAdj: this.ciTotalDnB,
+        infoValue: this.carrierInfoB.infoValue,
+        bandwidth: this.bandwidthB,
+        // ebNoThreshold: this.ebNoThresholdA
+        ebNoThreshold: this.carrierInfoB.ebNo
       }
     },
     dataCalculateCNbDownfade() {
       return {
-      ciUpTotal: this.ciTotalUpB,
-      cnUp: this.cnUpClearB,
-      cnDn: this.cnDnfadeClearB_Clear,
-      interMod : this.paraData.interMod,
-      ciCoch: 25,
-      ciAdj: this.ciTotalDnB,
-      infoValue: this.carrierInfoB.infoValue,
-      bandwidth: this.bandwidthB,
-      // ebNoThreshold: this.ebNoThresholdA
-      ebNoThreshold: this.carrierInfoB.ebNo
+        ciUpTotal: this.ciTotalUpB,
+        cnUp: this.cnUpClearB,
+        cnDn: this.cnDnfadeClearB_Clear,
+        interMod: this.paraData.interMod,
+        ciCoch: 25,
+        ciAdj: this.ciTotalDnB,
+        infoValue: this.carrierInfoB.infoValue,
+        bandwidth: this.bandwidthB,
+        // ebNoThreshold: this.ebNoThresholdA
+        ebNoThreshold: this.carrierInfoB.ebNo
       }
     },
     dataCalculateCNbBothfade() {
       return {
-      ciUpTotal: this.ciTotalUpB,
-      cnUp: this.cnUpUpfadeB,
-      cnDn: this.cnDnfadeClearB_Upfade,
-      interMod : this.paraData.interMod,
-      ciCoch: 25,
-      ciAdj: this.ciTotalDnB,
-      infoValue: this.carrierInfoB.infoValue,
-      bandwidth: this.bandwidthB,
-      // ebNoThreshold: this.ebNoThresholdA
-      ebNoThreshold: this.carrierInfoB.ebNo
+        ciUpTotal: this.ciTotalUpB,
+        cnUp: this.cnUpUpfadeB,
+        cnDn: this.cnDnfadeClearB_Upfade,
+        interMod: this.paraData.interMod,
+        ciCoch: 25,
+        ciAdj: this.ciTotalDnB,
+        infoValue: this.carrierInfoB.infoValue,
+        bandwidth: this.bandwidthB,
+        // ebNoThreshold: this.ebNoThresholdA
+        ebNoThreshold: this.carrierInfoB.ebNo
       }
     },
     /////////////////////////////////
@@ -1682,8 +1854,8 @@ export default {
       return {
         celeritas: this.locationInfoA.celeritas,
         antGainReceive: this.locationInfoB.antGainReceive,
-        eirpDn : this.eirpDnB,
-        totalLossDn : this.totalLossDnA,
+        eirpDn: this.eirpDnB,
+        totalLossDn: this.totalLossDnA,
         bandwidth: this.bandwidthA,
         atmos: this.atmosA,
         slantRange: this.slantRangeB,
@@ -1695,8 +1867,8 @@ export default {
       return {
         celeritas: this.locationInfoA.celeritas,
         antGainReceive: this.locationInfoB.antGainReceive,
-        eirpDn : this.eirpDnB,
-        totalLossDn : this.totalLossDnA,
+        eirpDn: this.eirpDnB,
+        totalLossDn: this.totalLossDnA,
         bandwidth: this.bandwidthA,
         atmos: this.atmosA,
         slantRange: this.slantRangeB,
@@ -1708,8 +1880,8 @@ export default {
       return {
         celeritas: this.locationInfoB.celeritas,
         antGainReceive: this.locationInfoA.antGainReceive,
-        eirpDn : this.eirpDnA,
-        totalLossDn : this.totalLossDnB,
+        eirpDn: this.eirpDnA,
+        totalLossDn: this.totalLossDnB,
         bandwidth: this.bandwidthB,
         atmos: this.atmosB,
         slantRange: this.slantRangeA,
@@ -1721,8 +1893,8 @@ export default {
       return {
         celeritas: this.locationInfoB.celeritas,
         antGainReceive: this.locationInfoA.antGainReceive,
-        eirpDn : this.eirpDnA,
-        totalLossDn : this.totalLossDnB,
+        eirpDn: this.eirpDnA,
+        totalLossDn: this.totalLossDnB,
         bandwidth: this.bandwidthB,
         atmos: this.atmosB,
         slantRange: this.slantRangeA,
@@ -1736,7 +1908,7 @@ export default {
     dataUplinkNoiseA() {
       return {
         bandwidth: this.bandwidthA,
-        opFluxDen : this.opFluxDenA,
+        opFluxDen: this.opFluxDenA,
         gainSqrM: this.gainSqrMA,
         gtSel: this.gtSelA,
         eirpUpVal: this.eirpUpValA,
@@ -1745,14 +1917,14 @@ export default {
         sfdAtten: this.sfdAttenA,
         receivePwrClear: this.receivePwrClearA_Clear,
         noisePwrDnfade: this.noisePwrDnfadeA_Clear,
-        rainUp: 2.07174802169227,
-        rainDown: 0.293214851232992
+        rainUp: this.rainUpA,
+        rainDown: this.rainDownA
       }
     },
     dataUplinkNoiseB() {
       return {
         bandwidth: this.bandwidthB,
-        opFluxDen : this.opFluxDenB,
+        opFluxDen: this.opFluxDenB,
         gainSqrM: this.gainSqrMB,
         gtSel: this.gtSelB,
         eirpUpVal: this.eirpUpValB,
@@ -1761,8 +1933,8 @@ export default {
         sfdAtten: this.sfdAttenB,
         receivePwrClear: this.receivePwrClearB_Clear,
         noisePwrDnfade: this.noisePwrDnfadeB_Clear,
-        rainUp: 2.08934166796135,
-        rainDown: 0.293319516937021
+        rainUp: this.rainUpB,
+        rainDown: this.rainDownB
       }
     },
     ////////////////////////////
@@ -1773,7 +1945,7 @@ export default {
         bandwidth: this.bandwidthA,
         tsys: this.locationInfoA.tsys,
         receivePwrClear: this.receivePwrClearA_Clear,
-        rain: 0.293214851232992,
+        rainDown: this.rainDownA,
         cnTotal: this.cnTotalA
       }
     },
@@ -1782,7 +1954,7 @@ export default {
         bandwidth: this.bandwidthA,
         tsys: this.locationInfoA.tsys,
         receivePwrClear: this.receivePwrClearA_Upfade,
-        rain: 0.293214851232992
+        rainDown: this.rainDownA,
       }
     },
     dataDownlinkNoiseB_Clear() {
@@ -1790,7 +1962,7 @@ export default {
         bandwidth: this.bandwidthB,
         tsys: this.locationInfoB.tsys,
         receivePwrClear: this.receivePwrClearB_Clear,
-        rain: 0.293319516937021,
+        rainDown: this.rainDownB,
         cnTotal: this.cnTotalB
       }
     },
@@ -1799,7 +1971,7 @@ export default {
         bandwidth: this.bandwidthB,
         tsys: this.locationInfoB.tsys,
         receivePwrClear: this.receivePwrClearB_Upfade,
-        rain: 0.293319516937021
+        rainDown: this.rainDownB,
       }
     },
     ////////////////////////
@@ -1845,27 +2017,33 @@ export default {
     },
     dataUplinkIntA1() {
       return {
-        topo: 2.035,
-        ulPden: -55,
-        esInTcGt: -3,
+        // topo: 2.035,
+        // ulPden: -55,
+        // esInTcGt: -3,
+        topo: this.paraData.adjInfo.topocentric1,
+        ulPden: this.paraData.adjInfo.uplinkPdens1,
+        esInTcGt: this.paraData.adjInfo.adjacent1,
         selectedSatellite: this.paraData.selectedSatellite,
         powerDen: this.powerDenA,
         antGainVal: this.locationInfoA.antGainVal,
         gtSel: this.gtSelA,
-        polImp: 5,
+        polImp: 0,
         ulSidelobe: 0,
       }
     },
     dataUplinkIntA2() {
       return {
-        topo: 1.485,
-        ulPden: -55,
-        esInTcGt: -10,
+        // topo: 1.485,
+        // ulPden: -55,
+        // esInTcGt: -10,
+        topo: this.paraData.adjInfo.topocentric2,
+        ulPden: this.paraData.adjInfo.uplinkPdens2,
+        esInTcGt: this.paraData.adjInfo.adjacent2,
         selectedSatellite: this.paraData.selectedSatellite,
         powerDen: this.powerDenA,
         antGainVal: this.locationInfoA.antGainVal,
         gtSel: this.gtSelA,
-        polImp: 5,
+        polImp: 0,
         ulSidelobe: 0,
       }
     },
@@ -1879,9 +2057,9 @@ export default {
 
     dataUplinkIntB1() {
       return {
-        topo: 2.035,
-        ulPden: -55,
-        esInTcGt: -3,
+        topo: this.paraData.adjInfo.topocentric1,
+        ulPden: this.paraData.adjInfo.uplinkPdens1,
+        esInTcGt: this.paraData.adjInfo.adjacent1,
         selectedSatellite: this.paraData.selectedSatellite,
         powerDen: this.powerDenB,
         antGainVal: this.locationInfoB.antGainVal,
@@ -1892,9 +2070,9 @@ export default {
     },
     dataUplinkIntB2() {
       return {
-        topo: 1.485,
-        ulPden: -55,
-        esInTcGt: -10,
+        topo: this.paraData.adjInfo.topocentric2,
+        ulPden: this.paraData.adjInfo.uplinkPdens2,
+        esInTcGt: this.paraData.adjInfo.adjacent2,
         selectedSatellite: this.paraData.selectedSatellite,
         powerDen: this.powerDenB,
         antGainVal: this.locationInfoB.antGainVal,
@@ -1916,9 +2094,9 @@ export default {
     ///////////////////////////////////////////
     dataDownlinkIntA1() {
       return {
-        topo: 2.035,
-        downlinkPdenSel: -40.063025,
-        polImp: 5,
+        topo: this.paraData.adjInfo.topocentric1,
+        downlinkPdenSel: this.paraData.adjInfo.downlinkPdens1,
+        polImp: 0,
         esAdj: -1.5,
 
         antEffVal: this.paraData.antEffVal,
@@ -1932,9 +2110,9 @@ export default {
     },
     dataDownlinkIntA2() {
       return {
-        topo: 1.485,
-        downlinkPdenSel: -29.0206,
-        polImp: 5,
+        topo: this.paraData.adjInfo.topocentric2,
+        downlinkPdenSel: this.paraData.adjInfo.downlinkPdens2,
+        polImp: 0,
         esAdj: -20,
 
         antEffVal: this.paraData.antEffVal,
@@ -1956,8 +2134,8 @@ export default {
 
     dataDownlinkIntB1() {
       return {
-        topo: 2.035,
-        downlinkPdenSel: -40.063025,
+        topo: this.paraData.adjInfo.topocentric1,
+        downlinkPdenSel: this.paraData.adjInfo.downlinkPdens1,
         polImp: 0,
         esAdj: 0,
 
@@ -1972,9 +2150,9 @@ export default {
     },
     dataDownlinkIntB2() {
       return {
-        topo: 1.485,
-        downlinkPdenSel: -29.0206,
-        polImp: 3,
+        topo: this.paraData.adjInfo.topocentric2,
+        downlinkPdenSel: this.paraData.adjInfo.downlinkPdens2,
+        polImp: 0,
         esAdj: -25,
 
         antEffVal: this.paraData.antEffVal,
@@ -1994,6 +2172,22 @@ export default {
       }
     },
 
+  },
+  watch: {
+    'paraData' (newVal, oldVal) {
+
+      // this.rxAntTempVal = newVal.rxAntTempVal;
+      this.cityA = newVal.cityA;
+      this.cityB = newVal.cityB;
+
+      this.$emit('calData', {
+
+        // selLocations: this.selLocations,
+        cityA: this.locationInfoA.city,
+        cityB: this.locationInfoB.city,
+
+      })
+    },
   }
 }
 </script>

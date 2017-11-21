@@ -9,7 +9,7 @@
   <div class="col-sm-2"></div>
 
   <div class="col-sm-2" style="margin-top:5px">
-    <div class="row">{{frqUpA}}</div>
+    <div class="row">{{frqUpA.toFixed(6)}}</div>
     <div class="row">
       <input v-model="frqDnA" class="form-control" style="text-align:center" @input="updateDownFrq">
     </div>
@@ -17,7 +17,7 @@
 
 
   <div class="col-sm-2" style="margin-top:5px">
-    <div class="row">{{frqUpB}}</div>
+    <div class="row">{{frqUpB.toFixed(6)}}</div>
     <div class="row">
       <input v-model="frqDnB" class="form-control" style="text-align:center" @input="updateDownFrq">
     </div>
@@ -58,10 +58,10 @@ export default {
     //   return this.freqAssigned.selectedTp.downlink_cf;
     // },
     frqUpA() {
-      return this.freqAssigned.selectedTp.uplink_cf;
+      return this.freqAssigned.selectedTp.uplink_cf + (this.frqDnA - this.freqAssigned.selectedTp.downlink_cf);
     },
     frqUpB() {
-      return this.freqAssigned.selectedTp.uplink_cf;
+      return this.freqAssigned.selectedTp.uplink_cf + (this.frqDnB - this.freqAssigned.selectedTp.downlink_cf);
     },
   },
   methods: {

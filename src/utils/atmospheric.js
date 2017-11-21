@@ -581,31 +581,29 @@ export const rainAtten001 = async function (location, freq, orbital_slot, polari
    }
 
    // Calculates rain attenuation from predicted attenuation exceeded for 0.01% of an average year
-export const rainAtten = function (location, freq, orbital_slot, polarization, availability) {
+export const rainAtten = async function (location, freq, orbital_slot, polarization, availability) {
        // Calculate the estimated attenuation to be exceeded for other percentages of an average year
        // in the range of .001% to 5%  is approximated by
        var unavailability = 100 - availability;
        var stat_lat = location.lat;
        var ele_angle = elevationAngle(location, orbital_slot);
        var ele_rad = ele_angle * Math.PI / 180;
-       var rain_001 = rainAtten001(location, freq, orbital_slot, polarization, availability);
+       var rain_001 = await rainAtten001(location, freq, orbital_slot, polarization, availability)
        var beta;
        if (unavailability >= 1 || Math.abs(stat_lat) >= 36) {
            beta = 0;
        }
-       else if (unavailability <
-
-         1 && Math.abs(stat_lat) < 36 && ele_angle >= 25) {
+       else if (unavailability < 1 && Math.abs(stat_lat) < 36 && ele_angle >= 25) {
            beta = -0.005 * (Math.abs(stat_lat) - 36);
        }
 
        else {
            beta = -0.005 * (Math.abs(stat_lat) - 36) + 1.8 - 4.25 * Math.sin(ele_rad);
        }
-       console.log('Beta = ' + beta);
-       console.log('Rain 001 =' + rain_001);
-       console.log('Unavailability = ' + unavailability);
-       console.log('Ele_rad = ' + ele_rad);
+      //  console.log('Beta = ' + beta);
+      //  console.log('Rain 001 =' + rain_001);
+      //  console.log('Unavailability = ' + unavailability);
+      //  console.log('Ele_rad = ' + ele_rad);
        return rain_001 * Math.pow((unavailability / 0.01), -(0.655 + 0.033 * Math.log(unavailability) - 0.045 * Math.log(rain_001) - beta * (1 - unavailability) * Math.sin(ele_rad)));
 
    }

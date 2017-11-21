@@ -52,6 +52,7 @@ export default {
       // this.allowBw = parseFloat(this.bandwidth) * (1 + parseFloat(this.guardBandVal) / 100);
       this.$emit('updateBW', {
         bandwidth: this.bandwidth,
+        guardBandVal: this.guardBandVal,
         allowBW: this.allowBw,
         numMCPC: this.numMCPC,
         aggHpaBoo: this.aggHpaBoo
@@ -64,6 +65,7 @@ export default {
       this.bandwidth = newVal.bandwidthVal;
       this.$emit('updateBW', {
         bandwidth: this.bandwidth,
+        guardBandVal: this.guardBandVal,
         allowBW: this.allowBw,
         numMCPC: this.numMCPC,
         aggHpaBoo: this.aggHpaBoo

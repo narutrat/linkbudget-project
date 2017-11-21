@@ -39,6 +39,7 @@ export default {
       return this.infoValue / this.fec;
     },
     infoValue() {
+      if (this.carrierInfo.bandwidth) {
       if (this.carrierInfo.selectedBwSel === 'Information Rate') {
         var infoCal = this.carrierInfo.bandwidth;
         return infoCal;
@@ -46,6 +47,9 @@ export default {
         var infoCal = (this.carrierInfo.bandwidth * this.fec) / this.bt * this.mod;
         return infoCal;
       }
+    } else {
+      return 0;
+    }
     },
     symbolRate() {
       return this.carrierInfo.bandwidth/ this.bt;

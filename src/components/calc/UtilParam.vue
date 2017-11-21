@@ -1,15 +1,25 @@
 <template>
-  <div>
-    <div class="col-sm-2" style="text-align:center">
+<div>
+  <div class="row">
+
+
+    <div class="col-sm-4" style="text-align:left; margin-left:10px">
+      <div class="row">Power Utilization</div>
+      <div class="row">BW Utilization</div>
+      <div class="row">Case</div>
+    </div>
+    <div class="col-sm-2" style="text-align:center; margin-left:-10px">
       <div class="row">{{pwrUtilA.toFixed(2)}}</div>
       <div class="row">{{bwUtilA}}</div>
       <div class="row">{{caseA}}</div>
+
     </div>
 
     <div class="col-sm-2" style="text-align:center">
       <div class="row">{{pwrUtilB.toFixed(2)}}</div>
       <div class="row">{{bwUtilB}}</div>
       <div class="row">{{caseB}}</div>
+
     </div>
 
     <div class="col-sm-2" style="text-align:center">
@@ -22,10 +32,18 @@
       <div class="row">% (Max=100)</div>
       <div class="row">% (Max=100)</div>
     </div>
+  </div>
 
-    <div class="row" style="text-align:left">
+  <div class="row">
+    <!-- <div class="col-sm-4" style="text-align:center">
+      <input v-model="pwrVal" class="form-control" style="text-align:center">
+    </div> -->
+    <!-- <div class="col-sm-8" style="text-align:center">
       <button v-on:click="goalseekHPA">Calculate by Power Utilization</button>
-    </div>
+
+    </div> -->
+  </div>
+
 </div>
 </template>
 
@@ -37,7 +55,8 @@ export default {
   props: ['utilParam'],
   data() {
     return {
-
+      pwrVal: '',
+      hpaPowerBoth: ''
     }
   },
   computed: {
@@ -85,21 +104,41 @@ export default {
 
   },
   methods: {
-    goalseekHPA() {
-      this.hpaPowerBothA = 10;
-    //   while (this.pwrUtilA <= this.powerUVal - 0.001) {
-    //     this.hpaPowerBothA = this.hpaPowerBothA + 0.001;
-    //   }
-    //   while (this.pwrUtilA <= this.powerUVal - 0.00001) {
-    //     this.hpaPowerBothA = this.hpaPowerBothA + 0.00001;
-    //   }
-    //   while (this.pwrUtilA <= this.powerUVal - 0.0000001) {
-    //     this.hpaPowerBothA = this.hpaPowerBothA + 0.0000001;
-    //   }
-    //   return this.hpaPowerBothA;
-    console.log('Sending: ' + JSON.stringify(this.hpaPowerBothA))
-    this.$emit('updateHPA', this.hpaPowerBothA);
-    },
-  }
+    // goalseekHPA() {
+    //   // this.hpaPowerBoth = 10;
+    //   // this.$emit('updateHPA', {
+    //   //   hpaPowerBoth: this.hpaPowerBoth,
+    //   this.hpaPowerBoth = 10;
+    //   this.$emit('updateHPA', {
+    //     hpaPowerBoth: this.hpaPowerBoth,
+    //
+    //   });
+      //   while (this.pwrUtilA <= this.powerUVal - 0.001) {
+      //     this.hpaPowerBothA = this.hpaPowerBothA + 0.001;
+      //   }
+      //   while (this.pwrUtilA <= this.powerUVal - 0.00001) {
+      //     this.hpaPowerBothA = this.hpaPowerBothA + 0.00001;
+      //   }
+      //   while (this.pwrUtilA <= this.powerUVal - 0.0000001) {
+      //     this.hpaPowerBothA = this.hpaPowerBothA + 0.0000001;
+      //   }
+      //   return this.hpaPowerBothA;
+      // console.log('Sending: ' + JSON.stringify(this.hpaPowerBothA))
+      // this.$emit('updateHPA', this.hpaPowerBothA);
+    // },
+  },
+  watch: {
+    'utilParam' (newVal, oldVal) {
+      // this.pwrVal = newVal.pwrVal;
+      this.$emit('updateHPA', {
+        // pwrVal: this.pwrVal,
+        pwrUtilA: this.pwrUtilA,
+        pwrUtilB: this.pwrUtilB,
+
+
+      });
+      // this.allowBW= newVal.allowBWVal;
+    }
+  },
 }
 </script>

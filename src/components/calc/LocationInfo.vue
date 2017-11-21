@@ -35,7 +35,7 @@
       <input v-model="longSel" class="form-control" style="text-align:center">
     </div>
     <div class="row">
-      <input v-model="this.selLocations.antEffVal" class="form-control" style="text-align:center" @input="updateLocation">
+      <input v-model="antEffVal" class="form-control" style="text-align:center" @input="updateLocation">
     </div>
     <div class="row">
       {{antGainVal.toFixed(2)}}
@@ -75,7 +75,7 @@
     <div class="row" style="margin-top:8px">{{latRad.toFixed(4)}}</div>
     <div class="row" style="margin-top:8px">{{longRad.toFixed(4)}}</div>
     <div class="row" style="margin-top:6px">
-      <input v-model="this.selLocations.antEffVal" class="form-control" style="text-align:center" @input="updateLocation">
+      <input v-model="antEffVal" class="form-control" style="text-align:center" @input="updateLocation">
     </div>
     <div class="row">dBi at</div>
     <div class="row">dBi</div>
@@ -174,10 +174,10 @@ export default {
       return this.longSel * Math.PI / 180;
     },
     antGainVal() {
-      return 10 * Math.log10((this.selLocations.antEffVal / 100) * (Math.pow(Math.PI * this.selLocations.antSize / (this.celeritas / (this.selLocations.frqUp * 1000000000)), 2)));
+      return 10 * Math.log10((this.antEffVal / 100) * (Math.pow(Math.PI * this.selLocations.antSize / (this.celeritas / (this.selLocations.frqUp * 1000000000)), 2)));
     },
     antGainReceive() {
-      return 10 * Math.log10(4 * Math.PI * (this.selLocations.antEffVal / 100) * (Math.PI * Math.pow(this.selLocations.antSize, 2) / 4) / Math.pow((this.celeritas / (this.selLocations.selectedTp.downlink_cf * 1000000000)), 2));
+      return 10 * Math.log10(4 * Math.PI * (this.antEffVal / 100) * (Math.PI * Math.pow(this.selLocations.antSize, 2) / 4) / Math.pow((this.celeritas / (this.selLocations.selectedTp.downlink_cf * 1000000000)), 2));
     },
     tsys() {
       return parseFloat(this.rxAntTempVal) + ((Math.pow(10, (this.lossFeed / 10)) - 1) * 290) + (Math.pow(10, (this.lossFeed / 10)) * this.lnaTempVal) +
@@ -219,7 +219,7 @@ export default {
         latRad: this.latRad,
         longSel: this.longSel,
         longRad: this.longRad,
-        antEffVal: this.selLocations.antEffVal, //a
+        antEffVal: this.antEffVal, //a
         //b
         antGainVal: this.antGainVal,
         antGainReceive: this.antGainReceive,
@@ -246,9 +246,11 @@ export default {
       this.lnaTempVal = newVal.lnaTempVal;
       this.dcGain = newVal.dcGain;
       this.iflLoss = newVal.iflLoss;
+      this.antEffVal = newVal.antEffVal;
       this.$emit('updateLocationInfo', {
 
         // selLocations: this.selLocations,
+        city: this.locationSel,
         locationSel: this.locationSel,
         locationSelected: this.locationSelected,
         country: this.country,
@@ -256,7 +258,7 @@ export default {
         latRad: this.latRad,
         longSel: this.longSel,
         longRad: this.longRad,
-        antEffVal: this.selLocations.antEffVal, //a
+        antEffVal: this.antEffVal, //a
         //b
         antGainVal: this.antGainVal,
         antGainReceive: this.antGainReceive,

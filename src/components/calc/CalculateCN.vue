@@ -8,7 +8,7 @@
     <div class="row" style="margin-top:15px">{{ciCoch}}</div>
     <div class="row" style="margin-top:10px">{{ciAdj.toFixed(4)}}</div>
     <div class="row">{{cnTotal.toFixed(4)}}</div>
-    <div class="row">{{ebno.toFixed(4)}}</div>
+    <div class="row">{{ebNo.toFixed(4)}}</div>
     <div class="row">{{margin.toFixed(4)}}</div>
   </div>
 </div>
@@ -64,7 +64,7 @@ export default {
         return 0;
       }
     },
-    ebno() {
+    ebNo() {
       if (this.cnTotal) {
         return this.cnTotal - (10 * Math.log10(this.calculateCN.infoValue * 1000)) + (10 * Math.log10(this.calculateCN.bandwidth * 1000));
       } else {
@@ -72,8 +72,8 @@ export default {
       }
     },
     margin() {
-      if (this.ebno) {
-        return parseFloat(this.ebno) - parseFloat(this.calculateCN.ebNoThreshold);
+      if (this.ebNo) {
+        return parseFloat(this.ebNo) - parseFloat(this.calculateCN.ebNoThreshold);
       } else {
         return 0;
       }
@@ -82,7 +82,15 @@ export default {
   watch: {
     'calculateCN'(newVal, oldVal) {
       this.$emit('updateCalculateCN', {
-        cnTotal: this.cnTotal
+        ciUpTotal: this.ciUpTotal,
+        cnUp: this.cnUp,
+        cnDn: this.cnDn,
+        interMod: this.interMod,
+        ciCoch: this.ciCoch,
+        ciAdj: this.ciAdj,
+        cnTotal: this.cnTotal,
+        ebNo: this.ebNo,
+        margin: this.margin,
       });
     }
   },

@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     increaseT() {
-      return 280 * (1 - Math.exp(-this.downlinkNoise.rain / 4.34));
+      return 280 * (1 - Math.exp(-this.downlinkNoise.rainDown / 4.34));
     },
     noiseBW() {
       return 10 * Math.log10(this.downlinkNoise.bandwidth * 1000);
@@ -50,7 +50,7 @@ export default {
       return this.downlinkNoise.receivePwrClear - this.noisePwrClear;
     },
     cnDnfadeClear() {
-      return this.downlinkNoise.receivePwrClear - this.noisePwrDnfade - this.downlinkNoise.rain;
+      return this.downlinkNoise.receivePwrClear - this.noisePwrDnfade - this.downlinkNoise.rainDown;
     },
     noisePwrTotal() {
       if (this.downlinkNoise.cnTotal && this.downlinkNoise.receivePwrClear) {
