@@ -19,6 +19,7 @@ export default {
       // adj: [],
       adjSat: [],
       adjSatOptions: ['Apstar76.5E', 'Express80E', 'Telkom118E', 'Asiasat122E'],
+      adjDatabases: []
       // adjSatOptions: []
     }
   },
@@ -45,21 +46,31 @@ export default {
     },
 
   },
+  mounted() {
+    this.$http.get('adjsat').then(response => {
+      this.adjDatabases = response.body.adjsats;
+      console.log(response);
+    }).catch((e) => {
+      console.log(e);
+    })
+  },
   watch: {
     'adjSatellites' (newVal, oldVal) {
-      this.adjInfo = newVal.adjInfo;
-      this.$emit('adjSatList', {
-        adjSat: this.adjSat,
-        adjInfo: this.adjInfo,
-      })
-    },
-    'adjSatellites' (newVal) {
-      this.$http.get('adjsat').then(response => {
-        this.adjDatabases = response.body.adjsats;
-        console.log(response);
-      }).catch((e) => {
-        console.log(e);
-      })
+      var vm = this;
+      let result = [];
+      result = this.adjDatabases.find(function(x) {
+        // console.log('x. = ' + vm.adjSatellites.selectedSatellite.name);
+        return x.satellite === vm.adjSatellites.selectedSatellite.name && x.beam === vm.adjSatellites.selectedBeam;
+      });
+      if (result) {
+        this.adjSat = [result.adj1, result.adj2]
+        this.$emit('adjSatList', {
+          adjSat: [result.adj1, result.adj2],
+          adjInfo: this.adjInfo,
+        })
+      }
+      // this.adjInfo = newVal.adjInfo;
+
     }
   }
 

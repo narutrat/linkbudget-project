@@ -76,9 +76,9 @@
       <div class="row">
         <h3 style="margin-left:30px; margin-top:5px; font-weight:bold; text-align:left">Location</h3>
 
-        <div class="col-sm-8"></div>
+        <div class="col-sm-7"></div>
 
-        <div class="col-sm-1" style="margin-left:-6px">
+        <div class="col-sm-1" style="margin-left:90px">
           <span>Adjacent Satellite </span>
         </div>
 
@@ -110,7 +110,7 @@
           Dx Contours
         </div>
 
-        <AdjDxContour :adjSatellites="adjSatellitesData" @dxContourVal="adjSatDxContourA = $event"></AdjDxContour>
+        <AdjDxContour :adjDxContour="adjDxContourDataA" @dxContourVal="adjSatDxContourA = $event"></AdjDxContour>
         <!-- <div>
       {{adjSatDxContourA}}
     </div> -->
@@ -138,7 +138,7 @@
           Dx Contours
         </div>
 
-        <AdjDxContour :adjSatellites="adjSatellitesData" @dxContourVal="adjSatDxContourB = $event"></AdjDxContour>
+        <AdjDxContour :adjDxContour="adjDxContourDataB" @dxContourVal="adjSatDxContourB = $event"></AdjDxContour>
       </div>
 
       <div class="row">
@@ -150,6 +150,22 @@
           <div class="row" style="margin-left:5px; text-align:left">
             <!-- <input type="checkbox" v-bind:value="adj" v-model="selectedSatellite.adjSat"> {{ adj }} </input> -->
             <AdjSatCheckBox @adjSatList="updateAdjSat" :adjSatellites="adjSatellitesData"></AdjSatCheckBox>
+          </div>
+        </div>
+
+        <div class="col-sm-2"></div>
+
+        <div class="col-sm-2" style="text-align:center; margin-left:-5px; line-height:35px">
+          <div v-for="sat in adjSat">
+            {{ sat }} Peak :
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="row">
+            <input v-if="this.adjSat[0]" class="form-control" v-model="adjSatPeak1" style="text-align:center"/>
+          </div>
+          <div class="row">
+            <input v-if="this.adjSat[1]" class="form-control"v-model="adjSatPeak2" style="text-align:center"/>
           </div>
         </div>
       </div>
@@ -664,7 +680,7 @@
   <span>{{this.modemApp.roll_off_factor}}//</span>
   <span>{{this.selectedModCodeA.fec}}//</span>
   <span>{{this.selectedModCodeA.mod}}</span> -->
-
+<!-- {{this.adjSat}} -->
   </div>
 </div>
 </template>
@@ -745,6 +761,7 @@ export default {
       antSizeB: "",
       dxContour: "",
       adjSatDxContourA: [],
+      adjSatDxContourB: [],
       adjSatCheckBox: [],
       //////////////////////////////////////////////////////////////////////////////////////
       selectedCarrier: "multi",
@@ -851,6 +868,8 @@ export default {
       avrFadePercent: '',
       adjInfo: {},
       ctpInfo: '',
+      adjSatPeak1: '',
+      adjSatPeak2: ''
     };
   },
   components: { // Allow components to be used as HTML element
@@ -1027,6 +1046,28 @@ export default {
         city: this.cityA,
       }
     },
+    adjDxContourDataA() {
+      return {
+        selectedSatellite: this.selectedSatellite,
+        selectedBeam: this.selectedBeam,
+        selectedLocations: this.selectedLocationsA,
+        city: this.cityA,
+        adjSatSel: this.adjSat,
+        adjSatPeak1: this.adjSatPeak1,
+        adjSatPeak2: this.adjSatPeak2
+      }
+    },
+    adjDxContourDataB() {
+      return {
+        selectedSatellite: this.selectedSatellite,
+        selectedBeam: this.selectedBeam,
+        selectedLocations: this.selectedLocationsB,
+        city: this.cityB,
+        adjSatSel: this.adjSat,
+        adjSatPeak1: this.adjSatPeak1,
+        adjSatPeak2: this.adjSatPeak2
+      }
+    },
     satName() {
       if (this.selectedSatellite.name === "Thaicom 5") {
         return "T5";
@@ -1109,7 +1150,9 @@ export default {
         antSizeA: this.antSizeA,
         antSizeB: this.antSizeB,
         dxContour: this.dxContour,
+        adjSatSel: this.adjSat,
         adjSatDxContourA: this.adjSatDxContourA,
+        adjSatDxContourB: this.adjSatDxContourB,
         //////////////////////////////////////////////////////////////////////////////////////
         selectedCarrier: this.selectedCarrier,
         selectedMode: this.selectedMode,

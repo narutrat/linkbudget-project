@@ -582,9 +582,21 @@
       <div class="row" style="border-bottom:solid 1px; padding:5px; font-weight:bold; font-size:16px; background-color: #337AB7; color: white; text-shadow:1px 1px black">
         <div class="col-sm-4"></div>
         <div class="col-sm-8">
-          <div class="row" style="font-size:14px; margin-bottom:2px;">
-            <AdjName :adjName="dataAdjName"></AdjName>
-            <AdjName :adjName="dataAdjName"></AdjName>
+          <div class="row" style="font-size:13px">
+            <div class="col-sm-3">
+              {{this.paraData.adjSatSel[0]}}
+            </div>
+            <div class="col-sm-3">
+              {{this.paraData.adjSatSel[1]}}
+            </div>
+            <div class="col-sm-3">
+              {{this.paraData.adjSatSel[0]}}
+            </div>
+            <div class="col-sm-3">
+              {{this.paraData.adjSatSel[1]}}
+            </div>
+            <!-- <AdjName :adjName="dataAdjName"></AdjName>
+            <AdjName :adjName="dataAdjName"></AdjName> -->
           </div>
         </div>
       </div>
@@ -628,8 +640,22 @@
         <div class="col-sm-4"></div>
         <div class="col-sm-8">
           <div class="row" style="font-size:14px; margin-bottom:2px;">
-            <AdjName :adjName="dataAdjName"></AdjName>
-            <AdjName :adjName="dataAdjName"></AdjName>
+            <div class="row" style="font-size:13px">
+              <div class="col-sm-3">
+                {{this.paraData.adjSatSel[0]}}
+              </div>
+              <div class="col-sm-3">
+                {{this.paraData.adjSatSel[1]}}
+              </div>
+              <div class="col-sm-3">
+                {{this.paraData.adjSatSel[0]}}
+              </div>
+              <div class="col-sm-3">
+                {{this.paraData.adjSatSel[1]}}
+              </div>
+              <!-- <AdjName :adjName="dataAdjName"></AdjName>
+              <AdjName :adjName="dataAdjName"></AdjName> -->
+            </div>
           </div>
         </div>
       </div>
@@ -657,7 +683,7 @@
 
     </div>
     <!-- {{this.paraData.selectedModCodeA}} -->
-
+<!-- {{this.paraData.adjSatSel[0]}} // {{this.paraData.adjSatSel[1]}} -->
 
   </div>
 
@@ -1300,6 +1326,20 @@ export default {
   //////////////////////////////////////////////////////////////////////////////
 
   computed: {
+    contour1() {
+      if (this.paraData.adjSatSel[0]) {
+        return this.paraData.adjInfo.adjacent1;
+      } else {
+        return -100;
+      }
+    },
+    contour2() {
+      if (this.paraData.adjSatSel[1]) {
+        return this.paraData.adjInfo.adjacent2;
+      } else {
+        return -100;
+      }
+    },
     bwA() {
       if (this.paraData.selectedBwSel === 'Bandwidth') {
         return this.paraData.bandwidthValA;
@@ -2009,6 +2049,7 @@ export default {
     /////////////////////////////////////////
     dataAdjName() {
       return {
+        adjSatSel: this.paraData.adjSatSel,
         adjSatName: this.paraData.adjSatDxContourA,
         selectedSatellite: this.paraData.selectedSatellite,
         selectedLocationsA: this.paraData.selectedLocationsA,
@@ -2020,9 +2061,11 @@ export default {
         // topo: 2.035,
         // ulPden: -55,
         // esInTcGt: -3,
+        adjSatSel: this.paraData.adjSatSel,
         topo: this.paraData.adjInfo.topocentric1,
         ulPden: this.paraData.adjInfo.uplinkPdens1,
-        esInTcGt: this.paraData.adjInfo.adjacent1,
+        // esInTcGt: this.paraData.adjInfo.adjacent1,
+        esInTcGt: this.contour1,
         selectedSatellite: this.paraData.selectedSatellite,
         powerDen: this.powerDenA,
         antGainVal: this.locationInfoA.antGainVal,
@@ -2038,7 +2081,8 @@ export default {
         // esInTcGt: -10,
         topo: this.paraData.adjInfo.topocentric2,
         ulPden: this.paraData.adjInfo.uplinkPdens2,
-        esInTcGt: this.paraData.adjInfo.adjacent2,
+        // esInTcGt: this.paraData.adjInfo.adjacent2,
+        esInTcGt: this.contour2,
         selectedSatellite: this.paraData.selectedSatellite,
         powerDen: this.powerDenA,
         antGainVal: this.locationInfoA.antGainVal,
@@ -2059,20 +2103,22 @@ export default {
       return {
         topo: this.paraData.adjInfo.topocentric1,
         ulPden: this.paraData.adjInfo.uplinkPdens1,
-        esInTcGt: this.paraData.adjInfo.adjacent1,
+        // esInTcGt: this.paraData.adjInfo.adjacent1,
+        esInTcGt: this.contour1,
         selectedSatellite: this.paraData.selectedSatellite,
         powerDen: this.powerDenB,
         antGainVal: this.locationInfoB.antGainVal,
         gtSel: this.gtSelB,
         polImp: 0,
-        ulSidelobe: 0,
+        ulSidelobe: 0
       }
     },
     dataUplinkIntB2() {
       return {
         topo: this.paraData.adjInfo.topocentric2,
         ulPden: this.paraData.adjInfo.uplinkPdens2,
-        esInTcGt: this.paraData.adjInfo.adjacent2,
+        // esInTcGt: this.paraData.adjInfo.adjacent2,
+        esInTcGt: this.contour2,
         selectedSatellite: this.paraData.selectedSatellite,
         powerDen: this.powerDenB,
         antGainVal: this.locationInfoB.antGainVal,
